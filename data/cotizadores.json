@@ -1,0 +1,25 @@
+{
+  "advisors": [
+    "Dixon Guerra",
+    "Elizbeth Villanueva",
+    "Liset Martinez",
+    "Yvonne Montoya"
+  ],
+  "quote": {
+    "cliente": "JULIO TALAVERA CASTRO",
+    "sistema": "FINANCIADO",
+    "precioLista": "no existe",
+    "mz": "no existe",
+    "descuentoLanzamiento": "S/ 4,000.00",
+    "lote": "no existe",
+    "precioFinalFinanciado": "#¡VALOR!",
+    "etapa": "no existe",
+    "inicial": "S/ 6,000.00",
+    "ubicacion": "no existe",
+    "valorCuota": "#¡VALOR!",
+    "metraje": "no existe",
+    "fecha": "13/06/2026",
+    "descuentoContado": "S/ 8,000.00",
+    "precioFinalContado": "#¡VALOR!"
+  }
+}

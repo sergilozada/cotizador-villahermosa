@@ -1,0 +1,724 @@
+:root {
+  color-scheme: dark;
+  color: #0f172a;
+  background: #eff6ff;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #e8eff9 100%);
+}
+.hidden {
+  display: none !important;
+}
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background-image: url('assets/PORTICO%20DE%20INGRESO.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+}
+.login-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  z-index: -1;
+}
+.login-card {
+  width: min(420px, calc(100% - 32px));
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+.login-card h2 {
+  margin: 0 0 10px;
+  font-size: 2rem;
+}
+.login-card p {
+  margin: 0 0 18px;
+  color: #475569;
+}
+.login-card label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #0f172a;
+}
+.login-card input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+}
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 50px;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  color: #475569;
+}
+.eye-icon {
+  width: 20px;
+  height: 20px;
+}
+.toggle-password:hover {
+  opacity: 0.7;
+}
+.toggle-password:active {
+  opacity: 0.5;
+}
+.login-card .button {
+  width: 100%;
+  margin-top: 8px;
+}
+.login-help {
+  margin-top: 20px;
+  color: #334155;
+}
+.login-help ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+.login-error {
+  margin-top: 12px;
+  color: #b91c1c;
+  font-weight: 600;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+input,
+select,
+textarea {
+  color: #0f172a;
+}
+input[readonly],
+select[readonly],
+textarea[readonly] {
+  background: #f1f5f9;
+  color: #475569;
+}
+.app-shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 24px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 32px 80px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148,163,184,0.16);
+}
+
+.theme-toggle {
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: white;
+  color: #0f172a;
+  cursor: pointer;
+  font-weight: 700;
+}
+.theme-toggle:hover {
+  background: #f8fafc;
+}
+.app-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  padding: 24px;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.5vw, 2.8rem);
+  letter-spacing: -0.04em;
+  text-align: center;
+  width: 100%;
+  max-width: 760px;
+}
+.brand-logo {
+  height: 140px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.brand-logo.left {
+  justify-self: start;
+}
+.brand-logo.right {
+  justify-self: end;
+}
+@media (max-width: 900px) {
+  .app-header {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .brand-logo {
+    height: 90px;
+  }
+  .brand-logo.left,
+  .brand-logo.right {
+    justify-self: center;
+  }
+}
+@media (max-width: 700px) {
+  .brand-logo { height: 80px; }
+  .brand-logo.right { height: 80px; }
+  .app-header h1 { font-size: 1.6rem; }
+}
+.info-grid,
+.calculator-form {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 24px;
+}
+.left-heading {
+  margin-bottom: 18px;
+}
+.left-heading h2 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+}
+.left-heading p {
+  margin: 10px 0 0;
+  color: #334155;
+}
+.finance-block {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.finance-block.secondary-block {
+  background: #f8fbff;
+}
+.finance-block,
+.finance-block.secondary-block {
+  min-height: 420px;
+}
+.finance-block-header {
+  display: block;
+  width: fit-content;
+  padding: 16px 24px;
+  border-radius: 18px;
+  background: #0f778a;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+/* Mode box used for FINANCIADO in the main finance block
+   Matches the visual style of the AL CONTADO header */
+.mode-box {
+  display: inline-block;
+  padding: 16px 24px;
+  border-radius: 18px;
+  background: #0f778a;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  width: fit-content;
+}
+.finance-banner {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  justify-items: stretch;
+  background: #dbeffe;
+  border-radius: 20px;
+  padding: 18px;
+  color: #0f172a;
+  margin-bottom: 24px;
+  white-space: nowrap;
+}
+.finance-banner span {
+  opacity: 0.7;
+}
+.finance-banner strong {
+  font-size: 1rem;
+  font-weight: 700;
+  justify-self: start;
+  padding-left: 8px;
+}
+  .finance-banner input[type="number"] {
+    justify-self: end;
+    max-width: 110px;
+  }
+.finance-grid {
+  display: grid;
+  gap: 14px;
+}
+.finance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.finance-row span {
+  color: #334155;
+  font-weight: 600;
+}
+.finance-row input {
+  min-width: 160px;
+  max-width: 180px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  text-align: right;
+}
+.finance-row input:focus {
+  outline: 2px solid rgba(15, 119, 138, 0.25);
+}
+.input-prefix {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  min-width: 160px;
+  max-width: 220px;
+}
+.input-prefix span {
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.input-prefix input {
+  border: none;
+  min-width: 0;
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  text-align: right;
+}
+.input-prefix input:focus {
+  outline: none;
+}
+.payment-control {
+  margin-bottom: 18px;
+}
+.payment-control select {
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+}
+.payment-control label,
+.info-grid label {
+  display: grid;
+  gap: 8px;
+  color: #0f172a;
+}
+.info-grid input,
+.info-grid select,
+.calculator-form input,
+.calculator-form select {
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+}
+.highlight {
+  background: #fef9c3;
+  border-color: #fde68a;
+}
+.finance-banner select {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  width: 100%;
+  max-width: 120px;
+}
+.finance-banner input[type="number"] {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  width: 100%;
+  max-width: 120px;
+  text-align: center;
+  font-weight: 700;
+}
+.finance-banner input[type="number"]:focus {
+  outline: 2px solid rgba(15, 119, 138, 0.25);
+}
+
+.finance-banner select:focus {
+  outline: 2px solid rgba(15, 119, 138, 0.25);
+}
+
+.page-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 0.95fr 1.05fr;
+  margin-top: 20px;
+}
+.panel {
+  background: white;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 26px 65px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(148,163,184,0.14);
+}
+.panel-left,
+.panel-right {
+  min-height: auto;
+}
+.compact-table {
+  margin-top: 12px;
+}
+.table-wrapper {
+  display: none;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+}
+.panel-history {
+  display: none;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+th,
+td {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+}
+th {
+  color: #475569;
+  letter-spacing: 0.01em;
+  font-weight: 700;
+}
+tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+tbody tr:hover {
+  background: #eff6ff;
+}
+tbody tr.selected {
+  background: #dbeafe;
+}
+.summary-card {
+  min-height: 220px;
+  padding: 22px;
+  border-radius: 24px;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  margin-top: 24px;
+}
+.summary-card .summary-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  align-items: center;
+}
+.summary-card dt {
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #334155;
+}
+.summary-card dt::after {
+  content: ' :';
+}
+.summary-card dd {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+}
+.summary-card dd span {
+  opacity: 0.85;
+}
+.button-row {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+.button {
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 20px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.button {
+  background: #0f778a;
+}
+.button.secondary {
+  background: #1b4f5f;
+}
+.button.small {
+  width: auto;
+  padding: 12px 18px;
+}
+.compact-block {
+  max-width: none;
+  margin: 0;
+}
+.button-row-centered {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 20px;
+}
+.button-row-centered .button {
+  width: auto;
+  min-width: 180px;
+  padding: 14px 22px;
+}
+.panel-history {
+  grid-column: 1 / -1;
+}
+.history-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.saved-quotes {
+  display: grid;
+  gap: 16px;
+}
+.quote-card {
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid #e2e8f0;
+  background: #f8fbff;
+}
+.quote-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.quote-card strong {
+  color: #0f172a;
+}
+.quote-card p {
+  margin: 0 0 10px;
+  color: #475569;
+}
+.quote-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media (max-width: 1080px) {
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+  .info-grid,
+  .calculator-form {
+    grid-template-columns: 1fr;
+  }
+  .finance-banner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@page {
+  margin: 12mm;
+  size: A4;
+}
+@media print {
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html,
+  body {
+    background: white;
+    color: #0f172a;
+    margin: 0;
+    padding: 0;
+    min-height: auto;
+  }
+  body * {
+    visibility: visible;
+  }
+  .hidden,
+  .login-overlay,
+  .login-card,
+  .login-help,
+  .login-error,
+  .button-row,
+  .button,
+  .quote-actions,
+  .panel-history {
+    display: none !important;
+  }
+  .app-shell {
+    padding: 0;
+    margin: 0 auto;
+    max-width: 100%;
+    width: auto;
+  }
+  .app-header {
+    margin: 0 0 16px 0;
+    padding: 8px 0;
+    page-break-inside: avoid !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    width: auto;
+    flex: 1;
+  }
+  .brand-logo {
+    height: 64px;
+    width: auto;
+  }
+  .page-grid {
+    display: block;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .panel,
+  .finance-block,
+  .summary-card {
+    box-shadow: none !important;
+    border: 1px solid #d1d5db !important;
+    background: white !important;
+    margin: 0 0 16px 0;
+    padding: 16px;
+    page-break-inside: avoid !important;
+  }
+  .finance-block {
+    margin-bottom: 16px;
+    min-height: auto;
+  }
+  .table-wrapper {
+    overflow: visible !important;
+  }
+  .panel-left,
+  .panel-right,
+  .finance-block,
+  .summary-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    width: 100%;
+  }
+  .left-heading h2 {
+    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+  }
+  .info-grid {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .info-grid label {
+    gap: 4px;
+    font-size: 0.85rem;
+  }
+  .info-grid input {
+    min-height: 40px;
+    font-size: 0.9rem;
+  }
+  .finance-row {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+  .finance-banner {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .summary-card {
+    min-height: auto;
+    padding: 16px;
+  }
+  .summary-card .summary-list {
+    gap: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
