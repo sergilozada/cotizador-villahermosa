@@ -108,7 +108,7 @@ const handleLogin = () => {
 
 const loadData = async () => {
   try {
-    const response = await fetch('../data/precios.json');
+    const response = await fetch('/data/precios.json');
     state.allLots = await response.json();
     state.filteredLots = [...state.allLots];
     renderLotsTable();

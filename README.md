@@ -35,6 +35,14 @@ Prototipo web para cotizar lotes de Villa Hermosa directamente desde los datos d
 5. Ajusta tipo de pago, plazo, enganche y descuento.
 6. Usa los botones para copiar, imprimir o guardar la cotización.
 
+## Despliegue en Netlify
+
+1. Crea un repositorio en GitHub y sube este proyecto.
+2. Abre Netlify y conecta tu repositorio.
+3. En los ajustes del sitio, establece el directorio de publicación en la raíz del repositorio (`.`).
+4. Netlify usará `src/index.html` como página de inicio gracias al archivo `_redirects`.
+5. Al desplegar, la aplicación quedará disponible como sitio estático.
+
 ## Cómo actualizar datos
 
 1. Modifica `PRECIOS.csv` con tus precios.
