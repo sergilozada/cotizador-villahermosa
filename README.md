@@ -1,50 +1,47 @@
 # Cotizador Villa Hermosa
 
-Prototipo web para cotizar lotes de Villa Hermosa directamente desde los datos de `data/PRECIOS.csv`.
+[](https://github.com/sergilozada/cotizador-villa-hermosa#cotizador-villa-hermosa)
+Sistema web para cotizar lotes de Villa Hermosa directamente desde los datos de `data/PRECIOS.csv`.
 
-## Estructura de archivos
+## Descripción
 
-- `src/index.html` — interfaz de usuario principal.
-- `src/styles.css` — estilos visuales y layout responsivo.
-- `src/script.js` — lógica de carga de datos, filtrado, cotización y guardado.
-- `data/precios.json` — dataset normalizado generado desde `data/PRECIOS.csv`.
-- `data/PRECIOS.csv` — datos de precios originales.
-- `data/COTIZADOR.csv` — datos de cotización originales.
-- `scripts/convert_precios.py` — script para generar `data/precios.json` desde el CSV.
-- `scripts/parse_cotizador.py` — script para generar `data/cotizadores.json` desde el CSV.
+[](https://github.com/sergilozada/cotizador-villa-hermosa#descripci%C3%B3n)
+Cotizador Villa Hermosa es una aplicación web ligera de cotización inmobiliaria que permite consultar precios de lotes, calcular propuestas de pago y generar cotizaciones listos para imprimir o compartir.
 
-## Qué incluye ahora
+## Funcionalidades principales
 
-- Filtro de lotes por código, etapa y ubicación.
-- Cálculo de cotización para lote seleccionado.
-- Elección de tipo de pago: financiado o contado.
-- Ajuste de plazo, enganche y descuento adicional.
-- Guardado de cotizaciones en el navegador.
-- Historial de propuestas con carga y eliminación.
-- Copiar resumen al portapapeles.
-- Impresión de cotización.
+[](https://github.com/sergilozada/cotizador-villa-hermosa#funcionalidades-principales)
 
-## Cómo usar
+- Carga y filtrado de lotes por código, etapa y ubicación.
+- Cálculo automático de precio según modalidad de pago.
+- Selección de pago al contado o financiación.
+- Ajuste de enganche, plazo y descuento adicional.
+- Guardado local de cotizaciones en el navegador.
+- Historial de cotizaciones con carga y eliminación.
+- Copiar resumen de cotización al portapapeles.
+- Impresión optimizada de la propuesta.
 
-1. Instala dependencias en la carpeta del proyecto:
-   - `npm install`
-2. Inicia el servidor de desarrollo:
-   - `npm run dev`
-3. Abre en el navegador la URL que se muestre (por ejemplo `http://127.0.0.1:4173`).
-4. Selecciona un lote de la tabla.
-5. Ajusta tipo de pago, plazo, enganche y descuento.
-6. Usa los botones para copiar, imprimir o guardar la cotización.
+## Tecnologías utilizadas
 
-## Despliegue en Netlify
+[](https://github.com/sergilozada/cotizador-villa-hermosa#tecnolog%C3%ADas-utilizadas)
 
-1. Crea un repositorio en GitHub y sube este proyecto.
-2. Abre Netlify y conecta tu repositorio.
-3. En los ajustes del sitio, establece el directorio de publicación en la raíz del repositorio (`.`).
-4. Netlify usará `src/index.html` como página de inicio gracias al archivo `_redirects`.
-5. Al desplegar, la aplicación quedará disponible como sitio estático.
+- HTML
+- CSS
+- JavaScript
+- Netlify (configuración de despliegue estático)
+- Python (scripts de conversión CSV a JSON)
 
-## Cómo actualizar datos
+## Sitio web
 
-1. Modifica `PRECIOS.csv` con tus precios.
-2. Ejecuta `python convert_precios.py` para regenerar `precios.json`.
-3. Recarga `index.html` en el navegador.
+[](https://github.com/sergilozada/cotizador-villa-hermosa#sitio-web)
+Pendiente de publicación en Netlify o GitHub Pages.
+
+## Repositorio
+
+[](https://github.com/sergilozada/cotizador-villa-hermosa#repositorio)
+[https://github.com/sergilozada/cotizador-villa-hermosa](https://github.com/sergilozada/cotizador-villa-hermosa)
+
+## Objetivo del proyecto
+
+[](https://github.com/sergilozada/cotizador-villa-hermosa#objetivo-del-proyecto)
+El objetivo de este proyecto es facilitar la cotización rápida de lotes de Villa Hermosa mediante una interfaz sencilla y datos estructurados, permitiendo a asesores y clientes tomar decisiones de compra con cálculos claros y accesibles.
