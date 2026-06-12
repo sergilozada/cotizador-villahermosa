@@ -177,7 +177,7 @@ textarea[readonly] {
   max-width: 760px;
 }
 .brand-logo {
-  height: 140px;
+  height: 160px;
   width: auto;
   object-fit: contain;
   border-radius: 8px;
@@ -312,6 +312,13 @@ textarea[readonly] {
   color: #334155;
   font-weight: 600;
 }
+.finance-row strong {
+  color: #b87f00;
+  background: rgba(254, 240, 138, 0.3);
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
 .finance-row input {
   min-width: 160px;
   max-width: 180px;
@@ -325,6 +332,25 @@ textarea[readonly] {
 }
 .finance-row input:focus {
   outline: 2px solid rgba(15, 119, 138, 0.25);
+}
+#monthlyPaymentValue,
+#finalPriceValue,
+#cashFinalValue,
+#cashPriceListValue,
+.summary-card dd strong,
+.summary-card dd span {
+  color: #b87f00;
+  background: rgba(254, 240, 138, 0.3);
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+#monthlyPaymentValue,
+#finalPriceValue,
+#cashFinalValue,
+#cashPriceListValue {
+  min-width: 90px;
+  text-align: right;
 }
 .input-prefix {
   display: inline-flex;
@@ -615,6 +641,7 @@ tbody tr.selected {
     margin: 0;
     padding: 0;
     min-height: auto;
+    font-size: 12pt;
   }
   body * {
     visibility: visible;
@@ -637,25 +664,32 @@ tbody tr.selected {
     width: auto;
   }
   .app-header {
-    margin: 0 0 16px 0;
-    padding: 8px 0;
+    margin: 0 0 14px 0;
+    padding: 10px 0 12px;
     page-break-inside: avoid !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
+    break-inside: avoid !important;
+    display: block;
+    text-align: center;
+    gap: 18px;
     width: 100%;
   }
   .app-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    text-align: center;
-    width: auto;
-    flex: 1;
+    margin: 0 auto;
+    font-size: 1.45rem;
+    width: 100%;
+    max-width: 560px;
+    line-height: 1.1;
   }
   .brand-logo {
-    height: 64px;
+    height: 100px;
     width: auto;
+    max-width: 190px;
+    display: inline-block;
+    margin: 0 12px;
+  }
+  .brand-logo.left,
+  .brand-logo.right {
+    justify-self: center;
   }
   .page-grid {
     display: block;
@@ -671,8 +705,12 @@ tbody tr.selected {
     border: 1px solid #d1d5db !important;
     background: white !important;
     margin: 0 0 16px 0;
-    padding: 16px;
+    padding: 18px;
     page-break-inside: avoid !important;
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
   .finance-block {
     margin-bottom: 16px;
@@ -691,7 +729,7 @@ tbody tr.selected {
   }
   .left-heading h2 {
     margin: 0 0 12px 0;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
   .info-grid {
     gap: 10px;
@@ -699,19 +737,38 @@ tbody tr.selected {
   }
   .info-grid label {
     gap: 4px;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
   }
   .info-grid input {
     min-height: 40px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
   .finance-row {
     padding: 12px 14px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+  .finance-row strong {
+    color: #c27800;
+    background: rgba(254, 240, 138, 0.25);
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  .finance-row span {
+    color: #334155;
+  }
+  #monthlyPaymentValue,
+  #finalPriceValue,
+  #cashFinalValue,
+  #cashPriceListValue {
+    color: #b87f00;
+    background: rgba(254, 240, 138, 0.3);
+    padding: 2px 6px;
+    border-radius: 8px;
   }
   .finance-banner {
     padding: 12px;
     margin-bottom: 16px;
+    grid-template-columns: 1fr;
   }
   .summary-card {
     min-height: auto;
@@ -719,6 +776,29 @@ tbody tr.selected {
   }
   .summary-card .summary-list {
     gap: 8px 16px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+  .summary-card dt,
+  .summary-card dd {
+    font-size: 0.95rem;
+  }
+  .summary-card dd strong,
+  .summary-card dd span {
+    color: #c27800;
+  }
+  .summary-card dd strong {
+    display: inline-block;
+    background: rgba(254, 240, 138, 0.25);
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  table,
+  th,
+  td {
+    font-size: 0.92rem;
+  }
+  th,
+  td {
+    padding: 10px 12px;
   }
 }
