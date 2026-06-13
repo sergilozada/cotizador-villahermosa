@@ -12,8 +12,8 @@ const users = {
     fullName: 'Dixon Jamir Guerra Armejo',
     phone: '912131159',
   },
-  'e.villanueva': {
-    advisor: 'Elizbeth Villanueva',
+  'l.villanueva': {
+    advisor: 'Lizbeth Villanueva',
     fullName: 'Lizbeth Antonia Villanueva Chávez',
     phone: '938697119',
   },
