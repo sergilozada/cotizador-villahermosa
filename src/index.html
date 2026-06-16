@@ -6,36 +6,77 @@
     <title>Cotizador Villa Hermosa</title>
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
+
   <body>
     <div id="loginOverlay" class="login-overlay">
       <div class="login-card">
-        <h2>Iniciar sesión</h2>
+        <div class="login-brand">Villa Hermosa</div>
+
+        <h2>Panel de Cotización</h2>
+
         <label>
           Usuario
-          <input id="usernameInput" type="text" />
+          <input
+            id="usernameInput"
+            type="text"
+            placeholder="Ingresa tu usuario"
+            autocomplete="username"
+          />
         </label>
+
         <label>
           Contraseña
           <div class="password-input-wrapper">
-            <input id="passwordInput" type="password" />
-            <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Mostrar contraseña">
-              <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <input
+              id="passwordInput"
+              type="password"
+              placeholder="Ingresa tu contraseña"
+              autocomplete="current-password"
+            />
+
+            <button
+              type="button"
+              class="toggle-password"
+              id="togglePasswordBtn"
+              aria-label="Mostrar contraseña"
+            >
+              <svg
+                class="eye-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
             </button>
           </div>
         </label>
-        <button id="loginButton" class="button">Entrar</button>
+
+        <button id="loginButton" class="button">Ingresar</button>
+
         <p class="login-error"></p>
       </div>
     </div>
 
     <div id="appContent" class="app-shell hidden">
       <header class="app-header">
-        <img src="/src/assets/AYTLOGO.jfif" alt="AYT House Inmobiliaria" class="brand-logo left" />
+        <img
+          src="/src/assets/AYTLOGO.jfif"
+          alt="AYT House Inmobiliaria"
+          class="brand-logo left"
+        />
+
         <h1>Cotizador Villa Hermosa</h1>
-        <img src="/src/assets/LOGOVILLAHERMOSA.jpeg" alt="Villa Hermosa" class="brand-logo right" />
+
+        <img
+          src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+          alt="Villa Hermosa"
+          class="brand-logo right"
+        />
       </header>
 
       <main class="page-grid">
@@ -49,38 +90,64 @@
               ASESOR(A)
               <input id="asesorSelect" type="text" readonly />
             </label>
+
             <label>
               CLIENTE
               <input id="clienteInput" type="text" placeholder="Nombre del cliente" />
             </label>
+
             <label>
               CÓDIGO
-              <input id="codigoInput" type="text" class="highlight" placeholder="" maxlength="3" />
+              <input
+                id="codigoInput"
+                type="text"
+                class="highlight"
+                placeholder=""
+                maxlength="3"
+              />
             </label>
+
             <label>
               MZ
               <input id="mzInput" type="text" readonly value="" />
             </label>
+
             <label>
               LOTE
               <input id="loteInput" type="text" readonly value="" />
             </label>
+
             <label>
               ETAPA
               <input id="etapaInput" type="text" readonly value="" />
             </label>
+
             <label>
               UBICACIÓN
               <input id="ubicacionInput" type="text" readonly value="" />
             </label>
+
             <label>
               METRAJE
               <input id="metrajeInput" type="text" readonly value="" />
             </label>
+
             <label>
               FECHA
               <input id="fechaInput" type="date" readonly />
             </label>
+          </div>
+
+          <div class="advisor-photocheck-card hidden" id="advisorPhotoCheckCard">
+            <div class="advisor-photocheck-frame">
+              <img
+                id="advisorPhotoCheckImage"
+                src="/src/assets/DIXON.jpeg"
+                alt="Fotocheck del asesor"
+                width="985"
+                height="1674"
+              />
+            </div>
           </div>
 
           <div class="table-wrapper compact-table">
@@ -95,6 +162,7 @@
                   <th>Precio final</th>
                 </tr>
               </thead>
+
               <tbody id="lotsTable"></tbody>
             </table>
           </div>
@@ -106,52 +174,111 @@
               <span>SISTEMA</span>
               <strong id="systemValue">FINANCIADO</strong>
               <span>MESES</span>
-              <input id="termSelect" type="number" min="1" value="12" />
+              <input
+                id="termSelect"
+                type="number"
+                min="1"
+                max="120"
+                step="1"
+                value="12"
+                inputmode="numeric"
+              />
             </div>
+
             <div class="finance-grid">
-              <div class="finance-row"><span>PRECIO LISTA:</span><strong id="priceListValue">-</strong></div>
+              <div class="finance-row">
+                <span>PRECIO LISTA:</span>
+                <strong id="priceListValue">-</strong>
+              </div>
+
               <div class="finance-row highlight-row">
                 <span>DSCTO POR LANZAMIENTO:</span>
                 <div class="input-prefix">
                   <span>S/</span>
-                  <input id="descuentoPreventaInput" type="number" step="100" min="0" value="0" />
+                  <input
+                    id="descuentoPreventaInput"
+                    type="number"
+                    step="100"
+                    min="0"
+                    value="0"
+                  />
                 </div>
               </div>
-              <div class="finance-row"><span>PRECIO FINAL FINANCIADO:</span><strong id="finalPriceValue">-</strong></div>
+
+              <div class="finance-row">
+                <span>PRECIO FINAL FINANCIADO:</span>
+                <strong id="finalPriceValue">-</strong>
+              </div>
+
               <div class="finance-row highlight-row">
                 <span>INICIAL:</span>
                 <div class="input-prefix">
                   <span>S/</span>
-                  <input id="initialInput" type="number" step="100" min="0" value="0" />
+                  <input
+                    id="initialInput"
+                    type="number"
+                    step="100"
+                    min="0"
+                    value="0"
+                  />
                 </div>
               </div>
-              <div class="finance-row note-row"><span>VALOR DE CUOTA:</span><strong id="monthlyPaymentValue">-</strong></div>
+
+              <div class="finance-row note-row">
+                <span>VALOR DE CUOTA:</span>
+                <strong id="monthlyPaymentValue">-</strong>
+              </div>
             </div>
           </div>
 
           <div class="finance-block secondary-block">
             <div class="finance-block-header">AL CONTADO</div>
+
             <div class="finance-grid">
-              <div class="finance-row"><span>PRECIO LISTA:</span><strong id="cashPriceListValue">-</strong></div>
+              <div class="finance-row">
+                <span>PRECIO LISTA:</span>
+                <strong id="cashPriceListValue">-</strong>
+              </div>
+
               <div class="finance-row highlight-row">
                 <span>DSCTO AL CONTADO:</span>
                 <div class="input-prefix">
                   <span>S/</span>
-                  <input id="cashDiscountInput" type="number" step="100" min="0" value="0" />
+                  <input
+                    id="cashDiscountInput"
+                    type="number"
+                    step="100"
+                    min="0"
+                    value="0"
+                  />
                 </div>
               </div>
-              <div class="finance-row"><span>PRECIO FINAL AL CONTADO:</span><strong id="cashFinalValue">-</strong></div>
+
+              <div class="finance-row">
+                <span>PRECIO FINAL AL CONTADO:</span>
+                <strong id="cashFinalValue">-</strong>
+              </div>
             </div>
           </div>
 
           <div class="button-row button-row-centered">
-            <button id="copySummaryButton" class="button secondary" disabled>Copiar resumen</button>
-            <button id="printSummaryButton" class="button secondary" disabled>Imprimir</button>
-            <button id="saveQuoteButton" class="button" disabled>Guardar cotización</button>
+            <button id="copySummaryButton" class="button secondary" disabled>
+              Copiar resumen
+            </button>
+
+            <button id="printSummaryButton" class="button secondary" disabled>
+              Imprimir
+            </button>
+
+            <button id="saveQuoteButton" class="button" disabled>
+              Guardar cotización
+            </button>
           </div>
 
           <div class="summary-card" id="summaryCard">
-            <p class="empty-state">Selecciona un lote para ver el detalle completo de la cotización.</p>
+            <p class="empty-state">
+              Selecciona un lote para ver el detalle completo de la cotización.
+            </p>
           </div>
         </section>
       </main>
@@ -162,15 +289,20 @@
             <h2>Historial de cotizaciones</h2>
             <p>Guarda y gestiona tus propuestas con facilidad.</p>
           </div>
+
           <div class="history-actions">
-            <button id="clearHistoryButton" class="button secondary small">Borrar historial</button>
+            <button id="clearHistoryButton" class="button secondary small">
+              Borrar historial
+            </button>
           </div>
         </div>
+
         <div id="savedQuotesList" class="saved-quotes">
           <p class="empty-state">Aún no guardaste ninguna cotización.</p>
         </div>
       </section>
     </div>
+
     <script src="/src/script.js"></script>
   </body>
 </html>
