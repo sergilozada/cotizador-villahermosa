@@ -578,6 +578,22 @@ textarea[readonly] {
   outline: none;
 }
 
+.promo-bandera-blanca {
+  margin: -6px 0 24px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(184, 127, 0, 0.28);
+  background: #fff7d6;
+  color: #713f12;
+  font-size: 0.96rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.promo-bandera-blanca strong {
+  color: #92400e;
+}
+
 /* ============================= */
 /* TABLA */
 /* ============================= */
@@ -1078,6 +1094,18 @@ tbody tr.selected {
 
   .finance-block.secondary-block {
     background: #ffffff !important;
+  }
+
+  .promo-bandera-blanca {
+    margin: 0 !important;
+    padding: 3mm 4mm !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(184, 127, 0, 0.32) !important;
+    background: #fff7d6 !important;
+    color: #713f12 !important;
+    font-size: 8pt !important;
+    font-weight: 900 !important;
+    line-height: 1.25 !important;
   }
 
   .finance-banner {

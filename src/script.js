@@ -4,6 +4,7 @@ const state = {
   selectedLot: null,
   savedQuotes: [],
   currentUser: null,
+  promoBanderaBlancaCodes: [],
 };
 
 const users = {
@@ -74,6 +75,7 @@ const monthlyPaymentValue = query('#monthlyPaymentValue');
 const systemValue = query('#systemValue');
 const cashPriceListValue = query('#cashPriceListValue');
 const cashFinalValue = query('#cashFinalValue');
+const promoBanderaBlancaMessage = query('#promoBanderaBlancaMessage');
 
 const summaryCard = query('#summaryCard');
 const copySummaryButton = query('#copySummaryButton');
@@ -87,10 +89,50 @@ const advisorPhotoCheckCard = query('#advisorPhotoCheckCard');
 const advisorPhotoCheckImage = query('#advisorPhotoCheckImage');
 
 const STORAGE_KEY = 'villa_hermosa_cotizaciones';
+const MAX_FINANCE_TERM = 84;
+const PROMO_BANDERA_BLANCA_LIMIT = 10;
 
 const showLoginError = (message) => {
   const errorElement = query('.login-error');
   if (errorElement) errorElement.textContent = message;
+};
+
+const getPromoBanderaBlancaCodes = (lots) =>
+  lots
+    .filter(
+      (lot) =>
+        String(lot.etapa) === '2' &&
+        lot.promoBanderaBlanca != null &&
+        lot.promoBanderaBlanca !== ''
+    )
+    .slice(0, PROMO_BANDERA_BLANCA_LIMIT)
+    .map((lot) => lot.codigo);
+
+const isPromoBanderaBlancaEligible = (lot) =>
+  Boolean(
+    lot &&
+      lot.codigo &&
+      lot.promoBanderaBlanca != null &&
+      state.promoBanderaBlancaCodes.includes(lot.codigo)
+  );
+
+const updatePromoBanderaBlancaMessage = () => {
+  if (!promoBanderaBlancaMessage) return;
+
+  const lot = state.selectedLot;
+
+  if (!isPromoBanderaBlancaEligible(lot)) {
+    promoBanderaBlancaMessage.textContent = '';
+    promoBanderaBlancaMessage.classList.add('hidden');
+    return;
+  }
+
+  promoBanderaBlancaMessage.innerHTML = `
+    Promoción Bandera Blanca exclusiva:
+    <strong>${formatCurrency(Number(lot.promoBanderaBlanca))}</strong>
+    precio especial al contado para este lote.
+  `;
+  promoBanderaBlancaMessage.classList.remove('hidden');
 };
 
 const updateAdvisorPhotoCheck = (user) => {
@@ -163,6 +205,7 @@ const loadData = async () => {
 
     state.allLots = await response.json();
     state.filteredLots = [...state.allLots];
+    state.promoBanderaBlancaCodes = getPromoBanderaBlancaCodes(state.allLots);
 
     renderLotsTable();
 
@@ -232,31 +275,36 @@ const findLotByCodigo = (codigo) => {
   );
 };
 
+const clearSelectedLotDetails = () => {
+  state.selectedLot = null;
+
+  mzInput.value = '';
+  loteInput.value = '';
+  etapaInput.value = '';
+  ubicacionInput.value = '';
+  metrajeInput.value = '';
+
+  priceListValue.textContent = '-';
+  finalPriceValue.textContent = '-';
+  cashPriceListValue.textContent = '-';
+  cashFinalValue.textContent = '-';
+  monthlyPaymentValue.textContent = '-';
+
+  descuentoPreventaInput.value = 0;
+  cashDiscountInput.value = 0;
+  initialInput.value = 0;
+
+  updatePromoBanderaBlancaMessage();
+  disableActions();
+  updateSummary();
+  renderLotsTable();
+};
+
 const handleCodigoInput = () => {
   const code = codigoInput.value.trim();
 
   if (!code) {
-    state.selectedLot = null;
-
-    mzInput.value = '';
-    loteInput.value = '';
-    etapaInput.value = '';
-    ubicacionInput.value = '';
-    metrajeInput.value = '';
-
-    priceListValue.textContent = '-';
-    finalPriceValue.textContent = '-';
-    cashPriceListValue.textContent = '-';
-    cashFinalValue.textContent = '-';
-    monthlyPaymentValue.textContent = '-';
-
-    descuentoPreventaInput.value = 0;
-    cashDiscountInput.value = 0;
-    initialInput.value = 0;
-
-    disableActions();
-    updateSummary();
-
+    clearSelectedLotDetails();
     return;
   }
 
@@ -269,7 +317,7 @@ const handleCodigoInput = () => {
       updateSummary();
     }
   } else {
-    updateSummary();
+    clearSelectedLotDetails();
   }
 };
 
@@ -292,12 +340,11 @@ const selectLot = (lot) => {
   ubicacionInput.value = lot.ubicacion || '';
   metrajeInput.value = lot.area != null ? `${lot.area} m²` : '';
 
-  descuentoPreventaInput.value = 5000;
+  descuentoPreventaInput.value =
+    lot.descuentoPreventa != null ? lot.descuentoPreventa : 0;
 
-  if (!cashDiscountInput.value) {
-    cashDiscountInput.value =
-      lot.descuentoContado != null ? lot.descuentoContado : 0;
-  }
+  cashDiscountInput.value =
+    lot.descuentoContado != null ? lot.descuentoContado : 0;
 
   const etapa = lot.etapa || '';
 
@@ -307,6 +354,10 @@ const selectLot = (lot) => {
     initialInput.value = 2000;
   } else {
     initialInput.value = lot.inicial != null ? lot.inicial : 0;
+  }
+
+  if (lot.cuota84 != null) {
+    termSelect.value = MAX_FINANCE_TERM;
   }
 
   enableActions();
@@ -337,10 +388,33 @@ const getTotals = () => {
     initialValue = state.selectedLot.inicial || 0;
   }
 
-  const term = Number(termSelect.value) || 1;
+  let term = Math.trunc(Number(termSelect.value));
 
-  const precioFinal = Math.max(0, precioLista - descuentoPreventa);
-  const cashFinal = Math.max(0, precioLista - cashDiscount);
+  if (Number.isNaN(term) || term < 1) {
+    term = 1;
+  } else if (term > MAX_FINANCE_TERM) {
+    term = MAX_FINANCE_TERM;
+  }
+
+  termSelect.value = term;
+
+  const usesDefaultPreventaDiscount =
+    state.selectedLot.descuentoPreventa != null &&
+    descuentoPreventa === Number(state.selectedLot.descuentoPreventa);
+
+  const usesDefaultCashDiscount =
+    state.selectedLot.descuentoContado != null &&
+    cashDiscount === Number(state.selectedLot.descuentoContado);
+
+  const precioFinal =
+    usesDefaultPreventaDiscount && state.selectedLot.precioFinal != null
+      ? Number(state.selectedLot.precioFinal)
+      : Math.max(0, precioLista - descuentoPreventa);
+
+  const cashFinal =
+    usesDefaultCashDiscount && state.selectedLot.precioFinalContado != null
+      ? Number(state.selectedLot.precioFinalContado)
+      : Math.max(0, precioLista - cashDiscount);
   const financedAmount = Math.max(0, precioFinal - initialValue);
   const monthlyPayment = term > 0 ? financedAmount / term : 0;
 
@@ -381,6 +455,7 @@ const updateSummary = () => {
   cashPriceListValue.textContent = formatCurrency(totals.precioLista);
   cashDiscountInput.value = totals.cashDiscount;
   cashFinalValue.textContent = formatCurrency(totals.cashFinal);
+  updatePromoBanderaBlancaMessage();
 
   summaryCard.innerHTML = `
     <dl class="summary-list">
@@ -574,6 +649,10 @@ const copySummary = () => {
 
   if (!totals) return;
 
+  const promoBanderaBlancaText = isPromoBanderaBlancaEligible(state.selectedLot)
+    ? `\nPromoción Bandera Blanca: ${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}`
+    : '';
+
   const text =
     `${codigoInput.value} - ${state.selectedLot.lote} / Etapa ${state.selectedLot.etapa} / Ubicación ${state.selectedLot.ubicacion}\n` +
     `Cliente: ${clienteInput.value || '-'}\n` +
@@ -587,7 +666,8 @@ const copySummary = () => {
     `Enganche: ${formatCurrency(totals.initialValue)}\n` +
     `Plazo: ${totals.term} meses\n` +
     `Monto a financiar: ${formatCurrency(totals.financedAmount)}\n` +
-    `Cuota mensual: ${formatCurrency(totals.monthlyPayment)}`;
+    `Cuota mensual: ${formatCurrency(totals.monthlyPayment)}` +
+    promoBanderaBlancaText;
 
   navigator.clipboard.writeText(text).then(() => {
     copySummaryButton.textContent = 'Copiado';
@@ -598,6 +678,7 @@ const copySummary = () => {
   });
 };
 
+termSelect.addEventListener('input', updateSummary);
 termSelect.addEventListener('change', updateSummary);
 
 codigoInput.addEventListener('input', (event) => {

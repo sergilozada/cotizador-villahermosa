@@ -2,84 +2,104 @@ import csv
 import json
 from pathlib import Path
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-ROOT_DIR = SCRIPT_DIR.parent
-INPUT_PATH = ROOT_DIR / 'data' / 'PRECIOS.csv'
-OUTPUT_PATH = ROOT_DIR / 'data' / 'precios.json'
 
-with INPUT_PATH.open(newline='', encoding='utf-8') as f:
-    reader = csv.reader(f, delimiter=';')
-    rows = [row for row in reader]
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT_DIR / "data"
 
-header_row = None
-header_index = None
-for index, row in enumerate(rows):
-    if any(cell.strip() == 'N°' for cell in row):
-        header_row = [cell.strip().replace('\ufeff', '') for cell in row]
-        header_index = index
-        break
-
-if header_row is None:
-    raise ValueError('No se encontró la fila de encabezado con "N°" en PRECIOS.csv')
-
-if header_row and header_row[0] == '':
-    header_row = header_row[1:]
-
-field_map = {
-    'N°': 'index',
-    'CODIGO': 'codigo',
-    'MZ': 'mz',
-    'LOTE': 'lote',
-    'ETAPA': 'etapa',
-    'AREA': 'area',
-    'UBICACIÓN': 'ubicacion',
-    'PRECIO LISTA': 'precioLista',
-    'DSCTO POR PRE-VENTA': 'descuentoPreventa',
-    'PRECIO FINAL': 'precioFinal',
-    'INICIAL': 'inicial',
-}
-
-items = []
-for row in rows[header_index + 1:]:
-    if not any(cell.strip() for cell in row):
-        continue
-    if row and row[0] == '':
-        row = row[1:]
-    row = row[: len(header_row)]
-    if len(row) < len(header_row):
-        row += [''] * (len(header_row) - len(row))
-    raw_item = dict(zip(header_row, [cell.strip() for cell in row]))
-    if not raw_item.get('CODIGO'):
-        continue
-    item = {}
-    for source_key, target_key in field_map.items():
-        item[target_key] = raw_item.get(source_key, '')
-    items.append(item)
+FINANCED_CSV = DATA_DIR / "PRECIOS_ETAPA_2_FINANCIADO.csv"
+CASH_CSV = DATA_DIR / "PRECIOS_ETAPA_2_CONTADO.csv"
+OUTPUT_PATH = DATA_DIR / "precios.json"
 
 
 def parse_number(value):
     if value is None:
         return None
-    value = str(value).strip()
-    if not value:
+
+    text = str(value).strip()
+
+    if not text:
         return None
-    value = value.replace('S/', '').replace('s/', '').replace(' ', '').replace(',', '')
+
+    text = text.replace("S/", "").replace("s/", "").replace(" ", "")
+    text = text.replace(",", "")
+
     try:
-        return float(value)
+        return float(text)
     except ValueError:
-        try:
-            return float(value.replace('.', '').replace(',', '.'))
-        except ValueError:
-            return None
+        return None
 
-for item in items:
-    item['area'] = parse_number(item['area'])
-    item['precioLista'] = parse_number(item['precioLista'])
-    item['descuentoPreventa'] = parse_number(item['descuentoPreventa'])
-    item['precioFinal'] = parse_number(item['precioFinal'])
-    item['inicial'] = parse_number(item['inicial'])
 
-with output_path.open('w', encoding='utf-8') as f:
-    json.dump(items, f, indent=2, ensure_ascii=False)
+def clean_row(row):
+    if row and row[0].strip() == "":
+        row = row[1:]
 
-print(f'Wrote {len(items)} items to {output_path}')
+    return [cell.strip().replace("\ufeff", "") for cell in row]
+
+
+def read_csv(path):
+    with path.open(newline="", encoding="utf-8-sig") as file:
+        reader = csv.reader(file, delimiter=";")
+        rows = [clean_row(row) for row in reader]
+
+    header = rows[0]
+    items = []
+
+    for row in rows[1:]:
+        if len(row) < len(header):
+            row += [""] * (len(header) - len(row))
+
+        item = dict(zip(header, row))
+
+        if not item.get("CODIGO"):
+            continue
+
+        items.append(item)
+
+    return items
+
+
+def build_items():
+    financed_rows = read_csv(FINANCED_CSV)
+    cash_rows = read_csv(CASH_CSV)
+    cash_by_code = {row["CODIGO"]: row for row in cash_rows}
+    items = []
+
+    for index, row in enumerate(financed_rows, start=1):
+        cash = cash_by_code.get(row["CODIGO"], {})
+
+        items.append(
+            {
+                "index": str(index),
+                "codigo": row.get("CODIGO", ""),
+                "mz": row.get("MZ", ""),
+                "lote": row.get("LOTE", ""),
+                "etapa": "2",
+                "area": parse_number(row.get("AREA")),
+                "ubicacion": row.get("UBICACIÓN", ""),
+                "precioLista": parse_number(row.get("PRECIO LISTA")),
+                "descuentoPreventa": parse_number(row.get("DSCTO POR PRE-VENTA")),
+                "precioFinal": parse_number(row.get("PRECIO FINAL")),
+                "inicial": parse_number(row.get("INICIAL")),
+                "cuota84": parse_number(row.get("84 CUOTAS")),
+                "descuentoContado": parse_number(cash.get("DSCTO AL CONTADO")),
+                "precioFinalContado": parse_number(cash.get("PRECIO FINAL")),
+                "promoBanderaBlanca": parse_number(
+                    cash.get("PROMOCIÓN BANDERA BLANCA")
+                ),
+            }
+        )
+
+    return items
+
+
+def main():
+    items = build_items()
+
+    with OUTPUT_PATH.open("w", encoding="utf-8") as file:
+        json.dump(items, file, indent=2, ensure_ascii=False)
+
+    print(f"Wrote {len(items)} stage 2 items to {OUTPUT_PATH}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,18 +1,18 @@
 # Cotizador Villa Hermosa
 
 [](https://github.com/sergilozada/cotizador-villa-hermosa#cotizador-villa-hermosa)
-Sistema web para cotizar lotes de Villa Hermosa directamente desde los datos de `data/PRECIOS.csv`.
+Sistema web para cotizar lotes de segunda etapa de Villa Hermosa desde `data/precios.json`, generado a partir de las listas de contado y financiado de etapa 2.
 
 ## Descripción
 
 [](https://github.com/sergilozada/cotizador-villa-hermosa#descripci%C3%B3n)
-Cotizador Villa Hermosa es una aplicación web ligera de cotización inmobiliaria que permite consultar precios de lotes, calcular propuestas de pago y generar cotizaciones listos para imprimir o compartir.
+Cotizador Villa Hermosa es una aplicación web ligera de cotización inmobiliaria que permite consultar precios de lotes de segunda etapa, calcular propuestas de pago y generar cotizaciones listas para imprimir o compartir.
 
 ## Funcionalidades principales
 
 [](https://github.com/sergilozada/cotizador-villa-hermosa#funcionalidades-principales)
 
-- Carga y filtrado de lotes por código, etapa y ubicación.
+- Carga de lotes de segunda etapa por código, manzana, lote y ubicación.
 - Cálculo automático de precio según modalidad de pago.
 - Selección de pago al contado o financiación.
 - Ajuste de enganche, plazo y descuento adicional.
@@ -30,6 +30,17 @@ Cotizador Villa Hermosa es una aplicación web ligera de cotización inmobiliari
 - JavaScript
 - Netlify (configuración de despliegue estático)
 - Python (scripts de conversión CSV a JSON)
+
+## Datos
+
+Los archivos fuente conservados para precios son:
+
+- `data/LISTAPRECIOSCONTADOSEGUNDAETAPA.xlsx`
+- `data/LISTAPRECIOSFINANCIADOSEGUNDAETAPA.xlsx`
+- `data/PRECIOS_ETAPA_2_CONTADO.csv`
+- `data/PRECIOS_ETAPA_2_FINANCIADO.csv`
+
+La app consume `data/precios.json`, generado con `scripts/import_stage2_prices.py`.
 
 ## Sitio web
 
