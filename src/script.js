@@ -95,7 +95,18 @@ const advisorPhotoCheckImage = query('#advisorPhotoCheckImage');
 
 const STORAGE_KEY = 'villa_hermosa_cotizaciones';
 const MAX_FINANCE_TERM = 84;
-const PROMO_BANDERA_BLANCA_LIMIT = 10;
+const PROMO_BANDERA_BLANCA_CODES = [
+  'G2',
+  'G3',
+  'G4',
+  'G5',
+  'G6',
+  'I2',
+  'I3',
+  'I4',
+  'I5',
+  'I6',
+];
 
 const showLoginError = (message) => {
   const errorElement = query('.login-error');
@@ -108,9 +119,9 @@ const getPromoBanderaBlancaCodes = (lots) =>
       (lot) =>
         String(lot.etapa) === '2' &&
         lot.promoBanderaBlanca != null &&
-        lot.promoBanderaBlanca !== ''
+        lot.promoBanderaBlanca !== '' &&
+        PROMO_BANDERA_BLANCA_CODES.includes(lot.codigo)
     )
-    .slice(0, PROMO_BANDERA_BLANCA_LIMIT)
     .map((lot) => lot.codigo);
 
 const isPromoBanderaBlancaEligible = (lot) =>
