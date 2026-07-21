@@ -20,12 +20,6 @@ const users = {
     phone: '938697119',
     photo: '/src/assets/LISBETH.jpeg',
   },
-  'l.martinez': {
-    advisor: 'Liset Martinez',
-    fullName: 'Liset Martinez Perez',
-    phone: '925365954',
-    photo: '/src/assets/YUMIRA.jpeg',
-  },
   'y.montoya': {
     advisor: 'Yvonne Montoya',
     fullName: 'Teresa Yvonne Montoya Acosta',
