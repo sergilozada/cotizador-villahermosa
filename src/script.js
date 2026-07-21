@@ -14,11 +14,6 @@ const users = {
     phone: '912131159',
     photo: '/src/assets/DIXON.jpeg',
   },
-  'n.mejia': {
-    advisor: 'Nidia Mejia',
-    fullName: 'Nidia Oriele Mejia Salcedo',
-    phone: '935106285',
-  },
   'l.villanueva': {
     advisor: 'Lizbeth Villanueva',
     fullName: 'Lizbeth Antonia Villanueva Chávez',
