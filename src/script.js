@@ -84,6 +84,7 @@ const advisorPhotoCheckImage = query('#advisorPhotoCheckImage');
 
 const STORAGE_KEY = 'villa_hermosa_cotizaciones';
 const MAX_FINANCE_TERM = 84;
+const ACCESS_PASSWORD = 'VH-Agosto2026!';
 const PROMO_BANDERA_BLANCA_CODES = [
   'G2',
   'G3',
@@ -181,7 +182,7 @@ const handleLogin = () => {
     return;
   }
 
-  if (password !== 'villahermosa2026') {
+  if (password !== ACCESS_PASSWORD) {
     showLoginError('Contraseña incorrecta.');
     return;
   }
