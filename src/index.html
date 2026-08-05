@@ -10,9 +10,18 @@
   <body>
     <div id="loginOverlay" class="login-overlay">
       <div class="login-card">
-        <div class="login-brand">Villa Hermosa</div>
+        <div class="login-logo-row">
+          <img
+            src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+            alt="Condominio Villa Hermosa"
+          />
+          <span>Acceso para asesores</span>
+        </div>
 
-        <h2>Panel de Cotización</h2>
+        <h2>Panel de<br />cotización</h2>
+        <p class="login-intro">
+          Prepara propuestas comerciales claras, elegantes y listas para compartir.
+        </p>
 
         <label>
           Usuario
@@ -70,7 +79,11 @@
           class="brand-logo left"
         />
 
-        <h1>Cotizador Villa Hermosa</h1>
+        <div class="header-title">
+          <span>Condominio Villa Hermosa</span>
+          <h1>Cotizador de terrenos</h1>
+          <p>Propuestas comerciales para nuestros futuros propietarios</p>
+        </div>
 
         <img
           src="/src/assets/LOGOVILLAHERMOSA.jpeg"
@@ -83,6 +96,7 @@
         <section class="panel panel-left">
           <div class="left-heading">
             <h2>COTIZADOR DE VENTA</h2>
+            <p>Completa los datos del cliente y selecciona el lote por su código.</p>
           </div>
 
           <div class="info-grid">
@@ -273,7 +287,7 @@
             </button>
 
             <button id="printSummaryButton" class="button secondary" disabled>
-              Imprimir
+              Imprimir propuesta
             </button>
 
             <button id="saveQuoteButton" class="button" disabled>
@@ -288,6 +302,131 @@
           </div>
         </section>
       </main>
+
+      <section class="panel plan-panel" id="interactivePlanSection">
+        <div class="panel-head plan-panel-head">
+          <div>
+            <span class="section-eyebrow">Mapa comercial</span>
+            <h2>Plano interactivo por etapas</h2>
+            <p>
+              Explora el proyecto, acerca el plano y selecciona una manzana y lote
+              para revisar su información comercial.
+            </p>
+          </div>
+          <div class="plan-data-badge" id="planDataBadge">
+            <strong>105</strong>
+            <span>lotes mapeados</span>
+          </div>
+        </div>
+
+        <div class="plan-toolbar">
+          <div class="plan-tabs" role="tablist" aria-label="Etapas del proyecto">
+            <button
+              type="button"
+              class="plan-tab"
+              role="tab"
+              aria-selected="false"
+              data-plan-stage="1"
+            >
+              Etapa 1
+            </button>
+            <button
+              type="button"
+              class="plan-tab active"
+              role="tab"
+              aria-selected="true"
+              data-plan-stage="2"
+            >
+              Etapa 2
+            </button>
+            <button
+              type="button"
+              class="plan-tab"
+              role="tab"
+              aria-selected="false"
+              data-plan-stage="3"
+            >
+              Etapa 3
+            </button>
+          </div>
+
+          <div class="plan-search">
+            <label for="planSearchInput">Buscar MZ / lote</label>
+            <div>
+              <input
+                id="planSearchInput"
+                type="text"
+                placeholder="Ej. G2"
+                maxlength="4"
+                autocomplete="off"
+              />
+              <button id="planSearchButton" type="button">Buscar</button>
+            </div>
+          </div>
+
+          <div class="plan-zoom-controls" aria-label="Controles de zoom">
+            <button id="planZoomOutButton" type="button" aria-label="Alejar plano">−</button>
+            <span id="planZoomValue">100%</span>
+            <button id="planZoomInButton" type="button" aria-label="Acercar plano">+</button>
+            <button id="planZoomResetButton" type="button">Ajustar</button>
+          </div>
+        </div>
+
+        <div class="plan-stage-message" id="planStageMessage" aria-live="polite">
+          <span class="plan-status-dot"></span>
+          <strong>Etapa 2:</strong>
+          <span>105 lotes cuentan con información comercial y pueden seleccionarse.</span>
+        </div>
+
+        <div class="plan-viewer-shell">
+          <div
+            class="plan-viewport"
+            id="planViewport"
+            tabindex="0"
+            aria-label="Plano interactivo de Villa Hermosa"
+          >
+            <div class="plan-canvas" id="planCanvas">
+              <svg
+                id="planSvg"
+                viewBox="0 0 3509 4961"
+                role="group"
+                aria-labelledby="planSvgTitle planSvgDescription"
+              >
+                <title id="planSvgTitle">Plano de la etapa 2</title>
+                <desc id="planSvgDescription">
+                  Selecciona un lote resaltado para consultar sus detalles.
+                </desc>
+                <image
+                  id="planImage"
+                  href="/src/assets/2da-02.png"
+                  width="3509"
+                  height="4961"
+                  aria-hidden="true"
+                  focusable="false"
+                  preserveAspectRatio="xMidYMid meet"
+                ></image>
+                <g id="planHotspots" class="plan-hotspots"></g>
+              </svg>
+            </div>
+          </div>
+
+          <aside class="plan-help-card" id="planHelpCard">
+            <span class="section-eyebrow">Cómo usarlo</span>
+            <h3>Selecciona directamente en el plano</h3>
+            <ol>
+              <li>Usa los botones de zoom para leer cada manzana.</li>
+              <li>Pasa el cursor sobre cualquier lote identificado.</li>
+              <li>Haz clic para abrir su área, ubicación y precios disponibles.</li>
+            </ol>
+            <div class="plan-legend">
+              <span><i class="legend-available"></i> Con información</span>
+              <span><i class="legend-pending"></i> Precio pendiente</span>
+              <span><i class="legend-selected"></i> Seleccionado</span>
+            </div>
+            <p id="planSelectionLabel">Ningún lote seleccionado en el plano.</p>
+          </aside>
+        </div>
+      </section>
 
       <section class="panel panel-history">
         <div class="panel-head">
@@ -307,7 +446,274 @@
           <p class="empty-state">Aún no guardaste ninguna cotización.</p>
         </div>
       </section>
+
+      <dialog
+        class="lot-details-dialog"
+        id="lotDetailsDialog"
+        aria-modal="true"
+        aria-labelledby="lotDialogCode"
+        aria-describedby="lotDialogSubtitle"
+      >
+        <button
+          type="button"
+          class="lot-dialog-close"
+          id="closeLotDetailsButton"
+          aria-label="Cerrar detalles del lote"
+        >
+          ×
+        </button>
+        <span class="section-eyebrow">Detalle comercial</span>
+        <div class="lot-dialog-title-row">
+          <div>
+            <h2 id="lotDialogCode">—</h2>
+            <p id="lotDialogSubtitle">—</p>
+          </div>
+          <span class="lot-data-status">Con información comercial</span>
+        </div>
+
+        <dl class="lot-dialog-facts">
+          <div><dt>Etapa</dt><dd id="lotDialogStage">—</dd></div>
+          <div><dt>Manzana</dt><dd id="lotDialogBlock">—</dd></div>
+          <div><dt>Lote</dt><dd id="lotDialogLot">—</dd></div>
+          <div><dt>Área</dt><dd id="lotDialogArea">—</dd></div>
+          <div><dt>Ubicación</dt><dd id="lotDialogLocation">—</dd></div>
+        </dl>
+
+        <div class="lot-dialog-prices">
+          <article>
+            <span>Precio de lista</span>
+            <strong id="lotDialogListPrice">—</strong>
+          </article>
+          <article>
+            <span>Descuento por lanzamiento</span>
+            <strong id="lotDialogLaunchDiscount">—</strong>
+          </article>
+          <article>
+            <span>Precio financiado</span>
+            <strong id="lotDialogFinancedPrice">—</strong>
+          </article>
+          <article>
+            <span>Inicial referencial</span>
+            <strong id="lotDialogInitial">—</strong>
+          </article>
+          <article>
+            <span>Cuota estimada (84 meses)</span>
+            <strong id="lotDialogInstallment">—</strong>
+          </article>
+          <article>
+            <span>Descuento al contado</span>
+            <strong id="lotDialogCashDiscount">—</strong>
+          </article>
+          <article>
+            <span>Precio al contado</span>
+            <strong id="lotDialogCashPrice">—</strong>
+          </article>
+        </div>
+
+        <p class="lot-dialog-promo hidden" id="lotDialogPromo"></p>
+
+        <div class="lot-dialog-actions">
+          <button type="button" class="button secondary" id="lotDialogCancelButton">
+            Seguir explorando
+          </button>
+          <button type="button" class="button" id="quoteMapLotButton">
+            Cargar en el cotizador
+          </button>
+        </div>
+      </dialog>
     </div>
+
+    <section id="printQuote" class="print-quote" aria-hidden="true">
+      <article class="print-page print-page-cover">
+        <header class="print-topbar">
+          <span class="print-document-label">Propuesta comercial</span>
+          <div class="print-topbar-brands" aria-label="Villa Hermosa y A&T House">
+            <span>CONDOMINIO<br /><strong>VILLA HERMOSA</strong></span>
+            <i aria-hidden="true"></i>
+            <span>A&T HOUSE<br /><small>INMOBILIARIA</small></span>
+          </div>
+        </header>
+
+        <div class="print-cover-content">
+          <div class="print-title-block">
+            <span>COTIZACIÓN</span>
+            <strong>VILLA HERMOSA</strong>
+          </div>
+
+          <div class="print-client-strip">
+            <div>
+              <span>Cliente</span>
+              <strong id="printClient">—</strong>
+            </div>
+            <div>
+              <span>Fecha</span>
+              <strong id="printDate">—</strong>
+            </div>
+            <div>
+              <span>Etapa</span>
+              <strong id="printStage">—</strong>
+            </div>
+          </div>
+
+          <div class="print-location-line">
+            <span>Ubicación (manzana y lote):</span>
+            <strong id="printLocationCode">—</strong>
+          </div>
+
+          <h2 class="print-visual-title">Conoce el proyecto y tu lote seleccionado:</h2>
+
+          <div class="print-visual-grid">
+            <figure class="print-project-figure">
+              <div class="print-project-image">
+                <svg
+                  id="printMapSvg"
+                  viewBox="900 300 1800 1800"
+                  role="img"
+                  aria-label="Detalle de ubicación del lote seleccionado"
+                >
+                  <image
+                    id="printMapImage"
+                    href="/src/assets/2da-02.png"
+                    width="3509"
+                    height="4961"
+                  ></image>
+                  <rect id="printMapMarker" x="0" y="0" width="0" height="0"></rect>
+                  <text id="printMapMarkerLabel" x="0" y="0">—</text>
+                </svg>
+                <span class="print-project-tag">Ubicación referencial dentro del plano</span>
+              </div>
+              <figcaption>Plano de detalle del lote seleccionado.</figcaption>
+            </figure>
+
+            <aside class="print-lot-panel">
+              <img
+                src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+                alt="Villa Hermosa"
+                class="print-project-logo"
+              />
+              <span class="print-lot-eyebrow">Lote seleccionado</span>
+              <strong class="print-lot-code" id="printLotCode">—</strong>
+              <dl>
+                <div><dt>Manzana</dt><dd id="printBlock">—</dd></div>
+                <div><dt>Lote</dt><dd id="printLot">—</dd></div>
+                <div><dt>Área</dt><dd id="printArea">—</dd></div>
+                <div><dt>Ubicación</dt><dd id="printLocation">—</dd></div>
+              </dl>
+              <p>Información correspondiente a la selección realizada en el cotizador.</p>
+            </aside>
+          </div>
+
+          <div class="print-cover-note">
+            <span>Un espacio para construir el futuro que imaginas.</span>
+            <p>
+              Condominio Villa Hermosa reúne tranquilidad, naturaleza y una inversión
+              pensada para crecer contigo.
+            </p>
+          </div>
+        </div>
+
+        <span class="print-page-number">01 / 02</span>
+      </article>
+
+      <article class="print-page print-page-pricing">
+        <header class="print-slim-topbar">
+          <span>VILLA HERMOSA</span>
+          <small>COTIZACIÓN DE TERRENO</small>
+        </header>
+
+        <div class="print-pricing-content">
+          <section class="print-description">
+            <h2>Descripción del terreno:</h2>
+            <p id="printDescription">—</p>
+          </section>
+
+          <section class="print-pricing-section">
+            <h2>Cotizador por terreno:</h2>
+
+            <div class="print-price-option">
+              <div class="print-price-head">
+                <span>Precio FINANCIADO</span>
+                <span>INICIAL</span>
+                <span>Precio a FINANCIAR</span>
+                <span id="printTermHeaderPrimary">CUOTAS</span>
+              </div>
+              <div class="print-price-values">
+                <strong id="printFinancedPricePrimary">—</strong>
+                <strong id="printInitialPrimary">—</strong>
+                <strong id="printBalancePrimary">—</strong>
+                <strong id="printInstallmentPrimary">—</strong>
+              </div>
+            </div>
+
+            <div class="print-price-option">
+              <div class="print-price-head">
+                <span>Precio FINANCIADO</span>
+                <span>INICIAL (30%)</span>
+                <span>Precio a FINANCIAR</span>
+                <span id="printTermHeader30">CUOTAS</span>
+              </div>
+              <div class="print-price-values">
+                <strong id="printFinancedPrice30">—</strong>
+                <strong id="printInitial30">—</strong>
+                <strong id="printBalance30">—</strong>
+                <strong id="printInstallment30">—</strong>
+              </div>
+            </div>
+
+            <h3>Alternativa al contado</h3>
+            <div class="print-price-option print-cash-option">
+              <div class="print-price-head">
+                <span>Precio de LISTA</span>
+                <span>DESCUENTO</span>
+                <span>Precio al CONTADO</span>
+                <span>AHORRO TOTAL</span>
+              </div>
+              <div class="print-price-values">
+                <strong id="printCashList">—</strong>
+                <strong id="printCashDiscount">—</strong>
+                <strong id="printCashFinal">—</strong>
+                <strong id="printCashSavings">—</strong>
+              </div>
+            </div>
+          </section>
+
+          <div id="printPromoBandera" class="print-promo hidden"></div>
+
+          <section class="print-terms">
+            <p>
+              La presente cotización tiene una vigencia de <strong>3 DÍAS</strong>
+              desde la fecha indicada. Transcurrido este plazo, los precios,
+              promociones y disponibilidad podrán variar.
+            </p>
+            <p>
+              Para continuar con el proceso de adquisición, comunícate con tu
+              asesor(a) asignado(a), quien te brindará la información y el
+              acompañamiento necesarios.
+            </p>
+            <p>¡Gracias por confiar en Condominio Villa Hermosa!</p>
+          </section>
+        </div>
+
+        <footer class="print-footer">
+          <div class="print-advisor-data">
+            <div>
+              <span>Asesor(a) a cargo:</span>
+              <strong id="printAdvisorName">—</strong>
+            </div>
+            <div>
+              <span>Celular:</span>
+              <strong id="printAdvisorPhone">—</strong>
+            </div>
+            <p>Calle Manuel Medina 384 · Ica, Perú</p>
+          </div>
+          <div class="print-footer-brand">
+            <span>CONDOMINIO</span>
+            <strong>VILLA<br />HERMOSA</strong>
+          </div>
+          <span class="print-page-number">02 / 02</span>
+        </footer>
+      </article>
+    </section>
 
     <script src="/src/script.js"></script>
   </body>

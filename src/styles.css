@@ -1266,3 +1266,1711 @@ tbody tr.selected {
     font-size: 8pt !important;
   }
 }
+
+/* ============================= */
+/* REDISEÑO EDITORIAL VILLA HERMOSA */
+/* ============================= */
+
+.print-quote {
+  display: none;
+}
+
+@media screen {
+  :root {
+    --vh-navy: #15284d;
+    --vh-navy-deep: #0e1c37;
+    --vh-teal: #148e98;
+    --vh-teal-dark: #0d6f78;
+    --vh-gold: #c9a24d;
+    --vh-ink: #182033;
+    --vh-muted: #697386;
+    --vh-line: #d9ddd9;
+    --vh-paper: #fffefb;
+    --vh-canvas: #f2f1ec;
+  }
+
+  body {
+    background: var(--vh-canvas);
+    color: var(--vh-ink);
+  }
+
+  .login-overlay {
+    background-position: center;
+  }
+
+  .login-overlay::before {
+    background: rgba(8, 23, 45, 0.72);
+  }
+
+  .login-card {
+    width: min(430px, calc(100% - 32px));
+    padding: 38px 38px 34px;
+    border: 0;
+    border-top: 7px solid var(--vh-teal);
+    border-radius: 0;
+    background: rgba(255, 254, 251, 0.97);
+    box-shadow: 0 30px 75px rgba(4, 13, 30, 0.34);
+  }
+
+  .login-logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--vh-line);
+  }
+
+  .login-logo-row img {
+    width: 132px;
+    height: 54px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .login-logo-row span {
+    color: var(--vh-teal-dark);
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .login-card h2 {
+    margin: 0 0 12px;
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.55rem;
+    font-weight: 500;
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+  }
+
+  .login-intro {
+    margin: 0 0 26px;
+    color: var(--vh-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .login-card label {
+    gap: 7px;
+    color: var(--vh-navy);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .login-card input {
+    min-height: 50px;
+    border: 1px solid #cfd5d5;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  .login-card input:focus {
+    border-color: var(--vh-teal);
+    box-shadow: 0 0 0 3px rgba(20, 142, 152, 0.12);
+  }
+
+  .login-card .button {
+    min-height: 50px;
+    border-radius: 0;
+    background: var(--vh-navy);
+    box-shadow: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .login-card .button:hover:not(:disabled) {
+    background: var(--vh-teal-dark);
+    box-shadow: none;
+  }
+
+  .app-shell {
+    max-width: 1440px;
+    padding: 26px;
+  }
+
+  .app-header {
+    grid-template-columns: 132px 1fr 132px;
+    gap: 34px;
+    padding: 24px 34px;
+    border: 0;
+    border-radius: 0;
+    background: var(--vh-navy-deep);
+    box-shadow: none;
+    color: #ffffff;
+  }
+
+  .header-title {
+    text-align: center;
+  }
+
+  .header-title > span {
+    display: block;
+    margin-bottom: 5px;
+    color: #8bd0d2;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .app-header .header-title h1 {
+    max-width: none;
+    color: #ffffff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2rem, 2.8vw, 3.05rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+
+  .header-title p {
+    margin: 7px 0 0;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.82rem;
+  }
+
+  .brand-logo {
+    width: 118px;
+    height: 74px;
+    padding: 7px;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  .page-grid {
+    gap: 22px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.75fr);
+    margin-top: 22px;
+  }
+
+  .panel {
+    padding: 28px;
+    border: 1px solid var(--vh-line);
+    border-radius: 0;
+    background: var(--vh-paper);
+    box-shadow: none;
+  }
+
+  .left-heading {
+    padding-bottom: 17px;
+    border-bottom: 1px solid var(--vh-line);
+  }
+
+  .left-heading h2,
+  .panel-head h2 {
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .left-heading p,
+  .panel-head p {
+    color: var(--vh-muted);
+    font-size: 0.9rem;
+  }
+
+  .info-grid label {
+    color: var(--vh-navy);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .info-grid input,
+  .info-grid select,
+  .calculator-form input,
+  .calculator-form select {
+    min-height: 49px;
+    border-color: #cfd5d5;
+    border-radius: 0;
+  }
+
+  .info-grid input:focus,
+  .finance-row input:focus {
+    border-color: var(--vh-teal);
+    box-shadow: 0 0 0 3px rgba(20, 142, 152, 0.1);
+  }
+
+  .highlight {
+    border-left: 4px solid var(--vh-gold) !important;
+    background: #fffcf2 !important;
+  }
+
+  .advisor-photocheck-frame {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .advisor-photocheck-frame img {
+    border-radius: 0;
+  }
+
+  .finance-block {
+    margin-bottom: 20px;
+    padding: 0;
+    border: 1px solid var(--vh-line);
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .finance-block.secondary-block {
+    background: #ffffff;
+  }
+
+  .finance-banner,
+  .finance-block-header {
+    width: 100%;
+    margin: 0;
+    padding: 16px 18px;
+    border-radius: 0;
+    background: var(--vh-navy);
+    color: #ffffff;
+  }
+
+  .finance-banner {
+    grid-template-columns: auto 1fr auto 86px;
+  }
+
+  .finance-banner span {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  #termSelect,
+  .finance-banner input[type='number'] {
+    border-radius: 0 !important;
+    border-color: rgba(255, 255, 255, 0.45) !important;
+  }
+
+  .finance-block-header {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .finance-grid {
+    gap: 0;
+    padding: 8px 18px 14px;
+  }
+
+  .finance-row {
+    min-height: 56px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eceeea;
+  }
+
+  .finance-row:last-child {
+    border-bottom: 0;
+  }
+
+  .finance-row span {
+    color: var(--vh-muted);
+    font-size: 0.77rem;
+  }
+
+  .finance-row strong {
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.07rem;
+  }
+
+  .highlight-row,
+  .note-row {
+    margin: 0;
+    padding: 10px 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .input-prefix {
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  .promo-bandera-blanca {
+    border-radius: 0;
+    border-color: rgba(201, 162, 77, 0.55);
+    background: #fff8e6;
+    color: #72561a;
+  }
+
+  .table-wrapper {
+    border: 1px solid var(--vh-line);
+    border-radius: 0;
+  }
+
+  table thead {
+    background: var(--vh-teal-dark);
+  }
+
+  tbody tr.selected {
+    background: #e5f5f4;
+    box-shadow: inset 4px 0 0 var(--vh-teal);
+  }
+
+  .button {
+    min-height: 44px;
+    border-radius: 0;
+    background: var(--vh-navy);
+    box-shadow: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.035em;
+  }
+
+  .button:hover:not(:disabled) {
+    background: var(--vh-teal-dark);
+    transform: translateY(-1px);
+  }
+
+  .button.secondary {
+    border: 1px solid var(--vh-navy);
+    background: transparent;
+    color: var(--vh-navy);
+  }
+
+  .button.secondary:hover:not(:disabled) {
+    background: var(--vh-navy);
+    color: #ffffff;
+  }
+
+  .summary-card {
+    border: 0;
+    border-top: 4px solid var(--vh-teal);
+    border-radius: 0;
+    background: #f7f8f5;
+  }
+
+  .summary-card dt {
+    color: var(--vh-muted);
+  }
+
+  .summary-card dd {
+    color: var(--vh-navy);
+  }
+
+  .panel-history {
+    margin-top: 22px;
+  }
+
+  .quote-card {
+    border-radius: 0;
+    border-color: var(--vh-line);
+    box-shadow: none;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    grid-template-columns: 110px 1fr 110px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .app-shell {
+    padding: 0;
+  }
+
+  .app-header {
+    grid-template-columns: 78px 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .brand-logo {
+    width: 72px;
+    height: 58px;
+  }
+
+  .brand-logo.right {
+    display: none;
+  }
+
+  .header-title {
+    text-align: left;
+  }
+
+  .app-header .header-title h1 {
+    text-align: left;
+  }
+
+  .header-title p {
+    display: none;
+  }
+
+  .page-grid,
+  .panel-history {
+    margin: 14px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .finance-banner {
+    grid-template-columns: auto 1fr auto 72px;
+    gap: 8px;
+  }
+}
+
+/* ============================= */
+/* PLANO INTERACTIVO */
+/* ============================= */
+
+@media screen {
+  .section-eyebrow {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: var(--vh-teal-dark);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .plan-panel {
+    margin-top: 22px;
+    overflow: hidden;
+  }
+
+  .plan-panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--vh-line);
+  }
+
+  .plan-panel-head h2 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .plan-panel-head p {
+    max-width: 720px;
+    margin: 8px 0 0;
+    line-height: 1.55;
+  }
+
+  .plan-data-badge {
+    display: grid;
+    min-width: 130px;
+    padding: 13px 16px;
+    border-left: 4px solid var(--vh-teal);
+    background: #eef7f5;
+  }
+
+  .plan-data-badge strong {
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .plan-data-badge span {
+    margin-top: 4px;
+    color: var(--vh-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .plan-data-badge.empty {
+    border-color: #a4a9b0;
+    background: #f0f1f1;
+  }
+
+  .plan-toolbar {
+    display: grid;
+    grid-template-columns: auto minmax(250px, 1fr) auto;
+    gap: 18px;
+    align-items: end;
+    padding: 20px 0;
+  }
+
+  .plan-tabs {
+    display: flex;
+    border: 1px solid var(--vh-line);
+  }
+
+  .plan-tab {
+    min-height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-right: 1px solid var(--vh-line);
+    background: #ffffff;
+    color: var(--vh-navy);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .plan-tab:last-child {
+    border-right: 0;
+  }
+
+  .plan-tab:hover,
+  .plan-tab:focus-visible {
+    background: #e8f4f3;
+    outline: none;
+  }
+
+  .plan-tab.active {
+    background: var(--vh-navy);
+    color: #ffffff;
+  }
+
+  .plan-search {
+    display: grid;
+    justify-self: center;
+    width: min(100%, 410px);
+    gap: 6px;
+  }
+
+  .plan-search label {
+    color: var(--vh-navy);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .plan-search > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .plan-search input {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid #cbd2d1;
+    border-right: 0;
+    border-radius: 0;
+    background: #ffffff;
+    color: var(--vh-navy);
+    font-weight: 800;
+    outline: none;
+  }
+
+  .plan-search input:focus {
+    border-color: var(--vh-teal);
+    box-shadow: inset 0 0 0 1px var(--vh-teal);
+  }
+
+  .plan-search button,
+  .plan-zoom-controls button {
+    min-height: 44px;
+    border: 1px solid var(--vh-navy);
+    border-radius: 0;
+    background: var(--vh-navy);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .plan-search button {
+    padding: 0 18px;
+  }
+
+  .plan-search button:hover,
+  .plan-zoom-controls button:hover {
+    border-color: var(--vh-teal-dark);
+    background: var(--vh-teal-dark);
+  }
+
+  .plan-zoom-controls {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+  }
+
+  .plan-zoom-controls button {
+    min-width: 44px;
+    padding: 0 13px;
+    border-right: 0;
+  }
+
+  .plan-zoom-controls button:last-child {
+    border-right: 1px solid var(--vh-navy);
+  }
+
+  .plan-zoom-controls span {
+    display: grid;
+    place-items: center;
+    min-width: 62px;
+    min-height: 44px;
+    border-block: 1px solid var(--vh-navy);
+    background: #ffffff;
+    color: var(--vh-navy);
+    font-size: 0.76rem;
+    font-weight: 900;
+  }
+
+  .plan-stage-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 11px 14px;
+    border-left: 4px solid var(--vh-teal);
+    background: #edf7f5;
+    color: #315a5d;
+    font-size: 0.82rem;
+  }
+
+  .plan-stage-message.pending {
+    border-color: #9da3aa;
+    background: #f1f2f2;
+    color: #646b73;
+  }
+
+  .plan-status-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--vh-teal);
+  }
+
+  .plan-stage-message.pending .plan-status-dot {
+    background: #9da3aa;
+  }
+
+  .plan-viewer-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 270px;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .plan-viewport {
+    position: relative;
+    height: clamp(600px, 74vh, 900px);
+    overflow: auto;
+    border: 1px solid #cbd2d1;
+    background:
+      linear-gradient(45deg, #e9eceb 25%, transparent 25%) 0 0 / 20px 20px,
+      linear-gradient(-45deg, #e9eceb 25%, transparent 25%) 0 10px / 20px 20px,
+      linear-gradient(45deg, transparent 75%, #e9eceb 75%) 10px -10px / 20px 20px,
+      linear-gradient(-45deg, transparent 75%, #e9eceb 75%) -10px 0 / 20px 20px,
+      #f5f6f4;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--vh-teal) #e1e5e3;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .plan-viewport.dragging {
+    cursor: grabbing;
+  }
+
+  .plan-viewport:focus-visible {
+    outline: 3px solid rgba(20, 142, 152, 0.2);
+    outline-offset: 2px;
+  }
+
+  .plan-canvas {
+    width: 100%;
+    min-width: 100%;
+    margin: 0 auto;
+    background: #ffffff;
+    transition: none;
+  }
+
+  #planSvg {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #ffffff;
+  }
+
+  .plan-lot-hotspot {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .plan-lot-hotspot rect,
+  .plan-lot-hotspot polygon {
+    fill: rgba(20, 142, 152, 0.055);
+    stroke: rgba(13, 111, 120, 0.22);
+    stroke-width: 4;
+    pointer-events: all;
+    vector-effect: non-scaling-stroke;
+    transition: fill 140ms ease, stroke 140ms ease;
+  }
+
+  .plan-lot-hotspot:hover rect,
+  .plan-lot-hotspot:hover polygon,
+  .plan-lot-hotspot:focus rect,
+  .plan-lot-hotspot:focus polygon,
+  .plan-lot-hotspot.previewing rect,
+  .plan-lot-hotspot.previewing polygon {
+    fill: rgba(20, 142, 152, 0.32);
+    stroke: #075f68;
+    stroke-width: 9;
+  }
+
+  .plan-lot-hotspot.selected rect,
+  .plan-lot-hotspot.selected polygon {
+    fill: rgba(201, 162, 77, 0.42);
+    stroke: #9c7015;
+    stroke-width: 11;
+  }
+
+  .plan-lot-hotspot.information-only rect,
+  .plan-lot-hotspot.information-only polygon {
+    fill: rgba(100, 107, 115, 0.1);
+    stroke: rgba(100, 107, 115, 0.55);
+    stroke-dasharray: 13 8;
+  }
+
+  .plan-help-card {
+    position: sticky;
+    top: 16px;
+    padding: 22px;
+    border-top: 5px solid var(--vh-teal);
+    background: #f3f6f3;
+  }
+
+  .plan-help-card h3 {
+    margin: 0 0 15px;
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .plan-help-card ol {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding-left: 20px;
+    color: var(--vh-muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .plan-legend {
+    display: grid;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 16px 0;
+    border-block: 1px solid #d8ddda;
+  }
+
+  .plan-legend span {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--vh-navy);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .plan-legend i {
+    width: 19px;
+    height: 13px;
+    border: 2px solid var(--vh-teal-dark);
+    background: rgba(20, 142, 152, 0.22);
+  }
+
+  .plan-legend .legend-selected {
+    border-color: #9c7015;
+    background: rgba(201, 162, 77, 0.45);
+  }
+
+  .plan-legend .legend-pending {
+    border-color: #777f86;
+    border-style: dashed;
+    background: rgba(100, 107, 115, 0.12);
+  }
+
+  #planSelectionLabel {
+    margin: 0;
+    color: #54606b;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .lot-details-dialog {
+    width: min(720px, calc(100% - 32px));
+    max-height: calc(100vh - 40px);
+    margin: auto;
+    padding: 32px;
+    overflow: auto;
+    border: 0;
+    border-top: 7px solid var(--vh-teal);
+    border-radius: 0;
+    background: #fffefb;
+    color: var(--vh-ink);
+    box-shadow: 0 30px 80px rgba(6, 18, 39, 0.34);
+  }
+
+  .lot-details-dialog::backdrop {
+    background: rgba(7, 18, 36, 0.68);
+    backdrop-filter: blur(3px);
+  }
+
+  .lot-dialog-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #cfd5d5;
+    border-radius: 0;
+    background: transparent;
+    color: var(--vh-navy);
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .lot-dialog-close:hover {
+    background: var(--vh-navy);
+    color: #ffffff;
+  }
+
+  .lot-dialog-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 22px;
+    margin: 7px 0 24px;
+    padding-bottom: 21px;
+    border-bottom: 1px solid var(--vh-line);
+  }
+
+  .lot-dialog-title-row h2 {
+    margin: 0;
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .lot-dialog-title-row p {
+    margin: 7px 0 0;
+    color: var(--vh-muted);
+    font-size: 0.88rem;
+  }
+
+  .lot-data-status {
+    padding: 8px 11px;
+    background: #e8f5f3;
+    color: var(--vh-teal-dark);
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .lot-data-status.pending {
+    background: #eceeed;
+    color: #656c73;
+  }
+
+  .lot-dialog-facts {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0 0 24px;
+    border-block: 1px solid var(--vh-line);
+  }
+
+  .lot-dialog-facts > div {
+    display: grid;
+    gap: 5px;
+    padding: 13px 12px;
+    border-right: 1px solid var(--vh-line);
+  }
+
+  .lot-dialog-facts > div:last-child {
+    border-right: 0;
+  }
+
+  .lot-dialog-facts dt {
+    color: var(--vh-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lot-dialog-facts dd {
+    margin: 0;
+    color: var(--vh-navy);
+    font-weight: 900;
+  }
+
+  .lot-dialog-prices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--vh-line);
+    border: 1px solid var(--vh-line);
+  }
+
+  .lot-dialog-prices article {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+    background: #ffffff;
+  }
+
+  .lot-dialog-prices article:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .lot-dialog-prices span {
+    color: var(--vh-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .lot-dialog-prices strong {
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+
+  .lot-dialog-promo {
+    margin: 16px 0 0;
+    padding: 13px 15px;
+    border-left: 4px solid var(--vh-gold);
+    background: #fff8e6;
+    color: #6c5117;
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .lot-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .lot-dialog-actions .button {
+    width: auto;
+    min-width: 180px;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .plan-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .plan-search {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .plan-zoom-controls {
+    justify-self: start;
+  }
+
+  .plan-viewer-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-help-card {
+    position: static;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .plan-panel {
+    margin: 14px;
+  }
+
+  .plan-panel-head {
+    display: grid;
+  }
+
+  .plan-data-badge {
+    width: 100%;
+  }
+
+  .plan-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-tabs,
+  .plan-zoom-controls {
+    width: 100%;
+  }
+
+  .plan-tab {
+    flex: 1;
+    padding: 0 10px;
+  }
+
+  .plan-zoom-controls button {
+    flex: 1;
+  }
+
+  .plan-stage-message {
+    align-items: flex-start;
+  }
+
+  .plan-viewport {
+    height: 70vh;
+    min-height: 520px;
+  }
+
+  .lot-details-dialog {
+    width: calc(100% - 20px);
+    padding: 26px 20px 22px;
+  }
+
+  .lot-dialog-title-row {
+    display: grid;
+  }
+
+  .lot-dialog-title-row h2 {
+    font-size: 2.25rem;
+  }
+
+  .lot-data-status {
+    width: fit-content;
+  }
+
+  .lot-dialog-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lot-dialog-facts > div {
+    border-bottom: 1px solid var(--vh-line);
+  }
+
+  .lot-dialog-prices {
+    grid-template-columns: 1fr;
+  }
+
+  .lot-dialog-actions {
+    display: grid;
+  }
+
+  .lot-dialog-actions .button {
+    width: 100%;
+  }
+}
+
+/* ============================= */
+/* DOCUMENTO A4 DE DOS PÁGINAS */
+/* ============================= */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #172038 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 9pt !important;
+  }
+
+  #loginOverlay,
+  #appContent,
+  .lot-details-dialog {
+    display: none !important;
+  }
+
+  .print-quote {
+    display: block !important;
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-quote[aria-hidden='true'] {
+    display: none !important;
+  }
+
+  .print-page {
+    position: relative !important;
+    display: block !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    break-after: page !important;
+    page-break-after: always !important;
+    background: #fffefb !important;
+    color: #172038 !important;
+  }
+
+  .print-page:last-child {
+    break-after: auto !important;
+    page-break-after: auto !important;
+  }
+
+  .print-topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    height: 23mm !important;
+    padding: 0 15mm !important;
+    background: #0e1c37 !important;
+    color: #ffffff !important;
+  }
+
+  .print-document-label {
+    color: rgba(255, 255, 255, 0.66) !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-topbar-brands {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5mm !important;
+    text-align: center !important;
+  }
+
+  .print-topbar-brands span {
+    color: rgba(255, 255, 255, 0.76) !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 6.5pt !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .print-topbar-brands strong {
+    color: #ffffff !important;
+    font-size: 9pt !important;
+    font-weight: 500 !important;
+  }
+
+  .print-topbar-brands small {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 4.5pt !important;
+    letter-spacing: 0.25em !important;
+  }
+
+  .print-topbar-brands i {
+    width: 0.25mm !important;
+    height: 9mm !important;
+    background: rgba(255, 255, 255, 0.34) !important;
+  }
+
+  .print-cover-content {
+    padding: 14mm 15mm 11mm !important;
+  }
+
+  .print-title-block {
+    display: grid !important;
+    margin-bottom: 9mm !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    line-height: 0.86 !important;
+  }
+
+  .print-title-block span {
+    color: #172038 !important;
+    font-size: 25pt !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .print-title-block strong {
+    color: #148e98 !important;
+    font-size: 36pt !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .print-client-strip {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 0.72fr !important;
+    margin-bottom: 10mm !important;
+    border-top: 0.3mm solid #cfd5d5 !important;
+    border-bottom: 0.3mm solid #cfd5d5 !important;
+  }
+
+  .print-client-strip > div {
+    display: grid !important;
+    gap: 1mm !important;
+    padding: 3.2mm 4mm !important;
+    border-right: 0.3mm solid #e3e5e1 !important;
+  }
+
+  .print-client-strip > div:first-child {
+    padding-left: 0 !important;
+  }
+
+  .print-client-strip > div:last-child {
+    border-right: 0 !important;
+  }
+
+  .print-client-strip span {
+    color: #7b8190 !important;
+    font-size: 6pt !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-client-strip strong {
+    overflow: hidden !important;
+    color: #172038 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 10.5pt !important;
+    font-weight: 500 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .print-location-line {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 4mm !important;
+    margin-bottom: 5mm !important;
+  }
+
+  .print-location-line span,
+  .print-visual-title,
+  .print-description h2,
+  .print-pricing-section > h2 {
+    margin: 0 !important;
+    color: #172038 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11.5pt !important;
+    font-style: italic !important;
+    font-weight: 800 !important;
+  }
+
+  .print-location-line strong {
+    color: #0e1c37 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 24pt !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .print-visual-title {
+    margin-bottom: 5mm !important;
+  }
+
+  .print-visual-grid {
+    display: grid !important;
+    grid-template-columns: 1.75fr 0.72fr !important;
+    gap: 8mm !important;
+    align-items: stretch !important;
+  }
+
+  .print-project-figure {
+    margin: 0 !important;
+  }
+
+  .print-project-image {
+    position: relative !important;
+    height: 88mm !important;
+    overflow: hidden !important;
+    background: #dbe7e4 !important;
+  }
+
+  .print-project-image::after {
+    display: none !important;
+  }
+
+  .print-project-image svg {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: #ffffff !important;
+  }
+
+  #printMapMarker {
+    fill: rgba(37, 167, 168, 0.22) !important;
+    stroke: #0a6f74 !important;
+    stroke-width: 10 !important;
+    vector-effect: non-scaling-stroke !important;
+  }
+
+  #printMapMarkerLabel {
+    fill: #10263c !important;
+    stroke: #ffffff !important;
+    stroke-width: 12 !important;
+    paint-order: stroke !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 54px !important;
+    font-weight: 900 !important;
+    text-anchor: middle !important;
+    dominant-baseline: central !important;
+  }
+
+  .print-project-image .print-project-tag {
+    position: absolute !important;
+    z-index: 1 !important;
+    right: 4mm !important;
+    bottom: 4mm !important;
+    left: auto !important;
+    padding: 2mm 3mm !important;
+    border-radius: 1.5mm !important;
+    background: rgba(16, 38, 60, 0.9) !important;
+    color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 8pt !important;
+    font-style: normal !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .print-project-figure figcaption {
+    margin-top: 2.5mm !important;
+    color: #888c94 !important;
+    font-size: 7pt !important;
+    font-style: italic !important;
+    text-align: center !important;
+  }
+
+  .print-lot-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 88mm !important;
+    padding: 6mm !important;
+    border-top: 2mm solid #148e98 !important;
+    background: #f1f4ef !important;
+  }
+
+  .print-project-logo {
+    width: 35mm !important;
+    height: 17mm !important;
+    margin: 0 auto 6mm !important;
+    object-fit: contain !important;
+    mix-blend-mode: multiply !important;
+  }
+
+  .print-lot-eyebrow {
+    color: #0d6f78 !important;
+    font-size: 6.5pt !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-lot-code {
+    margin: 1mm 0 4mm !important;
+    color: #172038 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 27pt !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+  }
+
+  .print-lot-panel dl {
+    display: grid !important;
+    gap: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-lot-panel dl div {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 3mm !important;
+    padding: 2mm 0 !important;
+    border-bottom: 0.25mm solid #d6dbd7 !important;
+  }
+
+  .print-lot-panel dt {
+    color: #787f86 !important;
+    font-size: 6.5pt !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-lot-panel dd {
+    margin: 0 !important;
+    color: #172038 !important;
+    font-size: 7.5pt !important;
+    font-weight: 800 !important;
+    text-align: right !important;
+  }
+
+  .print-lot-panel p {
+    margin: auto 0 0 !important;
+    color: #7b8190 !important;
+    font-size: 6.2pt !important;
+    font-style: italic !important;
+    line-height: 1.4 !important;
+  }
+
+  .print-cover-note {
+    display: grid !important;
+    grid-template-columns: 0.9fr 1.3fr !important;
+    gap: 8mm !important;
+    align-items: start !important;
+    margin-top: 8mm !important;
+    padding-top: 5mm !important;
+    border-top: 0.3mm solid #cfd5d5 !important;
+  }
+
+  .print-cover-note span {
+    color: #148e98 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 13pt !important;
+    font-style: italic !important;
+    line-height: 1.15 !important;
+  }
+
+  .print-cover-note p {
+    margin: 0 !important;
+    color: #697386 !important;
+    font-size: 7.5pt !important;
+    line-height: 1.55 !important;
+  }
+
+  .print-page > .print-page-number {
+    position: absolute !important;
+    right: 12mm !important;
+    bottom: 7mm !important;
+    color: #9297a0 !important;
+    font-size: 6pt !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .print-slim-topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 16mm !important;
+    padding: 0 15mm !important;
+    background: #0e1c37 !important;
+    color: #ffffff !important;
+  }
+
+  .print-slim-topbar span {
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 11pt !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .print-slim-topbar small {
+    color: rgba(255, 255, 255, 0.67) !important;
+    font-size: 6pt !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .print-pricing-content {
+    height: 233mm !important;
+    padding: 12mm 15mm 8mm !important;
+  }
+
+  .print-description {
+    margin-bottom: 9mm !important;
+  }
+
+  .print-description h2,
+  .print-pricing-section > h2 {
+    margin-bottom: 2mm !important;
+  }
+
+  .print-description p {
+    margin: 0 !important;
+    color: #373d48 !important;
+    font-size: 8.5pt !important;
+    font-style: italic !important;
+    line-height: 1.45 !important;
+  }
+
+  .print-price-option {
+    margin: 0 0 7mm !important;
+  }
+
+  .print-price-head,
+  .print-price-values {
+    display: grid !important;
+    grid-template-columns: 1fr 0.85fr 1.12fr 1.2fr !important;
+    align-items: center !important;
+  }
+
+  .print-price-head {
+    min-height: 7mm !important;
+    padding: 0 2mm !important;
+    background: #0d6f78 !important;
+  }
+
+  .print-price-head span {
+    color: #ffffff !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 7.6pt !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+
+  .print-price-values {
+    min-height: 12mm !important;
+    padding: 1.8mm 2mm 0 !important;
+  }
+
+  .print-price-values strong {
+    color: #172038 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 13pt !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+  }
+
+  .print-pricing-section > h3 {
+    margin: 1mm 0 3mm !important;
+    color: #172038 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 9.5pt !important;
+    font-style: italic !important;
+    font-weight: 800 !important;
+  }
+
+  .print-cash-option {
+    margin-bottom: 5mm !important;
+  }
+
+  .print-cash-option .print-price-head {
+    background: #15284d !important;
+  }
+
+  .print-promo {
+    margin: 0 0 6mm !important;
+    padding: 3mm 4mm !important;
+    border-left: 1.5mm solid #c9a24d !important;
+    background: #fff8e6 !important;
+    color: #684f19 !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+  }
+
+  .print-terms {
+    margin-top: 7mm !important;
+    padding-top: 5mm !important;
+    border-top: 0.3mm solid #d7dad7 !important;
+  }
+
+  .print-terms p {
+    margin: 0 0 2.5mm !important;
+    color: #858990 !important;
+    font-size: 6.8pt !important;
+    font-style: italic !important;
+    line-height: 1.42 !important;
+  }
+
+  .print-terms strong {
+    color: #172038 !important;
+    font-weight: 900 !important;
+  }
+
+  .print-footer {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    align-items: center !important;
+    height: 48mm !important;
+    padding: 8mm 15mm !important;
+    background: #0e1c37 !important;
+    color: #ffffff !important;
+  }
+
+  .print-advisor-data {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 3mm 9mm !important;
+  }
+
+  .print-advisor-data > div {
+    display: grid !important;
+    gap: 1mm !important;
+  }
+
+  .print-advisor-data span {
+    color: rgba(255, 255, 255, 0.68) !important;
+    font-size: 6pt !important;
+    font-style: italic !important;
+    font-weight: 700 !important;
+  }
+
+  .print-advisor-data strong {
+    color: #ffffff !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 13.5pt !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+  }
+
+  .print-advisor-data p {
+    grid-column: 1 / -1 !important;
+    margin: 1mm 0 0 !important;
+    color: rgba(255, 255, 255, 0.84) !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 9pt !important;
+    font-style: italic !important;
+  }
+
+  .print-footer-brand {
+    display: grid !important;
+    min-width: 34mm !important;
+    padding-left: 8mm !important;
+    border-left: 0.3mm solid rgba(255, 255, 255, 0.26) !important;
+    text-align: right !important;
+  }
+
+  .print-footer-brand span {
+    color: rgba(255, 255, 255, 0.66) !important;
+    font-size: 5.5pt !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  .print-footer-brand strong {
+    color: #7ed0d1 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 17pt !important;
+    font-weight: 500 !important;
+    line-height: 0.8 !important;
+  }
+
+  .print-footer .print-page-number {
+    position: absolute !important;
+    right: 5mm !important;
+    bottom: 4mm !important;
+    color: rgba(255, 255, 255, 0.42) !important;
+    font-size: 5.5pt !important;
+    letter-spacing: 0.12em !important;
+  }
+}
