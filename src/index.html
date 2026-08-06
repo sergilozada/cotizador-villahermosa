@@ -9,75 +9,127 @@
 
   <body>
     <div id="loginOverlay" class="login-overlay">
-      <div class="login-card">
-        <div class="login-logo-row">
-          <img
-            src="/src/assets/LOGOVILLAHERMOSA.jpeg"
-            alt="Condominio Villa Hermosa"
-          />
-          <span>Acceso para asesores</span>
-        </div>
-
-        <h2>Panel de<br />cotización</h2>
-        <p class="login-intro">
-          Prepara propuestas comerciales claras, elegantes y listas para compartir.
-        </p>
-
-        <label>
-          Usuario
-          <input
-            id="usernameInput"
-            type="text"
-            placeholder="Ingresa tu usuario"
-            autocomplete="username"
-          />
-        </label>
-
-        <label>
-          Contraseña
-          <div class="password-input-wrapper">
-            <input
-              id="passwordInput"
-              type="password"
-              placeholder="Ingresa tu contraseña"
-              autocomplete="current-password"
-            />
-
-            <button
-              type="button"
-              class="toggle-password"
-              id="togglePasswordBtn"
-              aria-label="Mostrar contraseña"
-            >
-              <svg
-                class="eye-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
+      <main class="login-stage">
+        <section class="login-showcase" aria-label="Condominio Villa Hermosa">
+          <div class="login-showcase-top">
+            <span class="login-showcase-line" aria-hidden="true"></span>
+            <span>Herramienta comercial</span>
           </div>
-        </label>
 
-        <button id="loginButton" class="button">Ingresar</button>
+          <div class="login-showcase-copy">
+            <p class="login-kicker">Condominio Villa Hermosa</p>
+            <h1>Tu mejor propuesta comienza con una gran ubicación.</h1>
+            <p>
+              Explora la segunda etapa, presenta sus detalles y crea cotizaciones
+              listas para compartir.
+            </p>
 
-        <p class="login-error"></p>
-      </div>
+            <div class="login-benefits" aria-label="Funciones del cotizador">
+              <span>Planos interactivos</span>
+              <span>Cálculos precisos</span>
+              <span>Propuestas elegantes</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="login-card" aria-labelledby="loginTitle">
+          <div class="login-access-tag">
+            <span aria-hidden="true"></span>
+            Acceso para asesores
+          </div>
+
+          <div class="login-logo-frame">
+            <img
+              src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+              alt="Condominio Villa Hermosa"
+            />
+          </div>
+
+          <div class="login-heading">
+            <p>Portal privado</p>
+            <h2 id="loginTitle">Bienvenido al cotizador</h2>
+            <span>
+              Ingresa tus datos para preparar una nueva propuesta comercial.
+            </span>
+          </div>
+
+          <div class="login-fields">
+            <label>
+              Usuario
+              <input
+                id="usernameInput"
+                type="text"
+                placeholder="Ingresa tu usuario"
+                autocomplete="username"
+              />
+            </label>
+
+            <label>
+              Contraseña
+              <div class="password-input-wrapper">
+                <input
+                  id="passwordInput"
+                  type="password"
+                  placeholder="Ingresa tu contraseña"
+                  autocomplete="current-password"
+                />
+
+                <button
+                  type="button"
+                  class="toggle-password"
+                  id="togglePasswordBtn"
+                  aria-label="Mostrar contraseña"
+                >
+                  <svg
+                    class="eye-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </label>
+          </div>
+
+          <button id="loginButton" class="button" type="button">
+            Ingresar al cotizador
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+
+          <p class="login-error" role="alert" aria-live="polite"></p>
+
+          <p class="login-security">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+            </svg>
+            Acceso exclusivo para el equipo comercial
+          </p>
+        </section>
+      </main>
     </div>
 
     <div id="appContent" class="app-shell hidden">
       <header class="app-header">
-        <img
-          src="/src/assets/AYTLOGO.jfif"
-          alt="AYT House Inmobiliaria"
-          class="brand-logo left"
-        />
+        <div class="header-brand-frame header-brand-frame-ayt">
+          <img
+            src="/src/assets/AYTLOGO.jfif"
+            alt="AYT House Inmobiliaria"
+            class="brand-logo left"
+          />
+        </div>
 
         <div class="header-title">
           <span>Condominio Villa Hermosa</span>
@@ -85,32 +137,35 @@
           <p>Propuestas comerciales para nuestros futuros propietarios</p>
         </div>
 
-        <img
-          src="/src/assets/LOGOVILLAHERMOSA.jpeg"
-          alt="Villa Hermosa"
-          class="brand-logo right"
-        />
+        <div class="header-brand-frame header-brand-frame-villa">
+          <img
+            src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+            alt="Villa Hermosa"
+            class="brand-logo right"
+          />
+        </div>
       </header>
 
       <main class="page-grid">
         <section class="panel panel-left">
           <div class="left-heading">
-            <h2>COTIZADOR DE VENTA</h2>
+            <span class="section-eyebrow">Propuesta comercial</span>
+            <h2>Prepara una nueva cotización</h2>
             <p>Completa los datos del cliente y selecciona el lote por su código.</p>
           </div>
 
           <div class="info-grid">
-            <label>
+            <label class="info-field info-field-advisor">
               ASESOR(A)
               <input id="asesorSelect" type="text" readonly />
             </label>
 
-            <label>
+            <label class="info-field info-field-client">
               CLIENTE
               <input id="clienteInput" type="text" placeholder="Nombre del cliente" />
             </label>
 
-            <label>
+            <label class="info-field info-field-code">
               CÓDIGO
               <input
                 id="codigoInput"
@@ -121,32 +176,32 @@
               />
             </label>
 
-            <label>
+            <label class="info-field info-field-mz">
               MZ
               <input id="mzInput" type="text" readonly value="" />
             </label>
 
-            <label>
+            <label class="info-field info-field-lot">
               LOTE
               <input id="loteInput" type="text" readonly value="" />
             </label>
 
-            <label>
+            <label class="info-field info-field-stage">
               ETAPA
               <input id="etapaInput" type="text" readonly value="" />
             </label>
 
-            <label>
+            <label class="info-field info-field-location">
               UBICACIÓN
               <input id="ubicacionInput" type="text" readonly value="" />
             </label>
 
-            <label>
+            <label class="info-field info-field-area">
               METRAJE
               <input id="metrajeInput" type="text" readonly value="" />
             </label>
 
-            <label>
+            <label class="info-field info-field-date">
               FECHA
               <input id="fechaInput" type="date" readonly />
             </label>
@@ -162,6 +217,11 @@
                 height="1674"
               />
             </div>
+          </div>
+
+          <div class="project-visual-card" aria-hidden="true">
+            <span>Condominio Villa Hermosa</span>
+            <strong>Segunda etapa</strong>
           </div>
 
           <div class="table-wrapper compact-table">
@@ -307,10 +367,10 @@
         <div class="panel-head plan-panel-head">
           <div>
             <span class="section-eyebrow">Mapa comercial</span>
-            <h2>Plano interactivo por etapas</h2>
+            <h2>Plano interactivo de la etapa 2</h2>
             <p>
-              Explora el proyecto, acerca el plano y selecciona una manzana y lote
-              para revisar su información comercial.
+              Acerca el plano y selecciona una manzana y lote para revisar toda su
+              información comercial.
             </p>
           </div>
           <div class="plan-data-badge" id="planDataBadge">
@@ -320,36 +380,6 @@
         </div>
 
         <div class="plan-toolbar">
-          <div class="plan-tabs" role="tablist" aria-label="Etapas del proyecto">
-            <button
-              type="button"
-              class="plan-tab"
-              role="tab"
-              aria-selected="false"
-              data-plan-stage="1"
-            >
-              Etapa 1
-            </button>
-            <button
-              type="button"
-              class="plan-tab active"
-              role="tab"
-              aria-selected="true"
-              data-plan-stage="2"
-            >
-              Etapa 2
-            </button>
-            <button
-              type="button"
-              class="plan-tab"
-              role="tab"
-              aria-selected="false"
-              data-plan-stage="3"
-            >
-              Etapa 3
-            </button>
-          </div>
-
           <div class="plan-search">
             <label for="planSearchInput">Buscar MZ / lote</label>
             <div>
@@ -383,7 +413,7 @@
             class="plan-viewport"
             id="planViewport"
             tabindex="0"
-            aria-label="Plano interactivo de Villa Hermosa"
+            aria-label="Plano interactivo de la etapa 2 de Villa Hermosa"
           >
             <div class="plan-canvas" id="planCanvas">
               <svg
