@@ -39,6 +39,13 @@ const users = {
     photo: '',
     password: 'Villahermosa2026',
   },
+  't.lozada': {
+    advisor: 'Theo Lozada Villegas',
+    fullName: 'Theo Lozada Villegas',
+    phone: '',
+    photo: '',
+    password: 'Villahermosa2026',
+  },
 };
 
 const formatCurrency = (value) => {
@@ -110,8 +117,6 @@ const planZoomInButton = query('#planZoomInButton');
 const planZoomResetButton = query('#planZoomResetButton');
 const planZoomValue = query('#planZoomValue');
 const planSelectionLabel = query('#planSelectionLabel');
-const planTabs = [...document.querySelectorAll('[data-plan-stage]')];
-
 const lotDetailsDialog = query('#lotDetailsDialog');
 const closeLotDetailsButton = query('#closeLotDetailsButton');
 const lotDialogCancelButton = query('#lotDialogCancelButton');
@@ -186,20 +191,10 @@ const PLAN_WIDTH = 3509;
 const PLAN_HEIGHT = 4961;
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 const PLAN_CONFIG = {
-  '1': {
-    label: 'Etapa 1',
-    image: '/src/assets/1ra-02.png',
-    description: 'Plano de la primera etapa. Información comercial pendiente de carga.',
-  },
   '2': {
     label: 'Etapa 2',
     image: '/src/assets/2da-02.png',
     description: 'Registros del proyecto vinculados con sus datos comerciales disponibles.',
-  },
-  '3': {
-    label: 'Etapa 3',
-    image: '/src/assets/3ra-02.png',
-    description: 'Plano de la tercera etapa con lotes digitalizados e información comercial pendiente.',
   },
 };
 
@@ -234,14 +229,8 @@ const hasCommercialPricing = (lot) => {
 const isInformationalLot = (lot) =>
   lot?.codigo === 'H9' || lot?.ubicacion === 'LOTE EDUCACIÓN';
 
-let STAGE_ONE_PLAN_LOTS = [];
-let STAGE_THREE_PLAN_LOTS = [];
-
-const getAllPlanLots = () => [
-  ...STAGE_ONE_PLAN_LOTS,
-  ...state.allLots,
-  ...STAGE_THREE_PLAN_LOTS,
-];
+const getAllPlanLots = () =>
+  state.allLots.filter((lot) => String(lot.etapa) === '2');
 
 const insetGeometry = ({ x, y, width, height }, inset = 4) => ({
   x: x + inset,
@@ -404,8 +393,6 @@ const buildStageOnePlanLots = () => {
 
   return lots;
 };
-
-STAGE_ONE_PLAN_LOTS = buildStageOnePlanLots();
 
 const buildStageThreePlanLots = () => {
   const lots = [];
@@ -587,8 +574,6 @@ const buildStageThreePlanLots = () => {
   return lots;
 };
 
-STAGE_THREE_PLAN_LOTS = buildStageThreePlanLots();
-
 const getVerticalLotGeometry = (x1, x2, rowBounds, lotNumber) => {
   const rowIndex = 18 - lotNumber;
 
@@ -730,6 +715,9 @@ const setPlanZoom = (nextZoom, { preserveCenter = true } = {}) => {
   }
 };
 
+const getDefaultPlanZoom = () =>
+  window.matchMedia('(max-width: 700px)').matches ? 1.75 : 1;
+
 const centerPlanOnGeometry = (geometry) => {
   if (!geometry || !planCanvas || !planViewport) return;
 
@@ -844,12 +832,6 @@ const setActivePlanStage = (stage, options = {}) => {
   if (planSvgTitle) planSvgTitle.textContent = `Plano de la ${config.label.toLowerCase()}`;
   if (planSvgDescription) planSvgDescription.textContent = config.description;
 
-  planTabs.forEach((tab) => {
-    const isActive = tab.dataset.planStage === normalizedStage;
-    tab.classList.toggle('active', isActive);
-    tab.setAttribute('aria-selected', String(isActive));
-  });
-
   const stageLots = getAllPlanLots().filter(
     (lot) => String(lot.etapa) === normalizedStage
   );
@@ -900,9 +882,11 @@ const setActivePlanStage = (stage, options = {}) => {
   renderPlanHotspots();
 
   if (!options.preserveZoom) {
-    state.planZoom = 1;
-    planCanvas.style.width = '100%';
-    if (planZoomValue) planZoomValue.textContent = '100%';
+    const defaultZoom = getDefaultPlanZoom();
+
+    state.planZoom = defaultZoom;
+    planCanvas.style.width = `${defaultZoom * 100}%`;
+    if (planZoomValue) planZoomValue.textContent = `${Math.round(defaultZoom * 100)}%`;
     planViewport.scrollTo({ top: 0, left: 0 });
   }
 };
@@ -1847,13 +1831,9 @@ if (togglePasswordBtn) {
   });
 }
 
-planTabs.forEach((tab) => {
-  tab.addEventListener('click', () => setActivePlanStage(tab.dataset.planStage));
-});
-
 planZoomOutButton?.addEventListener('click', () => setPlanZoom(state.planZoom - 0.25));
 planZoomInButton?.addEventListener('click', () => setPlanZoom(state.planZoom + 0.25));
-planZoomResetButton?.addEventListener('click', () => setPlanZoom(1));
+planZoomResetButton?.addEventListener('click', () => setPlanZoom(getDefaultPlanZoom()));
 planSearchButton?.addEventListener('click', handlePlanSearch);
 
 planSearchInput?.addEventListener('input', (event) => {
