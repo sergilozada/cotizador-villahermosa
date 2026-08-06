@@ -92,7 +92,7 @@ textarea[readonly] {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-width: 0;
   padding: 42px 44px 46px;
   overflow: hidden;
