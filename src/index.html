@@ -243,100 +243,151 @@
         </section>
 
         <section class="panel panel-right">
-          <div class="finance-block">
-            <div class="finance-banner">
-              <span>SISTEMA</span>
-              <strong id="systemValue">FINANCIADO</strong>
-              <span>MESES</span>
-              <input
-                id="termSelect"
-                type="number"
-                min="1"
-                max="84"
-                step="1"
-                value="84"
-                inputmode="numeric"
-              />
+          <div class="payment-mode-selector" aria-labelledby="paymentModeTitle">
+            <div class="payment-mode-selector-head">
+              <span class="section-eyebrow">Modalidad de compra</span>
+              <h2 id="paymentModeTitle">¿Cómo desea pagar el cliente?</h2>
+              <p>Mostramos únicamente el cálculo de la opción elegida.</p>
             </div>
 
-            <div class="finance-grid">
-              <div class="finance-row">
-                <span>PRECIO LISTA:</span>
-                <strong id="priceListValue">-</strong>
+            <div class="payment-mode-options" role="radiogroup" aria-labelledby="paymentModeTitle">
+              <label class="payment-mode-option">
+                <input
+                  type="radio"
+                  name="paymentMode"
+                  value="financed"
+                  checked
+                />
+                <span>
+                  <i aria-hidden="true">S/</i>
+                  <b>
+                    <strong id="financedModeLabel">Financiado</strong>
+                    <small>Cuotas mensuales</small>
+                  </b>
+                </span>
+              </label>
+
+              <label class="payment-mode-option">
+                <input type="radio" name="paymentMode" value="cash" />
+                <span>
+                  <i aria-hidden="true">✓</i>
+                  <b>
+                    <strong id="cashModeLabel">Al contado</strong>
+                    <small>Un solo pago</small>
+                  </b>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div
+            id="financedPaymentPanel"
+            class="payment-calculator"
+            role="region"
+            aria-labelledby="financedModeLabel"
+          >
+            <div class="finance-block">
+              <div class="finance-banner">
+                <span>SISTEMA</span>
+                <strong id="systemValue">FINANCIADO</strong>
+                <span>MESES</span>
+                <input
+                  id="termSelect"
+                  type="number"
+                  min="1"
+                  max="84"
+                  step="1"
+                  value="84"
+                  inputmode="numeric"
+                />
               </div>
 
-              <div class="finance-row highlight-row">
-                <span>DSCTO POR LANZAMIENTO:</span>
-                <div class="input-prefix">
-                  <span>S/</span>
-                  <input
-                    id="descuentoPreventaInput"
-                    type="number"
-                    step="100"
-                    min="0"
-                    value="0"
-                  />
+              <div class="finance-grid">
+                <div class="finance-row">
+                  <span>PRECIO LISTA:</span>
+                  <strong id="priceListValue">-</strong>
                 </div>
-              </div>
 
-              <div class="finance-row">
-                <span>PRECIO FINAL FINANCIADO:</span>
-                <strong id="finalPriceValue">-</strong>
-              </div>
-
-              <div class="finance-row highlight-row">
-                <span>INICIAL:</span>
-                <div class="input-prefix">
-                  <span>S/</span>
-                  <input
-                    id="initialInput"
-                    type="number"
-                    step="100"
-                    min="0"
-                    value="0"
-                  />
+                <div class="finance-row highlight-row">
+                  <span>DSCTO POR LANZAMIENTO:</span>
+                  <div class="input-prefix">
+                    <span>S/</span>
+                    <input
+                      id="descuentoPreventaInput"
+                      type="number"
+                      step="100"
+                      min="0"
+                      value="0"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div class="finance-row note-row">
-                <span>VALOR DE CUOTA:</span>
-                <strong id="monthlyPaymentValue">-</strong>
+                <div class="finance-row">
+                  <span>PRECIO FINAL FINANCIADO:</span>
+                  <strong id="finalPriceValue">-</strong>
+                </div>
+
+                <div class="finance-row highlight-row">
+                  <span>INICIAL:</span>
+                  <div class="input-prefix">
+                    <span>S/</span>
+                    <input
+                      id="initialInput"
+                      type="number"
+                      step="100"
+                      min="0"
+                      value="0"
+                    />
+                  </div>
+                </div>
+
+                <div class="finance-row note-row">
+                  <span>VALOR DE CUOTA:</span>
+                  <strong id="monthlyPaymentValue">-</strong>
+                </div>
               </div>
             </div>
           </div>
 
           <div
-            id="promoBanderaBlancaMessage"
-            class="promo-bandera-blanca hidden"
-            aria-live="polite"
-          ></div>
+            id="cashPaymentPanel"
+            class="payment-calculator hidden"
+            role="region"
+            aria-labelledby="cashModeLabel"
+          >
+            <div
+              id="promoBanderaBlancaMessage"
+              class="promo-bandera-blanca hidden"
+              aria-live="polite"
+            ></div>
 
-          <div class="finance-block secondary-block">
-            <div class="finance-block-header">AL CONTADO</div>
+            <div class="finance-block secondary-block">
+              <div class="finance-block-header">AL CONTADO</div>
 
-            <div class="finance-grid">
-              <div class="finance-row">
-                <span>PRECIO LISTA:</span>
-                <strong id="cashPriceListValue">-</strong>
-              </div>
-
-              <div class="finance-row highlight-row">
-                <span>DSCTO AL CONTADO:</span>
-                <div class="input-prefix">
-                  <span>S/</span>
-                  <input
-                    id="cashDiscountInput"
-                    type="number"
-                    step="100"
-                    min="0"
-                    value="0"
-                  />
+              <div class="finance-grid">
+                <div class="finance-row">
+                  <span>PRECIO LISTA:</span>
+                  <strong id="cashPriceListValue">-</strong>
                 </div>
-              </div>
 
-              <div class="finance-row">
-                <span>PRECIO FINAL AL CONTADO:</span>
-                <strong id="cashFinalValue">-</strong>
+                <div class="finance-row highlight-row">
+                  <span>DSCTO AL CONTADO:</span>
+                  <div class="input-prefix">
+                    <span>S/</span>
+                    <input
+                      id="cashDiscountInput"
+                      type="number"
+                      step="100"
+                      min="0"
+                      value="0"
+                    />
+                  </div>
+                </div>
+
+                <div class="finance-row">
+                  <span>PRECIO FINAL AL CONTADO:</span>
+                  <strong id="cashFinalValue">-</strong>
+                </div>
               </div>
             </div>
           </div>
@@ -498,7 +549,10 @@
             <h2 id="lotDialogCode">—</h2>
             <p id="lotDialogSubtitle">—</p>
           </div>
-          <span class="lot-data-status">Con información comercial</span>
+          <div class="lot-dialog-status-stack">
+            <span class="lot-data-status">Con información comercial</span>
+            <small class="lot-payment-mode" id="lotDialogPaymentMode">Financiado</small>
+          </div>
         </div>
 
         <dl class="lot-dialog-facts">
@@ -514,27 +568,27 @@
             <span>Precio de lista</span>
             <strong id="lotDialogListPrice">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="financed">
             <span>Descuento por lanzamiento</span>
             <strong id="lotDialogLaunchDiscount">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="financed">
             <span>Precio financiado</span>
             <strong id="lotDialogFinancedPrice">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="financed">
             <span>Inicial referencial</span>
             <strong id="lotDialogInitial">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="financed">
             <span>Cuota estimada (84 meses)</span>
             <strong id="lotDialogInstallment">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="cash">
             <span>Descuento al contado</span>
             <strong id="lotDialogCashDiscount">—</strong>
           </article>
-          <article>
+          <article data-dialog-payment-mode="cash">
             <span>Precio al contado</span>
             <strong id="lotDialogCashPrice">—</strong>
           </article>
@@ -657,10 +711,10 @@
             <p id="printDescription">—</p>
           </section>
 
-          <section class="print-pricing-section">
-            <h2>Cotizador por terreno:</h2>
+          <section class="print-pricing-section" id="printPricingSection">
+            <h2 id="printPricingTitle">Cotización financiada:</h2>
 
-            <div class="print-price-option">
+            <div class="print-price-option" data-print-payment-mode="financed">
               <div class="print-price-head">
                 <span>Precio FINANCIADO</span>
                 <span>INICIAL</span>
@@ -675,7 +729,7 @@
               </div>
             </div>
 
-            <div class="print-price-option">
+            <div class="print-price-option" data-print-payment-mode="financed">
               <div class="print-price-head">
                 <span>Precio FINANCIADO</span>
                 <span>INICIAL (30%)</span>
@@ -690,8 +744,11 @@
               </div>
             </div>
 
-            <h3>Alternativa al contado</h3>
-            <div class="print-price-option print-cash-option">
+            <h3 data-print-payment-mode="cash">Detalle del pago al contado</h3>
+            <div
+              class="print-price-option print-cash-option"
+              data-print-payment-mode="cash"
+            >
               <div class="print-price-head">
                 <span>Precio de LISTA</span>
                 <span>DESCUENTO</span>
@@ -711,7 +768,7 @@
 
           <section class="print-terms">
             <p>
-              La presente cotización tiene una vigencia de <strong>3 DÍAS</strong>
+              La presente cotización tiene una vigencia de <strong>7 DÍAS</strong>
               desde la fecha indicada. Transcurrido este plazo, los precios,
               promociones y disponibilidad podrán variar.
             </p>
