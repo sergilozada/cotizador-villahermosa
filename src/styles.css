@@ -92,7 +92,7 @@ textarea[readonly] {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-width: 0;
   padding: 42px 44px 46px;
   overflow: hidden;
@@ -112,40 +112,15 @@ textarea[readonly] {
   pointer-events: none;
 }
 
-.login-showcase-top,
 .login-showcase-copy {
   position: relative;
   z-index: 1;
-}
-
-.login-showcase-top {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.login-showcase-line {
-  width: 36px;
-  height: 2px;
-  background: #c9a24d;
-}
-
-.login-showcase-copy {
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
   max-width: 590px;
-}
-
-.login-kicker {
-  margin: 0 0 14px;
-  color: #9ce1d6;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  padding-top: clamp(18px, 4.5vh, 46px);
 }
 
 .login-showcase-copy h1 {
@@ -156,22 +131,15 @@ textarea[readonly] {
   font-weight: 500;
   line-height: 0.98;
   letter-spacing: -0.045em;
+  text-shadow: 0 4px 28px rgba(3, 15, 29, 0.58);
   text-wrap: balance;
-}
-
-.login-showcase-copy > p:not(.login-kicker) {
-  max-width: 500px;
-  margin: 22px 0 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
-  line-height: 1.65;
 }
 
 .login-benefits {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 30px;
+  margin-top: auto;
 }
 
 .login-benefits span {
@@ -240,7 +208,7 @@ textarea[readonly] {
   position: relative;
   width: min(290px, 100%);
   height: 132px;
-  margin: 0 0 18px;
+  margin: 0 auto 18px;
   overflow: hidden;
   background: #ffffff;
 }
@@ -254,36 +222,8 @@ textarea[readonly] {
   display: block;
 }
 
-.login-heading > p {
-  margin: 0 0 9px;
-  color: #c09a48;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.login-card h2 {
-  margin: 0;
-  color: #15284d;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2.2rem, 3vw, 2.75rem);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
-  text-wrap: balance;
-}
-
-.login-heading > span {
-  display: block;
-  margin-top: 13px;
-  color: #697386;
-  font-size: 0.91rem;
-  line-height: 1.55;
-}
-
 .login-fields {
-  margin-top: 28px;
+  margin-top: 24px;
 }
 
 .login-card label {
@@ -1335,9 +1275,13 @@ tbody tr.selected {
   }
 
   .login-showcase {
-    min-height: 260px;
+    min-height: 320px;
     padding: 28px 32px 32px;
-    background-position: 52% 46%;
+    background-position: 52% top;
+  }
+
+  .login-showcase-copy {
+    padding-top: 0;
   }
 
   .login-showcase-copy h1 {
@@ -1345,12 +1289,8 @@ tbody tr.selected {
     font-size: clamp(2.3rem, 7vw, 3.25rem);
   }
 
-  .login-showcase-copy > p:not(.login-kicker) {
-    display: none;
-  }
-
   .login-benefits {
-    margin-top: 20px;
+    margin-top: auto;
   }
 
   .login-card {
@@ -1378,22 +1318,15 @@ tbody tr.selected {
   }
 
   .login-showcase {
-    min-height: 218px;
+    min-height: 260px;
     padding: 23px 24px 26px;
-    background-position: 52% center;
-  }
-
-  .login-showcase-top {
-    font-size: 0.63rem;
-  }
-
-  .login-kicker {
-    margin-bottom: 8px;
-    font-size: 0.66rem;
+    background-position: 52% top;
   }
 
   .login-showcase-copy h1 {
-    font-size: clamp(2rem, 10vw, 2.65rem);
+    max-width: 350px;
+    font-size: clamp(1.75rem, 7.5vw, 2.15rem);
+    line-height: 1;
   }
 
   .login-benefits {
@@ -1421,12 +1354,8 @@ tbody tr.selected {
     top: -43px;
   }
 
-  .login-card h2 {
-    font-size: 2.1rem;
-  }
-
   .login-fields {
-    margin-top: 24px;
+    margin-top: 18px;
   }
 
   .login-security {
@@ -1461,12 +1390,8 @@ tbody tr.selected {
     margin-bottom: 10px;
   }
 
-  .login-heading > span {
-    margin-top: 9px;
-  }
-
   .login-fields {
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   .login-card label {
