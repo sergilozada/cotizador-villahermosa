@@ -15,7 +15,8 @@ body {
   background: linear-gradient(180deg, #f8fbff 0%, #e8eff9 100%);
 }
 
-.hidden {
+.hidden,
+[hidden] {
   display: none !important;
 }
 
@@ -91,14 +92,14 @@ textarea[readonly] {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-width: 0;
   padding: 42px 44px 46px;
   overflow: hidden;
   background-image:
-    linear-gradient(180deg, rgba(6, 20, 37, 0.18) 0%, rgba(6, 20, 37, 0.18) 32%, rgba(7, 27, 44, 0.9) 100%),
-    url('assets/PORTICO%20DE%20INGRESO.png');
-  background-position: 52% center;
+    linear-gradient(180deg, rgba(6, 20, 37, 0.42) 0%, rgba(6, 20, 37, 0.2) 34%, rgba(7, 27, 44, 0.92) 100%),
+    url('assets/portico-villa-hermosa.webp');
+  background-position: 50% center;
   background-size: cover;
   color: #ffffff;
 }
@@ -841,6 +842,198 @@ textarea[readonly] {
 
 .promo-bandera-blanca strong {
   color: #92400e;
+}
+
+/* ============================= */
+/* SELECTOR DE MODALIDAD DE PAGO */
+/* ============================= */
+
+.payment-mode-selector {
+  margin-bottom: 18px;
+  padding: 20px;
+  border: 1px solid rgba(21, 40, 77, 0.1);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255, 254, 251, 0.98), rgba(242, 248, 246, 0.98));
+  box-shadow: 0 14px 34px rgba(21, 40, 77, 0.07);
+}
+
+.payment-mode-selector-head {
+  margin-bottom: 16px;
+}
+
+.payment-mode-selector-head .section-eyebrow {
+  margin-bottom: 6px;
+}
+
+.payment-mode-selector-head h2 {
+  margin: 0;
+  color: #15284d;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.payment-mode-selector-head p {
+  margin: 7px 0 0;
+  color: #697386;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.payment-mode-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.payment-mode-option {
+  position: relative;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.payment-mode-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.payment-mode-option > span {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 74px;
+  padding: 12px 14px;
+  border: 1px solid #d7ddda;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #334155;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.payment-mode-option > span > i {
+  display: grid;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 11px;
+  background: #edf7f5;
+  color: #0d6f78;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.payment-mode-option > span > b {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  font-weight: inherit;
+}
+
+.payment-mode-option strong {
+  color: inherit;
+  font-size: 0.87rem;
+  line-height: 1.1;
+}
+
+.payment-mode-option small {
+  color: #7b8190;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.payment-mode-option:hover > span {
+  border-color: rgba(20, 142, 152, 0.42);
+  transform: translateY(-1px);
+}
+
+.payment-mode-option input:focus-visible + span {
+  outline: 3px solid rgba(20, 142, 152, 0.22);
+  outline-offset: 2px;
+}
+
+.payment-mode-option input:checked + span {
+  border-color: #15284d;
+  background: linear-gradient(135deg, #15284d, #123c55);
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(21, 40, 77, 0.18);
+  transform: translateY(-1px);
+}
+
+.payment-mode-option input:checked + span > i {
+  background: #148e98;
+  color: #ffffff;
+}
+
+.payment-mode-option input:checked + span small {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.payment-calculator {
+  animation: paymentCalculatorEnter 0.28s ease both;
+}
+
+.summary-card dd .summary-mode-badge,
+.quote-mode-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e8f5f3;
+  color: #0d6f78;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summary-card dd .summary-mode-badge.cash,
+.quote-mode-label.cash {
+  background: #fff3cf;
+  color: #7a5715;
+}
+
+.lot-dialog-status-stack {
+  display: grid;
+  justify-items: end;
+  gap: 7px;
+}
+
+.lot-payment-mode {
+  display: inline-flex;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #15284d;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@keyframes paymentCalculatorEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ============================= */
@@ -2859,8 +3052,8 @@ tbody tr.selected {
     border-radius: 18px;
     background-image:
       linear-gradient(180deg, rgba(7, 22, 40, 0.05) 28%, rgba(7, 22, 40, 0.9) 100%),
-      url('assets/PORTICO%20DE%20INGRESO.png');
-    background-position: 52% center;
+      url('assets/portico-villa-hermosa.webp');
+    background-position: 50% 58%;
     background-size: cover;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
     color: #ffffff;
@@ -3370,11 +3563,89 @@ tbody tr.selected {
   }
 
   .project-visual-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 158px;
+    margin-top: 14px;
+    padding: 18px;
+    overflow: hidden;
+    border-radius: 16px;
+    background-image:
+      linear-gradient(180deg, rgba(7, 22, 40, 0.08) 18%, rgba(7, 22, 40, 0.9) 100%),
+      url('assets/portico-villa-hermosa.webp');
+    background-position: 50% 58%;
+    background-size: cover;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+
+  .project-visual-card span {
+    color: #9ce1d6;
+    font-size: 0.61rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .project-visual-card strong {
+    margin-top: 4px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+
+  .advisor-photocheck-card:not(.hidden) + .project-visual-card {
     display: none;
   }
 
   .panel-right {
     display: block;
+  }
+
+  .payment-mode-selector {
+    margin-bottom: 14px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .payment-mode-selector-head {
+    margin-bottom: 13px;
+  }
+
+  .payment-mode-selector-head h2 {
+    font-size: 1.28rem;
+  }
+
+  .payment-mode-selector-head p {
+    font-size: 0.76rem;
+  }
+
+  .payment-mode-options {
+    gap: 8px;
+  }
+
+  .payment-mode-option > span {
+    min-height: 78px;
+    gap: 8px;
+    padding: 11px 10px;
+    border-radius: 12px;
+  }
+
+  .payment-mode-option > span > i {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+  }
+
+  .payment-mode-option strong {
+    font-size: 0.78rem;
+  }
+
+  .payment-mode-option small {
+    font-size: 0.6rem;
   }
 
   .finance-block {
@@ -3631,6 +3902,10 @@ tbody tr.selected {
 
   .lot-dialog-title-row {
     padding-right: 60px;
+  }
+
+  .lot-dialog-status-stack {
+    justify-items: start;
   }
 
   .lot-dialog-title-row p,

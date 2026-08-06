@@ -8,6 +8,7 @@ const state = {
   activePlanStage: '2',
   planZoom: 1,
   previewLot: null,
+  paymentMode: 'financed',
 };
 
 const users = {
@@ -90,6 +91,9 @@ const systemValue = query('#systemValue');
 const cashPriceListValue = query('#cashPriceListValue');
 const cashFinalValue = query('#cashFinalValue');
 const promoBanderaBlancaMessage = query('#promoBanderaBlancaMessage');
+const paymentModeInputs = [...document.querySelectorAll('input[name="paymentMode"]')];
+const financedPaymentPanel = query('#financedPaymentPanel');
+const cashPaymentPanel = query('#cashPaymentPanel');
 
 const summaryCard = query('#summaryCard');
 const copySummaryButton = query('#copySummaryButton');
@@ -137,6 +141,10 @@ const lotDialogCashDiscount = query('#lotDialogCashDiscount');
 const lotDialogCashPrice = query('#lotDialogCashPrice');
 const lotDialogPromo = query('#lotDialogPromo');
 const lotDialogDataStatus = query('.lot-data-status');
+const lotDialogPaymentMode = query('#lotDialogPaymentMode');
+const lotDialogPaymentModeItems = [
+  ...document.querySelectorAll('[data-dialog-payment-mode]'),
+];
 
 const printQuote = query('#printQuote');
 const printClient = query('#printClient');
@@ -164,6 +172,11 @@ const printCashDiscount = query('#printCashDiscount');
 const printCashFinal = query('#printCashFinal');
 const printCashSavings = query('#printCashSavings');
 const printPromoBandera = query('#printPromoBandera');
+const printPricingSection = query('#printPricingSection');
+const printPricingTitle = query('#printPricingTitle');
+const printPaymentModeItems = [
+  ...document.querySelectorAll('[data-print-payment-mode]'),
+];
 const printAdvisorName = query('#printAdvisorName');
 const printAdvisorPhone = query('#printAdvisorPhone');
 const printMapSvg = query('#printMapSvg');
@@ -948,17 +961,7 @@ const openLotDetails = (lot) => {
 
   if (quoteMapLotButton) quoteMapLotButton.disabled = !hasPricing;
 
-  if (lotDialogPromo) {
-    if (hasPricing && isPromoBanderaBlancaEligible(lot)) {
-      lotDialogPromo.textContent =
-        `Promoción Bandera Blanca: ${formatCurrency(Number(lot.promoBanderaBlanca))} ` +
-        'como precio especial al contado.';
-      lotDialogPromo.classList.remove('hidden');
-    } else {
-      lotDialogPromo.textContent = '';
-      lotDialogPromo.classList.add('hidden');
-    }
-  }
+  syncPaymentModeUI();
 
   syncPlanSelection(lot.codigo, true);
   centerPlanOnGeometry(geometry);
@@ -1040,7 +1043,7 @@ const updatePromoBanderaBlancaMessage = () => {
 
   const lot = state.selectedLot;
 
-  if (!isPromoBanderaBlancaEligible(lot)) {
+  if (state.paymentMode !== 'cash' || !isPromoBanderaBlancaEligible(lot)) {
     promoBanderaBlancaMessage.textContent = '';
     promoBanderaBlancaMessage.classList.add('hidden');
     return;
@@ -1052,6 +1055,81 @@ const updatePromoBanderaBlancaMessage = () => {
     precio especial al contado para este lote.
   `;
   promoBanderaBlancaMessage.classList.remove('hidden');
+};
+
+const normalizePaymentMode = (mode) => (mode === 'cash' ? 'cash' : 'financed');
+
+const getPaymentModeLabel = (mode = state.paymentMode) =>
+  normalizePaymentMode(mode) === 'cash' ? 'Al contado' : 'Financiado';
+
+const updateLotDialogPromo = () => {
+  if (!lotDialogPromo) return;
+
+  const lot = state.previewLot;
+  const showPromo =
+    state.paymentMode === 'cash' &&
+    hasCommercialPricing(lot) &&
+    isPromoBanderaBlancaEligible(lot);
+
+  if (!showPromo) {
+    lotDialogPromo.textContent = '';
+    lotDialogPromo.classList.add('hidden');
+    return;
+  }
+
+  lotDialogPromo.textContent =
+    `Promoción Bandera Blanca: ${formatCurrency(Number(lot.promoBanderaBlanca))} ` +
+    'como precio especial al contado.';
+  lotDialogPromo.classList.remove('hidden');
+};
+
+const syncPaymentModeUI = () => {
+  const mode = normalizePaymentMode(state.paymentMode);
+  const isCash = mode === 'cash';
+
+  state.paymentMode = mode;
+
+  paymentModeInputs.forEach((input) => {
+    input.checked = input.value === mode;
+  });
+
+  if (financedPaymentPanel) {
+    financedPaymentPanel.hidden = isCash;
+    financedPaymentPanel.classList.toggle('hidden', isCash);
+    financedPaymentPanel.setAttribute('aria-hidden', String(isCash));
+  }
+
+  if (cashPaymentPanel) {
+    cashPaymentPanel.hidden = !isCash;
+    cashPaymentPanel.classList.toggle('hidden', !isCash);
+    cashPaymentPanel.setAttribute('aria-hidden', String(!isCash));
+  }
+
+  lotDialogPaymentModeItems.forEach((element) => {
+    const isVisible = element.dataset.dialogPaymentMode === mode;
+    element.hidden = !isVisible;
+    element.classList.toggle('hidden', !isVisible);
+  });
+
+  printPaymentModeItems.forEach((element) => {
+    const isVisible = element.dataset.printPaymentMode === mode;
+    element.hidden = !isVisible;
+    element.classList.toggle('hidden', !isVisible);
+  });
+
+  if (lotDialogPaymentMode) {
+    lotDialogPaymentMode.textContent = `Vista: ${getPaymentModeLabel(mode)}`;
+  }
+
+  updatePromoBanderaBlancaMessage();
+  updateLotDialogPromo();
+};
+
+const setPaymentMode = (mode, { refresh = true } = {}) => {
+  state.paymentMode = normalizePaymentMode(mode);
+  syncPaymentModeUI();
+
+  if (refresh) updateSummary();
 };
 
 const updateAdvisorPhotoCheck = (user) => {
@@ -1412,6 +1490,23 @@ const updatePrintQuote = (totals) => {
     return;
   }
 
+  const isCashPayment = state.paymentMode === 'cash';
+
+  printPaymentModeItems.forEach((element) => {
+    const isVisible = element.dataset.printPaymentMode === state.paymentMode;
+    element.hidden = !isVisible;
+    element.classList.toggle('hidden', !isVisible);
+  });
+
+  if (printPricingSection) {
+    printPricingSection.dataset.paymentMode = state.paymentMode;
+  }
+
+  setPrintText(
+    printPricingTitle,
+    isCashPayment ? 'Cotización al contado:' : 'Cotización financiada:'
+  );
+
   const lotNumber = String(lot.lote || '').padStart(2, '0');
   const locationCode = `${lot.mz || '—'} - ${lotNumber || '—'}`;
   const area = lot.area != null ? `${Number(lot.area).toFixed(2)} m²` : '—';
@@ -1491,7 +1586,7 @@ const updatePrintQuote = (totals) => {
   setPrintText(printAdvisorPhone, formatPhone(currentUser.phone));
 
   if (printPromoBandera) {
-    if (isPromoBanderaBlancaEligible(lot)) {
+    if (isCashPayment && isPromoBanderaBlancaEligible(lot)) {
       printPromoBandera.textContent =
         `Promoción Bandera Blanca: precio especial al contado de ` +
         `${formatCurrency(Number(lot.promoBanderaBlanca))}.`;
@@ -1532,6 +1627,30 @@ const updateSummary = () => {
   cashFinalValue.textContent = formatCurrency(totals.cashFinal);
   updatePromoBanderaBlancaMessage();
 
+  const isCashPayment = state.paymentMode === 'cash';
+  const paymentModeLabel = getPaymentModeLabel();
+  const promoSummaryRow =
+    isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
+      ? `<dt>Promoción especial</dt><dd>${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}</dd>`
+      : '';
+  const paymentSummaryRows = isCashPayment
+    ? `
+      <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
+      <dt>Descuento al contado</dt><dd>${formatCurrency(totals.cashDiscount)}</dd>
+      <dt>Precio final al contado</dt><dd>${formatCurrency(totals.cashFinal)}</dd>
+      <dt>Ahorro total</dt><dd>${formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))}</dd>
+      ${promoSummaryRow}
+    `
+    : `
+      <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
+      <dt>Descuento por lanzamiento</dt><dd>${formatCurrency(totals.descuentoPreventa)}</dd>
+      <dt>Precio final financiado</dt><dd>${formatCurrency(totals.precioFinal)}</dd>
+      <dt>Inicial</dt><dd>${formatCurrency(totals.initialValue)}</dd>
+      <dt>Plazo</dt><dd>${totals.term} meses</dd>
+      <dt>Monto a financiar</dt><dd>${formatCurrency(totals.financedAmount)}</dd>
+      <dt>Cuota mensual</dt><dd>${formatCurrency(totals.monthlyPayment)}</dd>
+    `;
+
   summaryCard.innerHTML = `
     <dl class="summary-list">
       <dt>Código</dt><dd>${codigoInput.value || '-'}</dd>
@@ -1542,10 +1661,9 @@ const updateSummary = () => {
       <dt>Área</dt><dd>${state.selectedLot.area != null ? `${state.selectedLot.area} m²` : '-'}</dd>
       <dt>Asesor</dt><dd>${asesorSelect.value || '-'}</dd>
       <dt>Fecha</dt><dd>${fechaInput.value || '-'}</dd>
-      <dt>Precio final financiado</dt><dd>${formatCurrency(totals.precioFinal)}</dd>
-      <dt>Precio final contado</dt><dd>${formatCurrency(totals.cashFinal)}</dd>
-      <dt>Monto a financiar</dt><dd>${formatCurrency(totals.financedAmount)}</dd>
-      <dt>Cuota mensual</dt><dd>${formatCurrency(totals.monthlyPayment)}</dd>
+      <dt>Modalidad</dt>
+      <dd><span class="summary-mode-badge ${isCashPayment ? 'cash' : ''}">${paymentModeLabel}</span></dd>
+      ${paymentSummaryRows}
     </dl>
   `;
 
@@ -1601,6 +1719,24 @@ const renderSavedQuotes = () => {
   state.savedQuotes.forEach((quote) => {
     const card = document.createElement('div');
     card.className = 'quote-card';
+    const quotePaymentMode = normalizePaymentMode(quote.paymentMode);
+    const quoteIsCash = quotePaymentMode === 'cash';
+    const savedCashFinal =
+      quote.cashFinal != null
+        ? quote.cashFinal
+        : quote.precioLista != null
+          ? Math.max(0, Number(quote.precioLista) - Number(quote.cashDiscount || 0))
+          : null;
+    const quotePaymentDetails = quoteIsCash
+      ? `
+        <p>Descuento al contado: <strong>${formatCurrency(quote.cashDiscount)}</strong></p>
+        <p>Precio final al contado: <strong>${formatCurrency(savedCashFinal)}</strong></p>
+      `
+      : `
+        <p>Descuento por lanzamiento: <strong>${formatCurrency(quote.descuentoPreventa)}</strong></p>
+        <p>Precio final financiado: <strong>${formatCurrency(quote.adjustedFinal)}</strong></p>
+        <p>Cuota mensual: <strong>${formatCurrency(quote.monthlyPayment)}</strong></p>
+      `;
 
     card.innerHTML = `
       <header>
@@ -1612,10 +1748,8 @@ const renderSavedQuotes = () => {
 
       <p>Cliente: <strong>${quote.cliente || '-'}</strong></p>
       <p>Asesor: <strong>${quote.asesor}</strong></p>
-      <p>Descuento pre-venta: <strong>${formatCurrency(quote.descuentoPreventa)}</strong></p>
-      <p>Descuento al contado: <strong>${formatCurrency(quote.cashDiscount)}</strong></p>
-      <p>Precio final financiado: <strong>${formatCurrency(quote.adjustedFinal)}</strong></p>
-      <p>Cuota mensual: <strong>${formatCurrency(quote.monthlyPayment)}</strong></p>
+      <p>Modalidad: <span class="quote-mode-label ${quoteIsCash ? 'cash' : ''}">${getPaymentModeLabel(quotePaymentMode)}</span></p>
+      ${quotePaymentDetails}
 
       <div class="quote-actions">
         <button class="button secondary" data-action="load" data-id="${quote.id}">Cargar</button>
@@ -1638,6 +1772,7 @@ const loadQuote = (id) => {
 
   if (!lot) return;
 
+  setPaymentMode(quote.paymentMode, { refresh: false });
   selectLot(lot);
 
   clienteInput.value = quote.cliente || '';
@@ -1690,11 +1825,14 @@ const getCurrentQuote = () => {
     ubicacion: state.selectedLot.ubicacion,
     area: state.selectedLot.area,
     asesor: asesorSelect.value,
+    paymentMode: state.paymentMode,
+    precioLista: totals.precioLista,
     term: totals.term,
     initialValue: totals.initialValue,
     descuentoPreventa: totals.descuentoPreventa,
     adjustedFinal: totals.precioFinal,
     cashDiscount: totals.cashDiscount,
+    cashFinal: totals.cashFinal,
     financedAmount: totals.financedAmount,
     monthlyPayment: totals.monthlyPayment,
   };
@@ -1742,9 +1880,21 @@ const copySummary = () => {
 
   if (!totals) return;
 
-  const promoBanderaBlancaText = isPromoBanderaBlancaEligible(state.selectedLot)
-    ? `\nPromoción Bandera Blanca: ${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}`
-    : '';
+  const isCashPayment = state.paymentMode === 'cash';
+  const promoBanderaBlancaText =
+    isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
+      ? `\nPromoción Bandera Blanca: ${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}`
+      : '';
+  const paymentText = isCashPayment
+    ? `Descuento al contado: ${formatCurrency(totals.cashDiscount)}\n` +
+      `Precio final al contado: ${formatCurrency(totals.cashFinal)}\n` +
+      `Ahorro total: ${formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))}`
+    : `Descuento por lanzamiento: ${formatCurrency(totals.descuentoPreventa)}\n` +
+      `Precio final financiado: ${formatCurrency(totals.precioFinal)}\n` +
+      `Inicial: ${formatCurrency(totals.initialValue)}\n` +
+      `Plazo: ${totals.term} meses\n` +
+      `Monto a financiar: ${formatCurrency(totals.financedAmount)}\n` +
+      `Cuota mensual: ${formatCurrency(totals.monthlyPayment)}`;
 
   const text =
     `${codigoInput.value} - ${state.selectedLot.lote} / Etapa ${state.selectedLot.etapa} / Ubicación ${state.selectedLot.ubicacion}\n` +
@@ -1752,14 +1902,8 @@ const copySummary = () => {
     `Asesor: ${asesorSelect.value}\n` +
     `Fecha: ${fechaInput.value}\n` +
     `Área: ${state.selectedLot.area ?? '-'} m²\n` +
-    `Descuento pre-venta: ${formatCurrency(totals.descuentoPreventa)}\n` +
-    `Descuento al contado: ${formatCurrency(totals.cashDiscount)}\n` +
-    `Precio final financiado: ${formatCurrency(totals.precioFinal)}\n` +
-    `Precio final contado: ${formatCurrency(totals.cashFinal)}\n` +
-    `Enganche: ${formatCurrency(totals.initialValue)}\n` +
-    `Plazo: ${totals.term} meses\n` +
-    `Monto a financiar: ${formatCurrency(totals.financedAmount)}\n` +
-    `Cuota mensual: ${formatCurrency(totals.monthlyPayment)}` +
+    `Modalidad: ${getPaymentModeLabel()}\n` +
+    paymentText +
     promoBanderaBlancaText;
 
   navigator.clipboard.writeText(text).then(() => {
@@ -1770,6 +1914,12 @@ const copySummary = () => {
     }, 1200);
   });
 };
+
+paymentModeInputs.forEach((input) => {
+  input.addEventListener('change', () => {
+    if (input.checked) setPaymentMode(input.value);
+  });
+});
 
 termSelect.addEventListener('input', updateSummary);
 termSelect.addEventListener('change', updateSummary);
@@ -1945,4 +2095,5 @@ savedQuotesList.addEventListener('click', (event) => {
   }
 });
 
+syncPaymentModeUI();
 loadData();
