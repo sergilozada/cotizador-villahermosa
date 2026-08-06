@@ -541,7 +541,7 @@ textarea[readonly] {
 }
 
 /* ============================= */
-/* FOTOCHECK DEL ASESOR */
+/* FOTOCHECK DEL AGENTE INMOBILIARIO */
 /* ============================= */
 
 .advisor-photocheck-card {
@@ -3415,6 +3415,7 @@ tbody tr.selected {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
       'advisor advisor'
+      'registration registration'
       'client client'
       'code code'
       'mz lot'
@@ -3427,6 +3428,10 @@ tbody tr.selected {
 
   .info-field-advisor {
     grid-area: advisor;
+  }
+
+  .info-field-agent-registration {
+    grid-area: registration;
   }
 
   .info-field-client {
@@ -4425,6 +4430,13 @@ tbody tr.selected {
     font-size: 13.5pt !important;
     font-style: italic !important;
     font-weight: 400 !important;
+  }
+
+  .print-advisor-data small {
+    color: rgba(255, 255, 255, 0.72) !important;
+    font-size: 6.4pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
   }
 
   .print-advisor-data p {

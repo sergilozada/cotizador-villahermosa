@@ -25,7 +25,7 @@
         <section class="login-card" aria-label="Acceso al cotizador">
           <div class="login-access-tag">
             <span aria-hidden="true"></span>
-            Acceso para asesores
+            Acceso para agentes inmobiliarios
           </div>
 
           <div class="login-logo-frame">
@@ -138,8 +138,13 @@
 
           <div class="info-grid">
             <label class="info-field info-field-advisor">
-              ASESOR(A)
+              AGENTE INMOBILIARIO: NOMBRE
               <input id="asesorSelect" type="text" readonly />
+            </label>
+
+            <label class="info-field info-field-agent-registration">
+              REGISTRO INMOBILIARIO
+              <input id="agentRegistrationInput" type="text" readonly />
             </label>
 
             <label class="info-field info-field-client">
@@ -194,7 +199,7 @@
               <img
                 id="advisorPhotoCheckImage"
                 src="/src/assets/DIXON.jpeg"
-                alt="Fotocheck del asesor"
+                alt="Fotocheck del agente inmobiliario"
                 width="985"
                 height="1674"
               />
@@ -756,7 +761,7 @@
             </p>
             <p>
               Para continuar con el proceso de adquisición, comunícate con tu
-              asesor(a) asignado(a), quien te brindará la información y el
+              agente inmobiliario asignado, quien te brindará la información y el
               acompañamiento necesarios.
             </p>
             <p>¡Gracias por confiar en Condominio Villa Hermosa!</p>
@@ -766,8 +771,9 @@
         <footer class="print-footer">
           <div class="print-advisor-data">
             <div>
-              <span>Asesor(a) a cargo:</span>
+              <span>Agente inmobiliario:</span>
               <strong id="printAdvisorName">—</strong>
+              <small id="printAgentRegistration"></small>
             </div>
             <div>
               <span>Celular:</span>

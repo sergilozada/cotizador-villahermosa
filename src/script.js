@@ -38,6 +38,7 @@ const users = {
     fullName: 'Sergio Lozada',
     phone: '',
     photo: '',
+    registration: '',
     password: 'Villahermosa2026',
   },
   't.lozada': {
@@ -45,6 +46,15 @@ const users = {
     fullName: 'Theo Lozada Villegas',
     phone: '',
     photo: '',
+    registration: '14661-PN-MVCS',
+    password: 'Villahermosa2026',
+  },
+  'j.talavera': {
+    advisor: 'Julio Talavera',
+    fullName: 'Julio Talavera',
+    phone: '',
+    photo: '',
+    registration: '23773-PN-MVCS',
     password: 'Villahermosa2026',
   },
 };
@@ -66,6 +76,7 @@ const termSelect = query('#termSelect');
 const codigoInput = query('#codigoInput');
 const clienteInput = query('#clienteInput');
 const asesorSelect = query('#asesorSelect');
+const agentRegistrationInput = query('#agentRegistrationInput');
 const fechaInput = query('#fechaInput');
 
 const loginOverlay = query('#loginOverlay');
@@ -178,6 +189,7 @@ const printPaymentModeItems = [
   ...document.querySelectorAll('[data-print-payment-mode]'),
 ];
 const printAdvisorName = query('#printAdvisorName');
+const printAgentRegistration = query('#printAgentRegistration');
 const printAdvisorPhone = query('#printAdvisorPhone');
 const printMapSvg = query('#printMapSvg');
 const printMapImage = query('#printMapImage');
@@ -1159,7 +1171,8 @@ const setCurrentUser = (username) => {
   const user = users[username];
 
   if (user) {
-    asesorSelect.value = user.advisor;
+    asesorSelect.value = user.fullName || user.advisor;
+    agentRegistrationInput.value = user.registration || '';
     updateAdvisorPhotoCheck(user);
   }
 };
@@ -1582,7 +1595,13 @@ const updatePrintQuote = (totals) => {
     printCashSavings,
     formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))
   );
-  setPrintText(printAdvisorName, currentUser.advisor || asesorSelect.value || '—');
+  setPrintText(printAdvisorName, asesorSelect.value || currentUser.advisor || '—');
+  setPrintText(
+    printAgentRegistration,
+    agentRegistrationInput.value
+      ? `Registro N° ${agentRegistrationInput.value}`
+      : ''
+  );
   setPrintText(printAdvisorPhone, formatPhone(currentUser.phone));
 
   if (printPromoBandera) {
@@ -1629,6 +1648,9 @@ const updateSummary = () => {
 
   const isCashPayment = state.paymentMode === 'cash';
   const paymentModeLabel = getPaymentModeLabel();
+  const agentRegistrationSummaryRow = agentRegistrationInput.value
+    ? `<dt>Registro inmobiliario</dt><dd>${agentRegistrationInput.value}</dd>`
+    : '';
   const promoSummaryRow =
     isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
       ? `<dt>Promoción especial</dt><dd>${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}</dd>`
@@ -1659,7 +1681,8 @@ const updateSummary = () => {
       <dt>Etapa</dt><dd>${state.selectedLot.etapa || '-'}</dd>
       <dt>Ubicación</dt><dd>${state.selectedLot.ubicacion || '-'}</dd>
       <dt>Área</dt><dd>${state.selectedLot.area != null ? `${state.selectedLot.area} m²` : '-'}</dd>
-      <dt>Asesor</dt><dd>${asesorSelect.value || '-'}</dd>
+      <dt>Agente inmobiliario</dt><dd>${asesorSelect.value || '-'}</dd>
+      ${agentRegistrationSummaryRow}
       <dt>Fecha</dt><dd>${fechaInput.value || '-'}</dd>
       <dt>Modalidad</dt>
       <dd><span class="summary-mode-badge ${isCashPayment ? 'cash' : ''}">${paymentModeLabel}</span></dd>
@@ -1737,6 +1760,9 @@ const renderSavedQuotes = () => {
         <p>Precio final financiado: <strong>${formatCurrency(quote.adjustedFinal)}</strong></p>
         <p>Cuota mensual: <strong>${formatCurrency(quote.monthlyPayment)}</strong></p>
       `;
+    const quoteAgentRegistration = quote.agentRegistration
+      ? `<p>Registro inmobiliario: <strong>${quote.agentRegistration}</strong></p>`
+      : '';
 
     card.innerHTML = `
       <header>
@@ -1747,7 +1773,8 @@ const renderSavedQuotes = () => {
       </header>
 
       <p>Cliente: <strong>${quote.cliente || '-'}</strong></p>
-      <p>Asesor: <strong>${quote.asesor}</strong></p>
+      <p>Agente inmobiliario: <strong>${quote.asesor}</strong></p>
+      ${quoteAgentRegistration}
       <p>Modalidad: <span class="quote-mode-label ${quoteIsCash ? 'cash' : ''}">${getPaymentModeLabel(quotePaymentMode)}</span></p>
       ${quotePaymentDetails}
 
@@ -1778,6 +1805,7 @@ const loadQuote = (id) => {
   clienteInput.value = quote.cliente || '';
   codigoInput.value = quote.codigo;
   asesorSelect.value = quote.asesor || '';
+  agentRegistrationInput.value = quote.agentRegistration || '';
   fechaInput.value = getTodayDateValue();
 
   descuentoPreventaInput.value =
@@ -1825,6 +1853,7 @@ const getCurrentQuote = () => {
     ubicacion: state.selectedLot.ubicacion,
     area: state.selectedLot.area,
     asesor: asesorSelect.value,
+    agentRegistration: agentRegistrationInput.value,
     paymentMode: state.paymentMode,
     precioLista: totals.precioLista,
     term: totals.term,
@@ -1899,7 +1928,10 @@ const copySummary = () => {
   const text =
     `${codigoInput.value} - ${state.selectedLot.lote} / Etapa ${state.selectedLot.etapa} / Ubicación ${state.selectedLot.ubicacion}\n` +
     `Cliente: ${clienteInput.value || '-'}\n` +
-    `Asesor: ${asesorSelect.value}\n` +
+    `Agente inmobiliario: ${asesorSelect.value}\n` +
+    (agentRegistrationInput.value
+      ? `Registro inmobiliario: ${agentRegistrationInput.value}\n`
+      : '') +
     `Fecha: ${fechaInput.value}\n` +
     `Área: ${state.selectedLot.area ?? '-'} m²\n` +
     `Modalidad: ${getPaymentModeLabel()}\n` +
