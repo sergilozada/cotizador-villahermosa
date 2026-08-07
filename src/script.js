@@ -4,7 +4,6 @@ const state = {
   selectedLot: null,
   savedQuotes: [],
   currentUser: null,
-  promoBanderaBlancaCodes: [],
   activePlanStage: '2',
   planZoom: 1,
   previewLot: null,
@@ -109,7 +108,6 @@ const monthlyPaymentValue = query('#monthlyPaymentValue');
 const systemValue = query('#systemValue');
 const cashPriceListValue = query('#cashPriceListValue');
 const cashFinalValue = query('#cashFinalValue');
-const promoBanderaBlancaMessage = query('#promoBanderaBlancaMessage');
 const paymentModeInputs = [...document.querySelectorAll('input[name="paymentMode"]')];
 const financedPaymentPanel = query('#financedPaymentPanel');
 const cashPaymentPanel = query('#cashPaymentPanel');
@@ -158,7 +156,6 @@ const lotDialogInitial = query('#lotDialogInitial');
 const lotDialogInstallment = query('#lotDialogInstallment');
 const lotDialogCashDiscount = query('#lotDialogCashDiscount');
 const lotDialogCashPrice = query('#lotDialogCashPrice');
-const lotDialogPromo = query('#lotDialogPromo');
 const lotDialogDataStatus = query('.lot-data-status');
 const lotDialogPaymentMode = query('#lotDialogPaymentMode');
 const lotDialogPaymentModeItems = [
@@ -179,6 +176,8 @@ const printDescription = query('#printDescription');
 const printTermHeaderPrimary = query('#printTermHeaderPrimary');
 const printTermHeader30 = query('#printTermHeader30');
 const printFinancedPricePrimary = query('#printFinancedPricePrimary');
+const printFinancedListPrice = query('#printFinancedListPrice');
+const printFinancedLaunchDiscount = query('#printFinancedLaunchDiscount');
 const printInitialPrimary = query('#printInitialPrimary');
 const printBalancePrimary = query('#printBalancePrimary');
 const printInstallmentPrimary = query('#printInstallmentPrimary');
@@ -190,7 +189,6 @@ const printCashList = query('#printCashList');
 const printCashDiscount = query('#printCashDiscount');
 const printCashFinal = query('#printCashFinal');
 const printCashSavings = query('#printCashSavings');
-const printPromoBandera = query('#printPromoBandera');
 const printPricingSection = query('#printPricingSection');
 const printPricingTitle = query('#printPricingTitle');
 const printPaymentModeItems = [
@@ -207,18 +205,6 @@ let lotDialogTrigger = null;
 
 const STORAGE_KEY = 'villa_hermosa_cotizaciones';
 const MAX_FINANCE_TERM = 84;
-const PROMO_BANDERA_BLANCA_CODES = [
-  'G2',
-  'G3',
-  'G4',
-  'G5',
-  'G6',
-  'I2',
-  'I3',
-  'I4',
-  'I5',
-  'I6',
-];
 
 const PLAN_WIDTH = 3509;
 const PLAN_HEIGHT = 4961;
@@ -1039,69 +1025,10 @@ const showLoginError = (message) => {
   if (errorElement) errorElement.textContent = message;
 };
 
-const getPromoBanderaBlancaCodes = (lots) =>
-  lots
-    .filter(
-      (lot) =>
-        String(lot.etapa) === '2' &&
-        lot.promoBanderaBlanca != null &&
-        lot.promoBanderaBlanca !== '' &&
-        PROMO_BANDERA_BLANCA_CODES.includes(lot.codigo)
-    )
-    .map((lot) => lot.codigo);
-
-const isPromoBanderaBlancaEligible = (lot) =>
-  Boolean(
-    lot &&
-      lot.codigo &&
-      lot.promoBanderaBlanca != null &&
-      state.promoBanderaBlancaCodes.includes(lot.codigo)
-  );
-
-const updatePromoBanderaBlancaMessage = () => {
-  if (!promoBanderaBlancaMessage) return;
-
-  const lot = state.selectedLot;
-
-  if (state.paymentMode !== 'cash' || !isPromoBanderaBlancaEligible(lot)) {
-    promoBanderaBlancaMessage.textContent = '';
-    promoBanderaBlancaMessage.classList.add('hidden');
-    return;
-  }
-
-  promoBanderaBlancaMessage.innerHTML = `
-    Promoción Bandera Blanca exclusiva:
-    <strong>${formatCurrency(Number(lot.promoBanderaBlanca))}</strong>
-    precio especial al contado para este lote.
-  `;
-  promoBanderaBlancaMessage.classList.remove('hidden');
-};
-
 const normalizePaymentMode = (mode) => (mode === 'cash' ? 'cash' : 'financed');
 
 const getPaymentModeLabel = (mode = state.paymentMode) =>
   normalizePaymentMode(mode) === 'cash' ? 'Al contado' : 'Financiado';
-
-const updateLotDialogPromo = () => {
-  if (!lotDialogPromo) return;
-
-  const lot = state.previewLot;
-  const showPromo =
-    state.paymentMode === 'cash' &&
-    hasCommercialPricing(lot) &&
-    isPromoBanderaBlancaEligible(lot);
-
-  if (!showPromo) {
-    lotDialogPromo.textContent = '';
-    lotDialogPromo.classList.add('hidden');
-    return;
-  }
-
-  lotDialogPromo.textContent =
-    `Promoción Bandera Blanca: ${formatCurrency(Number(lot.promoBanderaBlanca))} ` +
-    'como precio especial al contado.';
-  lotDialogPromo.classList.remove('hidden');
-};
 
 const syncPaymentModeUI = () => {
   const mode = normalizePaymentMode(state.paymentMode);
@@ -1141,8 +1068,6 @@ const syncPaymentModeUI = () => {
     lotDialogPaymentMode.textContent = `Vista: ${getPaymentModeLabel(mode)}`;
   }
 
-  updatePromoBanderaBlancaMessage();
-  updateLotDialogPromo();
 };
 
 const setPaymentMode = (mode, { refresh = true } = {}) => {
@@ -1224,7 +1149,6 @@ const loadData = async () => {
 
     state.allLots = await response.json();
     state.filteredLots = [...state.allLots];
-    state.promoBanderaBlancaCodes = getPromoBanderaBlancaCodes(state.allLots);
 
     renderLotsTable();
     setActivePlanStage('2');
@@ -1319,7 +1243,6 @@ const clearSelectedLotDetails = () => {
   cashDiscountInput.value = 0;
   initialInput.value = 0;
 
-  updatePromoBanderaBlancaMessage();
   disableActions();
   updateSummary();
   renderLotsTable();
@@ -1587,6 +1510,11 @@ const updatePrintQuote = (totals) => {
 
   setPrintText(printTermHeaderPrimary, `CUOTAS (${totals.term} meses)`);
   setPrintText(printTermHeader30, `CUOTAS (${totals.term} meses)`);
+  setPrintText(printFinancedListPrice, formatCurrency(totals.precioLista));
+  setPrintText(
+    printFinancedLaunchDiscount,
+    formatCurrency(totals.descuentoPreventa)
+  );
   setPrintText(printFinancedPricePrimary, formatCurrency(totals.precioFinal));
   setPrintText(printInitialPrimary, formatCurrency(totals.initialValue));
   setPrintText(printBalancePrimary, formatCurrency(totals.financedAmount));
@@ -1610,18 +1538,6 @@ const updatePrintQuote = (totals) => {
       : 'Código de agente: —'
   );
   setPrintText(printAdvisorPhone, formatPhone(currentUser.phone));
-
-  if (printPromoBandera) {
-    if (isCashPayment && isPromoBanderaBlancaEligible(lot)) {
-      printPromoBandera.textContent =
-        `Promoción Bandera Blanca: precio especial al contado de ` +
-        `${formatCurrency(Number(lot.promoBanderaBlanca))}.`;
-      printPromoBandera.classList.remove('hidden');
-    } else {
-      printPromoBandera.textContent = '';
-      printPromoBandera.classList.add('hidden');
-    }
-  }
 
   if (printQuote) printQuote.setAttribute('aria-hidden', 'false');
 };
@@ -1651,24 +1567,18 @@ const updateSummary = () => {
   cashPriceListValue.textContent = formatCurrency(totals.precioLista);
   cashDiscountInput.value = totals.cashDiscount;
   cashFinalValue.textContent = formatCurrency(totals.cashFinal);
-  updatePromoBanderaBlancaMessage();
 
   const isCashPayment = state.paymentMode === 'cash';
   const paymentModeLabel = getPaymentModeLabel();
   const agentRegistrationSummaryRow = agentRegistrationInput.value
     ? `<dt>Código de agente</dt><dd>${agentRegistrationInput.value}</dd>`
     : '';
-  const promoSummaryRow =
-    isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
-      ? `<dt>Promoción especial</dt><dd>${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}</dd>`
-      : '';
   const paymentSummaryRows = isCashPayment
     ? `
       <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
       <dt>Descuento al contado</dt><dd>${formatCurrency(totals.cashDiscount)}</dd>
       <dt>Precio final al contado</dt><dd>${formatCurrency(totals.cashFinal)}</dd>
       <dt>Ahorro total</dt><dd>${formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))}</dd>
-      ${promoSummaryRow}
     `
     : `
       <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
@@ -1682,7 +1592,8 @@ const updateSummary = () => {
 
   summaryCard.innerHTML = `
     <dl class="summary-list">
-      <dt>Manzana y lote</dt><dd>${formatLotReference(state.selectedLot)}</dd>
+      <dt>Manzana</dt><dd>${state.selectedLot.mz || '-'}</dd>
+      <dt>Lote</dt><dd>${state.selectedLot.lote || '-'}</dd>
       <dt>Cliente</dt><dd>${clienteInput.value || '-'}</dd>
       <dt>Etapa</dt><dd>${state.selectedLot.etapa || '-'}</dd>
       <dt>Ubicación</dt><dd>${state.selectedLot.ubicacion || '-'}</dd>
@@ -1917,10 +1828,6 @@ const copySummary = () => {
   if (!totals) return;
 
   const isCashPayment = state.paymentMode === 'cash';
-  const promoBanderaBlancaText =
-    isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
-      ? `\nPromoción Bandera Blanca: ${formatCurrency(Number(state.selectedLot.promoBanderaBlanca))}`
-      : '';
   const paymentText = isCashPayment
     ? `Descuento al contado: ${formatCurrency(totals.cashDiscount)}\n` +
       `Precio final al contado: ${formatCurrency(totals.cashFinal)}\n` +
@@ -1942,8 +1849,7 @@ const copySummary = () => {
     `Fecha: ${fechaInput.value}\n` +
     `Área: ${state.selectedLot.area ?? '-'} m²\n` +
     `Modalidad: ${getPaymentModeLabel()}\n` +
-    paymentText +
-    promoBanderaBlancaText;
+    paymentText;
 
   navigator.clipboard.writeText(text).then(() => {
     copySummaryButton.textContent = 'Copiado';

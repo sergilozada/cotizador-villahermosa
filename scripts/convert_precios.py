@@ -83,9 +83,6 @@ def build_items():
                 "cuota84": parse_number(row.get("84 CUOTAS")),
                 "descuentoContado": parse_number(cash.get("DSCTO AL CONTADO")),
                 "precioFinalContado": parse_number(cash.get("PRECIO FINAL")),
-                "promoBanderaBlanca": parse_number(
-                    cash.get("PROMOCIÓN BANDERA BLANCA")
-                ),
             }
         )
 

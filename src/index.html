@@ -133,7 +133,7 @@
           <div class="left-heading">
             <span class="section-eyebrow">Propuesta comercial</span>
             <h2>Prepara una nueva cotización</h2>
-            <p>Completa los datos del cliente y selecciona el lote por su código.</p>
+            <p>Completa los datos del cliente y selecciona la manzana y el lote en el plano.</p>
           </div>
 
           <div class="info-grid">
@@ -157,19 +157,10 @@
               <input id="clienteInput" type="text" placeholder="Nombre del cliente" />
             </label>
 
-            <label class="info-field info-field-code">
-              CÓDIGO
-              <input
-                id="codigoInput"
-                type="text"
-                class="highlight"
-                placeholder=""
-                maxlength="3"
-              />
-            </label>
+            <input id="codigoInput" type="hidden" value="" />
 
             <label class="info-field info-field-mz">
-              MZ
+              MANZANA
               <input id="mzInput" type="text" readonly value="" />
             </label>
 
@@ -347,12 +338,6 @@
             role="region"
             aria-labelledby="cashModeLabel"
           >
-            <div
-              id="promoBanderaBlancaMessage"
-              class="promo-bandera-blanca hidden"
-              aria-live="polite"
-            ></div>
-
             <div class="finance-block secondary-block">
               <div class="finance-block-header">AL CONTADO</div>
 
@@ -586,8 +571,6 @@
           </article>
         </div>
 
-        <p class="lot-dialog-promo hidden" id="lotDialogPromo"></p>
-
         <div class="lot-dialog-actions">
           <button type="button" class="button secondary" id="lotDialogCancelButton">
             Seguir explorando
@@ -706,6 +689,20 @@
           <section class="print-pricing-section" id="printPricingSection">
             <h2 id="printPricingTitle">Cotización financiada:</h2>
 
+            <div
+              class="print-financed-breakdown"
+              data-print-payment-mode="financed"
+            >
+              <div>
+                <span>Precio de lista</span>
+                <strong id="printFinancedListPrice">—</strong>
+              </div>
+              <div>
+                <span>Descuento por lanzamiento</span>
+                <strong id="printFinancedLaunchDiscount">—</strong>
+              </div>
+            </div>
+
             <div class="print-price-option" data-print-payment-mode="financed">
               <div class="print-price-head">
                 <span>Precio FINANCIADO</span>
@@ -755,8 +752,6 @@
               </div>
             </div>
           </section>
-
-          <div id="printPromoBandera" class="print-promo hidden"></div>
 
           <section class="print-terms">
             <p>
