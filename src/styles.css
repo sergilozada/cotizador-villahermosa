@@ -768,22 +768,6 @@ textarea[readonly] {
   outline: none;
 }
 
-.promo-bandera-blanca {
-  margin: -6px 0 24px;
-  padding: 16px 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(184, 127, 0, 0.28);
-  background: #fff7d6;
-  color: #713f12;
-  font-size: 0.96rem;
-  font-weight: 800;
-  line-height: 1.35;
-}
-
-.promo-bandera-blanca strong {
-  color: #92400e;
-}
-
 /* ============================= */
 /* SELECTOR DE MODALIDAD DE PAGO */
 /* ============================= */
@@ -1608,18 +1592,6 @@ tbody tr.selected {
     background: #ffffff !important;
   }
 
-  .promo-bandera-blanca {
-    margin: 0 !important;
-    padding: 3mm 4mm !important;
-    border-radius: 10px !important;
-    border: 1px solid rgba(184, 127, 0, 0.32) !important;
-    background: #fff7d6 !important;
-    color: #713f12 !important;
-    font-size: 8pt !important;
-    font-weight: 900 !important;
-    line-height: 1.25 !important;
-  }
-
   .finance-banner {
     display: grid !important;
     grid-template-columns: auto 1fr auto 18mm !important;
@@ -2008,13 +1980,6 @@ tbody tr.selected {
   .input-prefix {
     border-radius: 0;
     background: #ffffff;
-  }
-
-  .promo-bandera-blanca {
-    border-radius: 0;
-    border-color: rgba(201, 162, 77, 0.55);
-    background: #fff8e6;
-    color: #72561a;
   }
 
   .table-wrapper {
@@ -2641,16 +2606,6 @@ tbody tr.selected {
     font-weight: 500;
   }
 
-  .lot-dialog-promo {
-    margin: 16px 0 0;
-    padding: 13px 15px;
-    border-left: 4px solid var(--vh-gold);
-    background: #fff8e6;
-    color: #6c5117;
-    font-size: 0.8rem;
-    font-weight: 800;
-  }
-
   .lot-dialog-actions {
     display: flex;
     justify-content: flex-end;
@@ -2966,7 +2921,8 @@ tbody tr.selected {
   }
 
   .info-field-advisor,
-  .info-field-agent-registration {
+  .info-field-agent-registration,
+  .info-field-client {
     grid-column: 1 / -1;
   }
 
@@ -3125,13 +3081,6 @@ tbody tr.selected {
     border-color: #d7ddda;
     border-radius: 11px;
     background: #ffffff;
-  }
-
-  .promo-bandera-blanca {
-    margin: 0 0 18px;
-    padding: 15px 18px;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(114, 86, 26, 0.06);
   }
 
   .button-row-centered {
@@ -3454,7 +3403,6 @@ tbody tr.selected {
       'advisor advisor'
       'registration registration'
       'client client'
-      'code code'
       'mz lot'
       'stage area'
       'location location'
@@ -3473,10 +3421,6 @@ tbody tr.selected {
 
   .info-field-client {
     grid-area: client;
-  }
-
-  .info-field-code {
-    grid-area: code;
   }
 
   .info-field-mz {
@@ -3691,13 +3635,6 @@ tbody tr.selected {
   .finance-row .input-prefix input {
     min-width: 0;
     font-size: 1rem;
-  }
-
-  .promo-bandera-blanca {
-    margin: 0 0 14px;
-    padding: 14px 15px;
-    border-radius: 14px;
-    font-size: 0.83rem;
   }
 
   .button-row-centered {
@@ -4344,6 +4281,43 @@ tbody tr.selected {
     line-height: 1.45 !important;
   }
 
+  .print-financed-breakdown {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4mm !important;
+    margin: 0 0 5mm !important;
+  }
+
+  .print-financed-breakdown > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 4mm !important;
+    min-height: 12mm !important;
+    padding: 2.5mm 4mm !important;
+    border-left: 1.2mm solid #0d6f78 !important;
+    background: #eef7f5 !important;
+  }
+
+  .print-financed-breakdown span {
+    color: #5a6472 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 6.5pt !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+  }
+
+  .print-financed-breakdown strong {
+    flex: 0 0 auto !important;
+    color: #172038 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 11.5pt !important;
+    font-style: italic !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+  }
+
   .print-price-option {
     margin: 0 0 7mm !important;
   }
@@ -4398,16 +4372,6 @@ tbody tr.selected {
 
   .print-cash-option .print-price-head {
     background: #15284d !important;
-  }
-
-  .print-promo {
-    margin: 0 0 6mm !important;
-    padding: 3mm 4mm !important;
-    border-left: 1.5mm solid #c9a24d !important;
-    background: #fff8e6 !important;
-    color: #684f19 !important;
-    font-size: 7.5pt !important;
-    font-weight: 700 !important;
   }
 
   .print-terms {

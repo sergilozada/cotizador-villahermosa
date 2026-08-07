@@ -108,7 +108,6 @@ def read_rows(path, mode):
                 {
                     "descuentoContado": number_or_none(row[6]),
                     "precioFinalContado": number_or_none(row[7]),
-                    "promoBanderaBlanca": number_or_none(row[8]),
                 }
             )
 
@@ -170,7 +169,6 @@ def write_stage2_cash_csv(rows):
         "PRECIO LISTA",
         "DSCTO AL CONTADO",
         "PRECIO FINAL",
-        "PROMOCIÓN BANDERA BLANCA",
     ]
 
     with STAGE2_CASH_CSV.open("w", newline="", encoding="utf-8-sig") as file:
@@ -190,7 +188,6 @@ def write_stage2_cash_csv(rows):
                     money(item["precioLista"]),
                     money(item["descuentoContado"]),
                     money(item["precioFinalContado"]),
-                    money(item["promoBanderaBlanca"]),
                 ]
             )
 
@@ -204,7 +201,6 @@ def merge_stage2(financed_rows, cash_rows):
         cash = cash_by_code.get(item["codigo"], {})
         combined["descuentoContado"] = cash.get("descuentoContado")
         combined["precioFinalContado"] = cash.get("precioFinalContado")
-        combined["promoBanderaBlanca"] = cash.get("promoBanderaBlanca")
         merged.append(combined)
 
     return merged
