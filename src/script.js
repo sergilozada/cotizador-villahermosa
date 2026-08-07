@@ -69,6 +69,14 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
+const formatLotReference = (lot) => {
+  const code = String(lot?.codigo || '').trim();
+  const block = String(lot?.mz || code.replace(/\d.*$/, '') || '—').trim();
+  const lotNumber = String(lot?.lote || code.match(/\d+$/)?.[0] || '—').trim();
+
+  return `Mz ${block} Lt ${lotNumber}`;
+};
+
 const query = (selector) => document.querySelector(selector);
 
 const lotsTable = query('#lotsTable');
@@ -942,7 +950,7 @@ const openLotDetails = (lot) => {
 
   const areaLabel = lot.area != null ? `${lot.area} m²` : 'Por confirmar';
 
-  setPrintText(lotDialogCode, lot.codigo);
+  setPrintText(lotDialogCode, formatLotReference(lot));
   setPrintText(lotDialogSubtitle, `${lot.ubicacion || 'Ubicación no registrada'} · ${areaLabel}`);
   setPrintText(lotDialogStage, lot.etapa);
   setPrintText(lotDialogBlock, lot.mz);
@@ -1520,8 +1528,7 @@ const updatePrintQuote = (totals) => {
     isCashPayment ? 'Cotización al contado:' : 'Cotización financiada:'
   );
 
-  const lotNumber = String(lot.lote || '').padStart(2, '0');
-  const locationCode = `${lot.mz || '—'} - ${lotNumber || '—'}`;
+  const locationCode = formatLotReference(lot);
   const area = lot.area != null ? `${Number(lot.area).toFixed(2)} m²` : '—';
   const thirtyPercentInitial = totals.precioFinal * 0.3;
   const thirtyPercentBalance = Math.max(0, totals.precioFinal - thirtyPercentInitial);
@@ -1567,7 +1574,7 @@ const updatePrintQuote = (totals) => {
   setPrintText(printDate, formatPrintDate(fechaInput.value));
   setPrintText(printStage, `Etapa ${lot.etapa || '—'}`);
   setPrintText(printLocationCode, locationCode);
-  setPrintText(printLotCode, lot.codigo || locationCode);
+  setPrintText(printLotCode, locationCode);
   setPrintText(printBlock, lot.mz || '—');
   setPrintText(printLot, lot.lote || '—');
   setPrintText(printArea, area);
@@ -1599,8 +1606,8 @@ const updatePrintQuote = (totals) => {
   setPrintText(
     printAgentRegistration,
     agentRegistrationInput.value
-      ? `Registro N° ${agentRegistrationInput.value}`
-      : ''
+      ? `Código de agente: ${agentRegistrationInput.value}`
+      : 'Código de agente: —'
   );
   setPrintText(printAdvisorPhone, formatPhone(currentUser.phone));
 
@@ -1649,7 +1656,7 @@ const updateSummary = () => {
   const isCashPayment = state.paymentMode === 'cash';
   const paymentModeLabel = getPaymentModeLabel();
   const agentRegistrationSummaryRow = agentRegistrationInput.value
-    ? `<dt>Registro inmobiliario</dt><dd>${agentRegistrationInput.value}</dd>`
+    ? `<dt>Código de agente</dt><dd>${agentRegistrationInput.value}</dd>`
     : '';
   const promoSummaryRow =
     isCashPayment && isPromoBanderaBlancaEligible(state.selectedLot)
@@ -1675,9 +1682,8 @@ const updateSummary = () => {
 
   summaryCard.innerHTML = `
     <dl class="summary-list">
-      <dt>Código</dt><dd>${codigoInput.value || '-'}</dd>
+      <dt>Manzana y lote</dt><dd>${formatLotReference(state.selectedLot)}</dd>
       <dt>Cliente</dt><dd>${clienteInput.value || '-'}</dd>
-      <dt>Lote</dt><dd>${state.selectedLot.lote || '-'}</dd>
       <dt>Etapa</dt><dd>${state.selectedLot.etapa || '-'}</dd>
       <dt>Ubicación</dt><dd>${state.selectedLot.ubicacion || '-'}</dd>
       <dt>Área</dt><dd>${state.selectedLot.area != null ? `${state.selectedLot.area} m²` : '-'}</dd>
@@ -1761,13 +1767,13 @@ const renderSavedQuotes = () => {
         <p>Cuota mensual: <strong>${formatCurrency(quote.monthlyPayment)}</strong></p>
       `;
     const quoteAgentRegistration = quote.agentRegistration
-      ? `<p>Registro inmobiliario: <strong>${quote.agentRegistration}</strong></p>`
+      ? `<p>Código de agente: <strong>${quote.agentRegistration}</strong></p>`
       : '';
 
     card.innerHTML = `
       <header>
         <div>
-          <strong>${quote.codigo} - ${quote.lote}</strong>
+          <strong>${formatLotReference(quote)}</strong>
           <p>${formatDate(quote.createdAt)}</p>
         </div>
       </header>
@@ -1848,6 +1854,7 @@ const getCurrentQuote = () => {
     createdAt: fechaInput.value ? new Date(fechaInput.value).getTime() : Date.now(),
     cliente: clienteInput.value.trim(),
     codigo: codigoInput.value.trim() || state.selectedLot.codigo,
+    mz: state.selectedLot.mz,
     lote: state.selectedLot.lote,
     etapa: state.selectedLot.etapa,
     ubicacion: state.selectedLot.ubicacion,
@@ -1926,11 +1933,11 @@ const copySummary = () => {
       `Cuota mensual: ${formatCurrency(totals.monthlyPayment)}`;
 
   const text =
-    `${codigoInput.value} - ${state.selectedLot.lote} / Etapa ${state.selectedLot.etapa} / Ubicación ${state.selectedLot.ubicacion}\n` +
+    `${formatLotReference(state.selectedLot)} / Etapa ${state.selectedLot.etapa} / Ubicación ${state.selectedLot.ubicacion}\n` +
     `Cliente: ${clienteInput.value || '-'}\n` +
     `Agente inmobiliario: ${asesorSelect.value}\n` +
     (agentRegistrationInput.value
-      ? `Registro inmobiliario: ${agentRegistrationInput.value}\n`
+      ? `Código de agente: ${agentRegistrationInput.value}\n`
       : '') +
     `Fecha: ${fechaInput.value}\n` +
     `Área: ${state.selectedLot.area ?? '-'} m²\n` +
