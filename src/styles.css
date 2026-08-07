@@ -2965,6 +2965,43 @@ tbody tr.selected {
     background: #fffdf6 !important;
   }
 
+  .info-field-advisor,
+  .info-field-agent-registration {
+    grid-column: 1 / -1;
+  }
+
+  .info-field-advisor input {
+    min-height: 56px;
+    border-color: rgba(20, 142, 152, 0.28);
+    background: linear-gradient(135deg, #f5fbf9 0%, #ffffff 100%);
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+  }
+
+  .info-field-agent-registration {
+    margin-top: -6px;
+    color: var(--vh-teal-dark);
+  }
+
+  #agentRegistrationInput {
+    border-color: rgba(201, 162, 77, 0.5);
+    border-left: 5px solid var(--vh-gold);
+    background: linear-gradient(90deg, #fff9df 0%, #fffdf6 55%, #ffffff 100%);
+    color: var(--vh-navy);
+    font-size: 0.96rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    box-shadow: 0 8px 20px rgba(201, 162, 77, 0.08);
+  }
+
+  #agentRegistrationInput::placeholder {
+    color: #87909c;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
   .project-visual-card {
     position: relative;
     display: flex;
@@ -4408,7 +4445,7 @@ tbody tr.selected {
 
   .print-advisor-data {
     display: grid !important;
-    grid-template-columns: 1.2fr 0.8fr !important;
+    grid-template-columns: minmax(0, 1.35fr) minmax(32mm, 0.65fr) !important;
     gap: 3mm 9mm !important;
   }
 
@@ -4432,11 +4469,32 @@ tbody tr.selected {
     font-weight: 400 !important;
   }
 
+  .print-advisor-data > div:first-child {
+    min-width: 0 !important;
+  }
+
+  #printAdvisorName {
+    line-height: 1.12 !important;
+    overflow-wrap: anywhere !important;
+  }
+
   .print-advisor-data small {
-    color: rgba(255, 255, 255, 0.72) !important;
-    font-size: 6.4pt !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    margin-top: 1.2mm !important;
+    padding: 1.2mm 2.4mm !important;
+    border: 0.3mm solid rgba(126, 208, 209, 0.58) !important;
+    border-radius: 999px !important;
+    background: rgba(126, 208, 209, 0.12) !important;
+    color: #a9e7e8 !important;
+    font-size: 7pt !important;
+    font-style: normal !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
   }
 
   .print-advisor-data p {
