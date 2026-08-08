@@ -1467,8 +1467,8 @@ const updatePrintQuote = (totals) => {
   if (planGeometry && printMapSvg && printMapMarker && printMapMarkerLabel) {
     const centerX = planGeometry.x + planGeometry.width / 2;
     const centerY = planGeometry.y + planGeometry.height / 2;
-    const viewWidth = planGeometry.height > 700 ? 1450 : 1120;
-    const viewHeight = planGeometry.height > 700 ? 1080 : 780;
+    const viewWidth = planGeometry.height > 700 ? 1050 : 820;
+    const viewHeight = planGeometry.height > 700 ? 1120 : 900;
     const viewX = Math.max(0, Math.min(PLAN_WIDTH - viewWidth, centerX - viewWidth / 2));
     const viewY = Math.max(0, Math.min(PLAN_HEIGHT - viewHeight, centerY - viewHeight / 2));
 

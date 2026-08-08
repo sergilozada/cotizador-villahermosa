@@ -582,214 +582,578 @@
       </dialog>
     </div>
 
-    <section id="printQuote" class="print-quote" aria-hidden="true">
-      <article class="print-page print-page-cover">
-        <header class="print-topbar">
-          <span class="print-document-label">Propuesta comercial</span>
-          <div class="print-topbar-brands" aria-label="Villa Hermosa y A&T House">
-            <span>CONDOMINIO<br /><strong>VILLA HERMOSA</strong></span>
-            <i aria-hidden="true"></i>
-            <span>A&T HOUSE<br /><small>INMOBILIARIA</small></span>
-          </div>
-        </header>
+ <section id="printQuote" class="print-quote" aria-hidden="true">
 
-        <div class="print-cover-content">
-          <div class="print-title-block">
-            <span>COTIZACIÓN</span>
-            <strong>VILLA HERMOSA</strong>
-          </div>
+  <!-- ====================================================== -->
+  <!-- PÁGINA 1                                               -->
+  <!-- ====================================================== -->
 
-          <div class="print-client-strip">
-            <div>
-              <span>Cliente</span>
-              <strong id="printClient">—</strong>
-            </div>
-            <div>
-              <span>Fecha</span>
-              <strong id="printDate">—</strong>
-            </div>
-            <div>
-              <span>Etapa</span>
-              <strong id="printStage">—</strong>
-            </div>
-          </div>
+  <article class="print-page print-page-cover">
 
-          <div class="print-location-line">
-            <span>Ubicación (manzana y lote):</span>
-            <strong id="printLocationCode">—</strong>
-          </div>
+    <!-- CABECERA TURQUESA -->
+    <header class="print-topbar">
 
-          <h2 class="print-visual-title">Conoce el proyecto y tu lote seleccionado:</h2>
+      <span class="print-document-label">
+        PROPUESTA COMERCIAL
+      </span>
 
-          <div class="print-visual-grid">
-            <figure class="print-project-figure">
-              <div class="print-project-image">
-                <svg
-                  id="printMapSvg"
-                  viewBox="900 300 1800 1800"
-                  role="img"
-                  aria-label="Detalle de ubicación del lote seleccionado"
-                >
-                  <image
-                    id="printMapImage"
-                    href="/src/assets/2da-02.png"
-                    width="3509"
-                    height="4961"
-                  ></image>
-                  <rect id="printMapMarker" x="0" y="0" width="0" height="0"></rect>
-                  <text id="printMapMarkerLabel" x="0" y="0">—</text>
-                </svg>
-                <span class="print-project-tag">Ubicación referencial dentro del plano</span>
-              </div>
-              <figcaption>Plano de detalle del lote seleccionado.</figcaption>
-            </figure>
+      <div
+        class="print-topbar-brands"
+        aria-label="Villa Hermosa y A&T House"
+      >
+        <img
+          src="/src/assets/VILLAHERMOSAWHITE.png"
+          alt="Condominio Villa Hermosa"
+          class="print-header-logo print-header-logo-villa"
+        />
 
-            <aside class="print-lot-panel">
-              <img
-                src="/src/assets/LOGOVILLAHERMOSA.jpeg"
-                alt="Villa Hermosa"
-                class="print-project-logo"
-              />
-              <span class="print-lot-eyebrow">Lote seleccionado</span>
-              <strong class="print-lot-code" id="printLotCode">—</strong>
-              <dl>
-                <div><dt>Manzana</dt><dd id="printBlock">—</dd></div>
-                <div><dt>Lote</dt><dd id="printLot">—</dd></div>
-                <div><dt>Área</dt><dd id="printArea">—</dd></div>
-                <div><dt>Ubicación</dt><dd id="printLocation">—</dd></div>
-              </dl>
-              <p>Información correspondiente a la selección realizada en el cotizador.</p>
-            </aside>
-          </div>
+        <i aria-hidden="true"></i>
 
-          <div class="print-cover-note">
-            <span>Un espacio para construir el futuro que imaginas.</span>
-            <p>
-              Condominio Villa Hermosa reúne tranquilidad, naturaleza y una inversión
-              pensada para crecer contigo.
-            </p>
-          </div>
+        <img
+          src="/src/assets/A%26TWHITE.png"
+          alt="A&T House Inmobiliaria"
+          class="print-header-logo print-header-logo-ayt"
+        />
+      </div>
+
+    </header>
+
+
+    <div class="print-cover-content">
+
+      <!-- COTIZACIÓN + LOGO GRANDE CENTRAL -->
+      <div class="print-title-area">
+
+        <span class="print-quotation-label">
+          COTIZACIÓN:
+        </span>
+
+        <img
+          src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+          alt="Condominio Villa Hermosa"
+          class="print-main-villa-logo"
+        />
+
+      </div>
+
+
+      <!-- CLIENTE / FECHA / ETAPA -->
+      <div class="print-client-strip">
+
+        <div>
+          <span>CLIENTE</span>
+          <strong id="printClient">—</strong>
         </div>
 
-        <span class="print-page-number">01 / 02</span>
-      </article>
-
-      <article class="print-page print-page-pricing">
-        <header class="print-slim-topbar">
-          <span>VILLA HERMOSA</span>
-          <small>COTIZACIÓN DE TERRENO</small>
-        </header>
-
-        <div class="print-pricing-content">
-          <section class="print-description">
-            <h2>Descripción del terreno:</h2>
-            <p id="printDescription">—</p>
-          </section>
-
-          <section class="print-pricing-section" id="printPricingSection">
-            <h2 id="printPricingTitle">Cotización financiada:</h2>
-
-            <div
-              class="print-financed-breakdown"
-              data-print-payment-mode="financed"
-            >
-              <div>
-                <span>Precio de lista</span>
-                <strong id="printFinancedListPrice">—</strong>
-              </div>
-              <div>
-                <span>Descuento por lanzamiento</span>
-                <strong id="printFinancedLaunchDiscount">—</strong>
-              </div>
-            </div>
-
-            <div class="print-price-option" data-print-payment-mode="financed">
-              <div class="print-price-head">
-                <span>Precio FINANCIADO</span>
-                <span>INICIAL</span>
-                <span>Precio a FINANCIAR</span>
-                <span id="printTermHeaderPrimary">CUOTAS</span>
-              </div>
-              <div class="print-price-values">
-                <strong id="printFinancedPricePrimary">—</strong>
-                <strong id="printInitialPrimary">—</strong>
-                <strong id="printBalancePrimary">—</strong>
-                <strong id="printInstallmentPrimary">—</strong>
-              </div>
-            </div>
-
-            <div class="print-price-option" data-print-payment-mode="financed">
-              <div class="print-price-head">
-                <span>Precio FINANCIADO</span>
-                <span>INICIAL (30%)</span>
-                <span>Precio a FINANCIAR</span>
-                <span id="printTermHeader30">CUOTAS</span>
-              </div>
-              <div class="print-price-values">
-                <strong id="printFinancedPrice30">—</strong>
-                <strong id="printInitial30">—</strong>
-                <strong id="printBalance30">—</strong>
-                <strong id="printInstallment30">—</strong>
-              </div>
-            </div>
-
-            <h3 data-print-payment-mode="cash">Detalle del pago al contado</h3>
-            <div
-              class="print-price-option print-cash-option"
-              data-print-payment-mode="cash"
-            >
-              <div class="print-price-head">
-                <span>Precio de LISTA</span>
-                <span>DESCUENTO</span>
-                <span>Precio al CONTADO</span>
-                <span>AHORRO TOTAL</span>
-              </div>
-              <div class="print-price-values">
-                <strong id="printCashList">—</strong>
-                <strong id="printCashDiscount">—</strong>
-                <strong id="printCashFinal">—</strong>
-                <strong id="printCashSavings">—</strong>
-              </div>
-            </div>
-          </section>
-
-          <section class="print-terms">
-            <p>
-              La presente cotización tiene una vigencia de <strong>7 DÍAS</strong>
-              desde la fecha indicada. Transcurrido este plazo, los precios,
-              promociones y disponibilidad podrán variar.
-            </p>
-            <p>
-              Para continuar con el proceso de adquisición, comunícate con tu
-              agente inmobiliario asignado, quien te brindará la información y el
-              acompañamiento necesarios.
-            </p>
-            <p>¡Gracias por confiar en Condominio Villa Hermosa!</p>
-          </section>
+        <div>
+          <span>FECHA</span>
+          <strong id="printDate">—</strong>
         </div>
 
-        <footer class="print-footer">
-          <div class="print-advisor-data">
-            <div>
-              <span>Agente inmobiliario:</span>
-              <strong id="printAdvisorName">—</strong>
-              <small id="printAgentRegistration"></small>
-            </div>
-            <div>
-              <span>Celular:</span>
-              <strong id="printAdvisorPhone">—</strong>
-            </div>
-            <p>Calle Manuel Medina 384 · Ica, Perú</p>
-          </div>
-          <div class="print-footer-brand">
-            <span>CONDOMINIO</span>
-            <strong>VILLA<br />HERMOSA</strong>
-          </div>
-          <span class="print-page-number">02 / 02</span>
-        </footer>
-      </article>
-    </section>
+        <div>
+          <span>ETAPA</span>
+          <strong id="printStage">—</strong>
+        </div>
 
-    <script src="/src/script.js"></script>
-  </body>
+      </div>
+
+
+      <!-- UBICACIÓN -->
+      <div class="print-location-line">
+
+        <span>
+          Ubicación (Manzana y Lote):
+        </span>
+
+        <strong id="printLocationCode">
+          —
+        </strong>
+
+      </div>
+
+
+      <h2 class="print-visual-title">
+        Conoce el proyecto y tu lote seleccionado:
+      </h2>
+
+
+      <!-- PLANO + FICHA DEL LOTE -->
+      <div class="print-visual-grid">
+
+        <!-- PLANO -->
+        <figure class="print-project-figure">
+
+          <div class="print-project-image">
+
+            <svg
+              id="printMapSvg"
+              viewBox="900 300 1800 1800"
+              role="img"
+              aria-label="Detalle de ubicación del lote seleccionado"
+            >
+
+              <image
+                id="printMapImage"
+                href="/src/assets/2da-02.png"
+                width="3509"
+                height="4961"
+              ></image>
+
+              <rect
+                id="printMapMarker"
+                x="0"
+                y="0"
+                width="0"
+                height="0"
+              ></rect>
+
+              <text
+                id="printMapMarkerLabel"
+                x="0"
+                y="0"
+              >
+                —
+              </text>
+
+            </svg>
+
+
+            <span class="print-project-tag">
+              Ubicación referencial dentro del plano
+            </span>
+
+          </div>
+
+
+          <figcaption>
+            Plano de detalle del lote seleccionado.
+          </figcaption>
+
+        </figure>
+
+
+        <!-- FICHA -->
+        <aside class="print-lot-panel">
+
+          <img
+            src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+            alt="Villa Hermosa"
+            class="print-project-logo"
+          />
+
+
+          <span class="print-lot-eyebrow">
+            LOTE SELECCIONADO
+          </span>
+
+
+          <strong
+            class="print-lot-code"
+            id="printLotCode"
+          >
+            —
+          </strong>
+
+
+          <dl>
+
+            <div>
+              <dt>MANZANA</dt>
+              <dd id="printBlock">—</dd>
+            </div>
+
+            <div>
+              <dt>LOTE</dt>
+              <dd id="printLot">—</dd>
+            </div>
+
+            <div>
+              <dt>ÁREA</dt>
+              <dd id="printArea">—</dd>
+            </div>
+
+            <div>
+              <dt>UBICACIÓN</dt>
+              <dd id="printLocation">—</dd>
+            </div>
+
+          </dl>
+
+
+          <p>
+            Información correspondiente a la selección
+            realizada en el cotizador.
+          </p>
+
+        </aside>
+
+      </div>
+
+
+      <!-- FRASE FINAL PÁGINA 1 -->
+      <div class="print-cover-note">
+
+        <span>
+          Un espacio para construir el<br />
+          futuro que imaginas
+        </span>
+
+        <p>
+          Condominio Villa Hermosa reúne tranquilidad,
+          naturaleza y una inversión pensada para crecer contigo.
+        </p>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+
+  <!-- ====================================================== -->
+  <!-- PÁGINA 2                                               -->
+  <!-- ====================================================== -->
+
+  <article class="print-page print-page-pricing">
+
+
+    <!-- LOGO SUPERIOR CENTRADO -->
+    <div class="print-page-two-logo-card">
+
+      <img
+        src="/src/assets/LOGOVILLAHERMOSA.jpeg"
+        alt="Condominio Villa Hermosa"
+      />
+
+    </div>
+
+
+    <div class="print-pricing-content">
+
+
+      <!-- DESCRIPCIÓN -->
+      <section class="print-description">
+
+        <h2>
+          Descripción del terreno:
+        </h2>
+
+        <p id="printDescription">
+          —
+        </p>
+
+      </section>
+
+
+      <!-- COTIZACIÓN -->
+      <section
+        class="print-pricing-section"
+        id="printPricingSection"
+      >
+
+        <h2 id="printPricingTitle">
+          Cotización financiada:
+        </h2>
+
+
+        <!-- PRECIO LISTA Y DESCUENTO -->
+        <div
+          class="print-financed-breakdown"
+          data-print-payment-mode="financed"
+        >
+
+          <div>
+
+            <span>
+              PRECIO DE LISTA
+            </span>
+
+            <strong id="printFinancedListPrice">
+              —
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              DESCUENTO POR LANZAMIENTO
+            </span>
+
+            <strong id="printFinancedLaunchDiscount">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- OPCIÓN 1 -->
+        <div
+          class="print-price-option"
+          data-print-payment-mode="financed"
+        >
+
+          <div class="print-price-head">
+
+            <span>
+              Precio FINANCIADO
+            </span>
+
+            <span>
+              INICIAL
+            </span>
+
+            <span>
+              Precio a FINANCIAR
+            </span>
+
+            <span id="printTermHeaderPrimary">
+              CUOTAS
+            </span>
+
+          </div>
+
+
+          <div class="print-price-values">
+
+            <strong id="printFinancedPricePrimary">
+              —
+            </strong>
+
+            <strong id="printInitialPrimary">
+              —
+            </strong>
+
+            <strong id="printBalancePrimary">
+              —
+            </strong>
+
+            <strong id="printInstallmentPrimary">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- OPCIÓN 2 - 30% -->
+        <div
+          class="print-price-option"
+          data-print-payment-mode="financed"
+        >
+
+          <div class="print-price-head">
+
+            <span>
+              Precio FINANCIADO
+            </span>
+
+            <span>
+              INICIAL (30%)
+            </span>
+
+            <span>
+              Precio a FINANCIAR
+            </span>
+
+            <span id="printTermHeader30">
+              CUOTAS
+            </span>
+
+          </div>
+
+
+          <div class="print-price-values">
+
+            <strong id="printFinancedPrice30">
+              —
+            </strong>
+
+            <strong id="printInitial30">
+              —
+            </strong>
+
+            <strong id="printBalance30">
+              —
+            </strong>
+
+            <strong id="printInstallment30">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- AL CONTADO                                        -->
+        <!-- ================================================= -->
+
+        <h3 data-print-payment-mode="cash">
+          Cotización al contado:
+        </h3>
+
+
+        <div
+          class="print-price-option print-cash-option"
+          data-print-payment-mode="cash"
+        >
+
+          <div class="print-price-head">
+
+            <span>
+              Precio de LISTA
+            </span>
+
+            <span>
+              DESCUENTO
+            </span>
+
+            <span>
+              Precio al CONTADO
+            </span>
+
+            <span>
+              AHORRO TOTAL
+            </span>
+
+          </div>
+
+
+          <div class="print-price-values">
+
+            <strong id="printCashList">
+              —
+            </strong>
+
+            <strong id="printCashDiscount">
+              —
+            </strong>
+
+            <strong id="printCashFinal">
+              —
+            </strong>
+
+            <strong id="printCashSavings">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- CONDICIONES -->
+      <section class="print-terms">
+
+        <p>
+          La presente cotización tiene una vigencia de
+          <strong>7 DÍAS</strong>
+          desde la fecha indicada. Transcurrido este plazo,
+          los precios, promociones y disponibilidad podrán variar.
+        </p>
+
+
+        <p>
+          Para continuar con el proceso de adquisición,
+          comunícate con tu agente inmobiliario asignado,
+          quien te brindará la información y el acompañamiento necesarios.
+        </p>
+
+
+        <p>
+          ¡Gracias por confiar en Condominio Villa Hermosa!
+        </p>
+
+      </section>
+
+    </div>
+
+
+
+    <!-- ====================================================== -->
+    <!-- FOOTER TURQUESA                                        -->
+    <!-- ====================================================== -->
+
+    <footer class="print-footer">
+
+
+      <!-- DATOS DEL AGENTE -->
+      <div class="print-advisor-data">
+
+        <div>
+
+          <span>
+            Asesor inmobiliario:
+          </span>
+
+          <strong id="printAdvisorName">
+            —
+          </strong>
+
+          <small id="printAgentRegistration">
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Celular:
+          </span>
+
+          <strong id="printAdvisorPhone">
+            —
+          </strong>
+
+        </div>
+
+
+        <p>
+          Calle Manuel Medina 384. Ica, Perú
+        </p>
+
+      </div>
+
+
+
+      <!-- LOGOS -->
+      <div class="print-footer-brands">
+
+        <img
+          src="/src/assets/VILLAHERMOSAWHITE.png"
+          alt="Condominio Villa Hermosa"
+          class="print-footer-logo print-footer-logo-villa"
+        />
+
+
+        <i aria-hidden="true"></i>
+
+
+        <img
+          src="/src/assets/A%26TWHITE.png"
+          alt="A&T House Inmobiliaria"
+          class="print-footer-logo print-footer-logo-ayt"
+        />
+
+      </div>
+
+    </footer>
+
+  </article>
+
+</section>
+
+<script src="/src/script.js"></script>
+</body>
 </html>

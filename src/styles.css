@@ -3852,9 +3852,9 @@ tbody tr.selected {
   }
 }
 
-/* ============================= */
-/* DOCUMENTO A4 DE DOS PÁGINAS */
-/* ============================= */
+/* ========================================================= */
+/* DOCUMENTO A4 - DISEÑO COMERCIAL VILLA HERMOSA 1:1        */
+/* ========================================================= */
 
 @page {
   size: A4 portrait;
@@ -3862,6 +3862,15 @@ tbody tr.selected {
 }
 
 @media print {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   html,
   body {
     width: 210mm !important;
@@ -3869,17 +3878,18 @@ tbody tr.selected {
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
-    color: #172038 !important;
+    color: #17284c !important;
     font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 9pt !important;
   }
 
+  /* Ocultamos todo el cotizador normal */
   #loginOverlay,
   #appContent,
   .lot-details-dialog {
     display: none !important;
   }
 
+  /* Mostramos solamente el documento */
   .print-quote {
     display: block !important;
     width: 210mm !important;
@@ -3887,22 +3897,27 @@ tbody tr.selected {
     padding: 0 !important;
   }
 
-  .print-quote[aria-hidden='true'] {
+  .print-quote[aria-hidden="true"] {
     display: none !important;
   }
 
   .print-page {
     position: relative !important;
     display: block !important;
+
     width: 210mm !important;
     height: 297mm !important;
+
     margin: 0 !important;
     padding: 0 !important;
+
     overflow: hidden !important;
+
+    background: #ffffff !important;
+    color: #17284c !important;
+
     break-after: page !important;
     page-break-after: always !important;
-    background: #fffefb !important;
-    color: #172038 !important;
   }
 
   .print-page:last-child {
@@ -3910,96 +3925,151 @@ tbody tr.selected {
     page-break-after: auto !important;
   }
 
+
+  /* ===================================================== */
+  /* PÁGINA 1 - CABECERA TURQUESA                          */
+  /* ===================================================== */
+
   .print-topbar {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+
     width: 100% !important;
-    height: 23mm !important;
-    padding: 0 15mm !important;
-    background: #0e1c37 !important;
+    height: 26mm !important;
+
+    padding: 0 14mm !important;
+
+    border-radius: 0 0 8mm 8mm !important;
+
+    background: #078d91 !important;
     color: #ffffff !important;
   }
 
   .print-document-label {
-    color: rgba(255, 255, 255, 0.66) !important;
-    font-size: 7.5pt !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.18em !important;
+    color: #ffffff !important;
+
+    font-size: 9.5pt !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 0 !important;
     text-transform: uppercase !important;
   }
+
+
+  /* LOGOS HEADER */
 
   .print-topbar-brands {
     display: flex !important;
     align-items: center !important;
+    justify-content: flex-end !important;
+
+    height: 100% !important;
+
     gap: 5mm !important;
-    text-align: center !important;
-  }
-
-  .print-topbar-brands span {
-    color: rgba(255, 255, 255, 0.76) !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 6.5pt !important;
-    line-height: 1.15 !important;
-    letter-spacing: 0.14em !important;
-  }
-
-  .print-topbar-brands strong {
-    color: #ffffff !important;
-    font-size: 9pt !important;
-    font-weight: 500 !important;
-  }
-
-  .print-topbar-brands small {
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 4.5pt !important;
-    letter-spacing: 0.25em !important;
   }
 
   .print-topbar-brands i {
+    display: block !important;
+
     width: 0.25mm !important;
-    height: 9mm !important;
-    background: rgba(255, 255, 255, 0.34) !important;
+    height: 11mm !important;
+
+    background: rgba(255, 255, 255, 0.72) !important;
   }
+
+  .print-header-logo {
+    display: block !important;
+    object-fit: contain !important;
+  }
+
+  .print-header-logo-villa {
+    width: 29mm !important;
+    height: 17mm !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 18mm !important;
+    height: 18mm !important;
+  }
+
+
+  /* ===================================================== */
+  /* PÁGINA 1 - CONTENIDO                                  */
+  /* ===================================================== */
 
   .print-cover-content {
-    padding: 14mm 15mm 11mm !important;
+    padding: 14mm 11.5mm 10mm !important;
   }
 
-  .print-title-block {
-    display: grid !important;
-    margin-bottom: 9mm !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    line-height: 0.86 !important;
+
+  /* COTIZACIÓN + LOGO GRANDE */
+
+  .print-title-area {
+    position: relative !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+
+    height: 54mm !important;
+
+    margin-bottom: 4mm !important;
   }
 
-  .print-title-block span {
-    color: #172038 !important;
-    font-size: 25pt !important;
-    font-weight: 400 !important;
-    letter-spacing: -0.035em !important;
+  .print-quotation-label {
+    position: absolute !important;
+
+    top: 10mm !important;
+    left: 0 !important;
+
+    color: #88b82e !important;
+
+    font-size: 17pt !important;
+    font-weight: 900 !important;
   }
 
-  .print-title-block strong {
-    color: #148e98 !important;
-    font-size: 36pt !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.04em !important;
+  .print-main-villa-logo {
+    display: block !important;
+
+    width: 65mm !important;
+    height: 43mm !important;
+
+    margin: 0 !important;
+
+    object-fit: contain !important;
+
+    mix-blend-mode: multiply !important;
   }
+
+
+  /* ===================================================== */
+  /* CLIENTE / FECHA / ETAPA                               */
+  /* ===================================================== */
 
   .print-client-strip {
     display: grid !important;
-    grid-template-columns: 2fr 1fr 0.72fr !important;
-    margin-bottom: 10mm !important;
-    border-top: 0.3mm solid #cfd5d5 !important;
-    border-bottom: 0.3mm solid #cfd5d5 !important;
+
+    grid-template-columns:
+      2fr
+      1fr
+      0.7fr !important;
+
+    margin: 0 0 8mm !important;
+
+    border-top: 0.35mm solid #17284c !important;
+    border-bottom: 0.35mm solid #17284c !important;
   }
 
   .print-client-strip > div {
     display: grid !important;
-    gap: 1mm !important;
-    padding: 3.2mm 4mm !important;
-    border-right: 0.3mm solid #e3e5e1 !important;
+    align-content: center !important;
+
+    min-height: 13mm !important;
+
+    padding: 2mm 4mm !important;
+
+    border-right: 0.25mm solid #17284c !important;
   }
 
   .print-client-strip > div:first-child {
@@ -4011,60 +4081,84 @@ tbody tr.selected {
   }
 
   .print-client-strip span {
-    color: #7b8190 !important;
-    font-size: 6pt !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.12em !important;
+    color: #17284c !important;
+
+    font-size: 6.4pt !important;
+    font-weight: 900 !important;
+
     text-transform: uppercase !important;
   }
 
   .print-client-strip strong {
     overflow: hidden !important;
-    color: #172038 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
+
+    color: #5e6372 !important;
+
     font-size: 10.5pt !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
+
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
   }
 
+
+  /* ===================================================== */
+  /* UBICACIÓN                                             */
+  /* ===================================================== */
+
   .print-location-line {
     display: flex !important;
-    align-items: baseline !important;
+    align-items: center !important;
+
     gap: 4mm !important;
-    margin-bottom: 5mm !important;
+
+    margin: 0 6mm 7mm !important;
   }
 
-  .print-location-line span,
-  .print-visual-title,
-  .print-description h2,
-  .print-pricing-section > h2 {
-    margin: 0 !important;
-    color: #172038 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 11.5pt !important;
+  .print-location-line span {
+    color: #17284c !important;
+
+    font-size: 12pt !important;
     font-style: italic !important;
     font-weight: 800 !important;
   }
 
   .print-location-line strong {
-    color: #0e1c37 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 24pt !important;
+    color: #008a91 !important;
+
+    font-size: 25pt !important;
     font-style: italic !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.05em !important;
+    font-weight: 900 !important;
+
+    letter-spacing: 0.04em !important;
   }
 
   .print-visual-title {
-    margin-bottom: 5mm !important;
+    margin: 0 6mm 7mm !important;
+
+    color: #17284c !important;
+
+    font-size: 12pt !important;
+    font-style: italic !important;
+    font-weight: 800 !important;
   }
+
+
+  /* ===================================================== */
+  /* PLANO + FICHA DEL LOTE                                */
+  /* ===================================================== */
 
   .print-visual-grid {
     display: grid !important;
-    grid-template-columns: 1.75fr 0.72fr !important;
-    gap: 8mm !important;
+
+    /* Medidas muy cercanas a tu referencia */
+    grid-template-columns: 1.6fr 1fr !important;
+
+    gap: 9mm !important;
+
     align-items: stretch !important;
+
+    margin: 0 14mm !important;
   }
 
   .print-project-figure {
@@ -4073,9 +4167,12 @@ tbody tr.selected {
 
   .print-project-image {
     position: relative !important;
-    height: 88mm !important;
+
+    height: 100mm !important;
+
     overflow: hidden !important;
-    background: #dbe7e4 !important;
+
+    background: #f5f6f2 !important;
   }
 
   .print-project-image::after {
@@ -4084,284 +4181,424 @@ tbody tr.selected {
 
   .print-project-image svg {
     display: block !important;
+
     width: 100% !important;
     height: 100% !important;
+
     background: #ffffff !important;
   }
 
+
+  /* MARCA DEL LOTE */
+
   #printMapMarker {
-    fill: rgba(37, 167, 168, 0.22) !important;
-    stroke: #0a6f74 !important;
+    fill: rgba(0, 140, 145, 0.16) !important;
+
+    stroke: #00858b !important;
     stroke-width: 10 !important;
+
     vector-effect: non-scaling-stroke !important;
   }
 
   #printMapMarkerLabel {
-    fill: #10263c !important;
+    fill: #17284c !important;
+
     stroke: #ffffff !important;
     stroke-width: 12 !important;
+
     paint-order: stroke !important;
+
     font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 54px !important;
+
+    font-size: 58px !important;
     font-weight: 900 !important;
+
     text-anchor: middle !important;
     dominant-baseline: central !important;
   }
 
+
+  /* ETIQUETA SOBRE EL PLANO */
+
   .print-project-image .print-project-tag {
     position: absolute !important;
-    z-index: 1 !important;
+
+    z-index: 2 !important;
+
     right: 4mm !important;
     bottom: 4mm !important;
-    left: auto !important;
-    padding: 2mm 3mm !important;
-    border-radius: 1.5mm !important;
-    background: rgba(16, 38, 60, 0.9) !important;
+
+    padding: 2.2mm 3.2mm !important;
+
+    border-radius: 2mm !important;
+
+    background: rgba(17, 38, 67, 0.92) !important;
+
     color: #ffffff !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 8pt !important;
+
+    font-size: 8.3pt !important;
     font-style: normal !important;
     font-weight: 800 !important;
-    letter-spacing: 0.04em !important;
+
+    letter-spacing: 0.02em !important;
   }
 
   .print-project-figure figcaption {
-    margin-top: 2.5mm !important;
-    color: #888c94 !important;
-    font-size: 7pt !important;
+    margin-top: 2mm !important;
+
+    color: #898d95 !important;
+
+    font-size: 6.5pt !important;
     font-style: italic !important;
-    text-align: center !important;
+
+    text-align: left !important;
   }
+
+
+  /* ===================================================== */
+  /* FICHA LOTE SELECCIONADO                               */
+  /* ===================================================== */
 
   .print-lot-panel {
     display: flex !important;
     flex-direction: column !important;
-    min-height: 88mm !important;
-    padding: 6mm !important;
-    border-top: 2mm solid #148e98 !important;
-    background: #f1f4ef !important;
+
+    min-height: 100mm !important;
+
+    padding: 5mm 6mm !important;
+
+    border-top: 2mm solid #078d91 !important;
+
+    background: #f1f3ee !important;
   }
 
   .print-project-logo {
+    display: block !important;
+
     width: 35mm !important;
-    height: 17mm !important;
+    height: 20mm !important;
+
     margin: 0 auto 6mm !important;
+
     object-fit: contain !important;
+
     mix-blend-mode: multiply !important;
   }
 
   .print-lot-eyebrow {
-    color: #0d6f78 !important;
-    font-size: 6.5pt !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.12em !important;
+    color: #087984 !important;
+
+    font-size: 7pt !important;
+    font-weight: 900 !important;
+
+    letter-spacing: 0.14em !important;
+
     text-transform: uppercase !important;
   }
 
   .print-lot-code {
-    margin: 1mm 0 4mm !important;
-    color: #172038 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 27pt !important;
+    margin: 2mm 0 5mm !important;
+
+    color: #17284c !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+
+    font-size: 25pt !important;
+
     font-style: italic !important;
     font-weight: 400 !important;
+
+    white-space: nowrap !important;
   }
 
   .print-lot-panel dl {
     display: grid !important;
-    gap: 0 !important;
+
     margin: 0 !important;
+    padding: 0 !important;
   }
 
   .print-lot-panel dl div {
     display: flex !important;
+
     justify-content: space-between !important;
+    align-items: center !important;
+
     gap: 3mm !important;
-    padding: 2mm 0 !important;
-    border-bottom: 0.25mm solid #d6dbd7 !important;
+
+    padding: 2.2mm 0 !important;
+
+    border-bottom: 0.25mm solid #d5d8d2 !important;
   }
 
   .print-lot-panel dt {
-    color: #787f86 !important;
+    color: #85898e !important;
+
     font-size: 6.5pt !important;
+
     text-transform: uppercase !important;
   }
 
   .print-lot-panel dd {
     margin: 0 !important;
-    color: #172038 !important;
+
+    color: #17284c !important;
+
     font-size: 7.5pt !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
+
     text-align: right !important;
   }
 
   .print-lot-panel p {
     margin: auto 0 0 !important;
-    color: #7b8190 !important;
-    font-size: 6.2pt !important;
+
+    color: #8a8e95 !important;
+
+    font-size: 6pt !important;
     font-style: italic !important;
-    line-height: 1.4 !important;
+
+    line-height: 1.45 !important;
   }
+
+
+  /* ===================================================== */
+  /* FRASE INFERIOR DE PÁGINA 1                            */
+  /* ===================================================== */
 
   .print-cover-note {
     display: grid !important;
-    grid-template-columns: 0.9fr 1.3fr !important;
-    gap: 8mm !important;
+
+    grid-template-columns: 0.9fr 1.35fr !important;
+
+    gap: 10mm !important;
+
     align-items: start !important;
-    margin-top: 8mm !important;
-    padding-top: 5mm !important;
-    border-top: 0.3mm solid #cfd5d5 !important;
+
+    margin: 8mm 6mm 0 !important;
+
+    padding-top: 4mm !important;
+
+    border-top: 0.3mm solid #17284c !important;
   }
 
   .print-cover-note span {
-    color: #148e98 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 13pt !important;
+    color: #17284c !important;
+
+    font-size: 11pt !important;
     font-style: italic !important;
+
     line-height: 1.15 !important;
   }
 
   .print-cover-note p {
     margin: 0 !important;
-    color: #697386 !important;
-    font-size: 7.5pt !important;
-    line-height: 1.55 !important;
+
+    color: #17284c !important;
+
+    font-size: 7.3pt !important;
+
+    line-height: 1.35 !important;
   }
 
-  .print-page > .print-page-number {
-    position: absolute !important;
-    right: 12mm !important;
-    bottom: 7mm !important;
-    color: #9297a0 !important;
-    font-size: 6pt !important;
-    letter-spacing: 0.12em !important;
+
+  /* ===================================================== */
+  /* PÁGINA 2                                              */
+  /* ===================================================== */
+
+  .print-page-two-logo-card {
+    position: relative !important;
+
+    z-index: 2 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    width: 56mm !important;
+    height: 32mm !important;
+
+    margin: 0 auto !important;
+
+    border-radius: 0 0 5mm 5mm !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+      0 1.5mm 2.2mm rgba(0, 0, 0, 0.18) !important;
   }
 
-  .print-slim-topbar {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    height: 16mm !important;
-    padding: 0 15mm !important;
-    background: #0e1c37 !important;
-    color: #ffffff !important;
+  .print-page-two-logo-card img {
+    display: block !important;
+
+    width: 44mm !important;
+    height: 25mm !important;
+
+    object-fit: contain !important;
+
+    mix-blend-mode: multiply !important;
   }
 
-  .print-slim-topbar span {
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 11pt !important;
-    letter-spacing: 0.08em !important;
-  }
 
-  .print-slim-topbar small {
-    color: rgba(255, 255, 255, 0.67) !important;
-    font-size: 6pt !important;
-    letter-spacing: 0.16em !important;
-  }
+  /* CONTENIDO PÁGINA 2 */
 
   .print-pricing-content {
-    height: 233mm !important;
-    padding: 12mm 15mm 8mm !important;
+    height: auto !important;
+
+    padding: 13mm 11.5mm 42mm !important;
   }
 
+
+  /* DESCRIPCIÓN */
+
   .print-description {
-    margin-bottom: 9mm !important;
+    margin-bottom: 11mm !important;
   }
 
   .print-description h2,
   .print-pricing-section > h2 {
-    margin-bottom: 2mm !important;
+    margin: 0 0 2mm !important;
+
+    color: #17284c !important;
+
+    font-size: 12pt !important;
+    font-style: italic !important;
+    font-weight: 800 !important;
   }
 
   .print-description p {
     margin: 0 !important;
-    color: #373d48 !important;
-    font-size: 8.5pt !important;
-    font-style: italic !important;
-    line-height: 1.45 !important;
+
+    color: #17284c !important;
+
+    font-size: 10pt !important;
+
+    font-style: normal !important;
+
+    line-height: 1.4 !important;
   }
+
+
+  /* ===================================================== */
+  /* PRECIO LISTA + DESCUENTO                              */
+  /* ===================================================== */
 
   .print-financed-breakdown {
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 4mm !important;
-    margin: 0 0 5mm !important;
+
+    grid-template-columns: 1fr 1fr !important;
+
+    gap: 0 !important;
+
+    margin: 5mm 3mm 6mm !important;
   }
 
   .print-financed-breakdown > div {
     display: flex !important;
+
     align-items: center !important;
     justify-content: space-between !important;
+
     gap: 4mm !important;
-    min-height: 12mm !important;
-    padding: 2.5mm 4mm !important;
-    border-left: 1.2mm solid #0d6f78 !important;
-    background: #eef7f5 !important;
+
+    min-height: 13mm !important;
+
+    padding: 2mm 7mm !important;
+
+    border-left: 1mm solid #087f87 !important;
+
+    background: #fbfcf7 !important;
   }
 
   .print-financed-breakdown span {
-    color: #5a6472 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 6.5pt !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.05em !important;
+    color: #17284c !important;
+
+    font-size: 6.8pt !important;
+    font-weight: 900 !important;
+
+    letter-spacing: 0 !important;
+
     text-transform: uppercase !important;
   }
 
   .print-financed-breakdown strong {
     flex: 0 0 auto !important;
-    color: #172038 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 11.5pt !important;
+
+    color: #17284c !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+
+    font-size: 15pt !important;
     font-style: italic !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
+
     white-space: nowrap !important;
   }
 
+
+  /* ===================================================== */
+  /* OPCIONES FINANCIADAS                                  */
+  /* ===================================================== */
+
   .print-price-option {
-    margin: 0 0 7mm !important;
+    margin: 0 3mm 8mm !important;
   }
 
   .print-price-head,
   .print-price-values {
     display: grid !important;
-    grid-template-columns: 1fr 0.85fr 1.12fr 1.2fr !important;
+
+    grid-template-columns:
+      1fr
+      1fr
+      1fr
+      1fr !important;
+
     align-items: center !important;
   }
 
   .print-price-head {
     min-height: 7mm !important;
-    padding: 0 2mm !important;
-    background: #0d6f78 !important;
+
+    padding: 0 1mm !important;
+
+    background: #087f87 !important;
   }
 
   .print-price-head span {
     color: #ffffff !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 7.6pt !important;
+
+    font-size: 7.4pt !important;
     font-weight: 700 !important;
+
     text-align: center !important;
   }
 
   .print-price-values {
-    min-height: 12mm !important;
-    padding: 1.8mm 2mm 0 !important;
+    min-height: 13mm !important;
   }
 
   .print-price-values strong {
-    color: #172038 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 13pt !important;
+    color: #17284c !important;
+
+    font-family: Georgia, "Times New Roman", serif !important;
+
+    font-size: 14pt !important;
     font-style: italic !important;
     font-weight: 400 !important;
+
     text-align: center !important;
   }
 
+
+  /* AL CONTADO */
+
   .print-pricing-section > h3 {
-    margin: 1mm 0 3mm !important;
-    color: #172038 !important;
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 9.5pt !important;
+    margin: 1mm 3mm 3mm !important;
+
+    color: #17284c !important;
+
+    font-size: 10pt !important;
     font-style: italic !important;
     font-weight: 800 !important;
   }
@@ -4371,133 +4608,2184 @@ tbody tr.selected {
   }
 
   .print-cash-option .print-price-head {
-    background: #15284d !important;
+    background: #087f87 !important;
   }
 
+
+  /* ===================================================== */
+  /* CONDICIONES                                           */
+  /* ===================================================== */
+
   .print-terms {
-    margin-top: 7mm !important;
-    padding-top: 5mm !important;
-    border-top: 0.3mm solid #d7dad7 !important;
+    margin: 10mm 2mm 0 !important;
+
+    padding-top: 4mm !important;
+
+    border-top: 0.3mm solid #17284c !important;
   }
 
   .print-terms p {
-    margin: 0 0 2.5mm !important;
-    color: #858990 !important;
-    font-size: 6.8pt !important;
-    font-style: italic !important;
-    line-height: 1.42 !important;
+    margin: 0 0 3mm !important;
+
+    color: #17284c !important;
+
+    font-size: 7pt !important;
+
+    font-style: normal !important;
+
+    line-height: 1.35 !important;
   }
 
   .print-terms strong {
-    color: #172038 !important;
+    color: #17284c !important;
+
     font-weight: 900 !important;
   }
 
+
+  /* ===================================================== */
+  /* FOOTER TURQUESA                                       */
+  /* ===================================================== */
+
   .print-footer {
     position: absolute !important;
+
     right: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
+
     display: grid !important;
-    grid-template-columns: 1fr auto !important;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto !important;
+
     align-items: center !important;
-    height: 48mm !important;
-    padding: 8mm 15mm !important;
-    background: #0e1c37 !important;
+
+    height: 38mm !important;
+
+    padding: 6mm 14mm !important;
+
+    border-radius: 8mm 8mm 0 0 !important;
+
+    background: #078d91 !important;
+
     color: #ffffff !important;
   }
 
+
+  /* DATOS AGENTE */
+
   .print-advisor-data {
     display: grid !important;
-    grid-template-columns: minmax(0, 1.35fr) minmax(32mm, 0.65fr) !important;
+
+    grid-template-columns:
+      minmax(0, 1.35fr)
+      minmax(25mm, 0.7fr) !important;
+
     gap: 3mm 9mm !important;
+
+    margin-left: 5mm !important;
   }
 
   .print-advisor-data > div {
     display: grid !important;
+
     gap: 1mm !important;
   }
 
   .print-advisor-data span {
-    color: rgba(255, 255, 255, 0.68) !important;
-    font-size: 6pt !important;
-    font-style: italic !important;
-    font-weight: 700 !important;
+    color: #ffffff !important;
+
+    font-size: 6.2pt !important;
+    font-weight: 800 !important;
   }
 
   .print-advisor-data strong {
     color: #ffffff !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 13.5pt !important;
-    font-style: italic !important;
+
+    font-size: 12pt !important;
     font-weight: 400 !important;
   }
 
-  .print-advisor-data > div:first-child {
-    min-width: 0 !important;
-  }
-
   #printAdvisorName {
-    line-height: 1.12 !important;
     overflow-wrap: anywhere !important;
+    line-height: 1.1 !important;
   }
 
   .print-advisor-data small {
     display: inline-flex !important;
+
     align-items: center !important;
-    width: max-content !important;
+
+    width: fit-content !important;
     max-width: 100% !important;
-    margin-top: 1.2mm !important;
-    padding: 1.2mm 2.4mm !important;
-    border: 0.3mm solid rgba(126, 208, 209, 0.58) !important;
-    border-radius: 999px !important;
-    background: rgba(126, 208, 209, 0.12) !important;
-    color: #a9e7e8 !important;
-    font-size: 7pt !important;
-    font-style: normal !important;
+
+    margin-top: 1.5mm !important;
+
+    padding: 1.2mm 2.5mm !important;
+
+    border: 0 !important;
+    border-radius: 5mm !important;
+
+    background: #ffffff !important;
+
+    color: #17284c !important;
+
+    font-size: 5.5pt !important;
     font-weight: 900 !important;
+
     line-height: 1.2 !important;
-    letter-spacing: 0.05em !important;
+
     text-transform: uppercase !important;
   }
 
   .print-advisor-data p {
     grid-column: 1 / -1 !important;
+
     margin: 1mm 0 0 !important;
-    color: rgba(255, 255, 255, 0.84) !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
+
+    color: #ffffff !important;
+
     font-size: 9pt !important;
+
     font-style: italic !important;
   }
 
-  .print-footer-brand {
-    display: grid !important;
-    min-width: 34mm !important;
-    padding-left: 8mm !important;
-    border-left: 0.3mm solid rgba(255, 255, 255, 0.26) !important;
-    text-align: right !important;
+
+  /* LOGOS FOOTER */
+
+  .print-footer-brands {
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 5mm !important;
+
+    margin-left: 8mm !important;
   }
 
-  .print-footer-brand span {
-    color: rgba(255, 255, 255, 0.66) !important;
-    font-size: 5.5pt !important;
-    letter-spacing: 0.17em !important;
+  .print-footer-brands i {
+    display: block !important;
+
+    width: 0.25mm !important;
+    height: 17mm !important;
+
+    background: rgba(255, 255, 255, 0.72) !important;
   }
 
-  .print-footer-brand strong {
-    color: #7ed0d1 !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
-    font-size: 17pt !important;
-    font-weight: 500 !important;
-    line-height: 0.8 !important;
+  .print-footer-logo {
+    display: block !important;
+
+    object-fit: contain !important;
   }
 
-  .print-footer .print-page-number {
-    position: absolute !important;
-    right: 5mm !important;
+  .print-footer-logo-villa {
+    width: 34mm !important;
+    height: 19mm !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 21mm !important;
+    height: 22mm !important;
+  }
+
+
+  /* Ya no usamos elementos del diseño anterior */
+
+  .print-slim-topbar,
+  .print-footer-brand,
+  .print-page-number,
+  .print-title-block {
+    display: none !important;
+  }
+}
+/* ========================================================= */
+/* AJUSTE FINO PDF 1:1 - REFERENCIA VILLA HERMOSA            */
+/* PEGAR AL FINAL ABSOLUTO DE styles.css                      */
+/* ========================================================= */
+
+@media print {
+
+  /* ======================= */
+  /* PÁGINA 1                */
+  /* ======================= */
+
+  /* Logo Villa Hermosa grande central */
+  .print-main-villa-logo {
+    width: 72mm !important;
+    height: 46mm !important;
+    transform: scale(1.48) !important;
+    transform-origin: center top !important;
+  }
+
+  /* Mantener espacio correcto alrededor del logo */
+  .print-title-area {
+    height: 58mm !important;
+    margin-bottom: 3mm !important;
+  }
+
+  /* COTIZACIÓN: un poco más grande */
+  .print-quotation-label {
+    top: 11mm !important;
+    left: 0 !important;
+    font-size: 18pt !important;
+  }
+
+  /* Logos blancos del header: actualmente salen muy pequeños */
+  .print-header-logo-villa {
+    width: 34mm !important;
+    height: 18mm !important;
+    transform: scale(1.45) !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 21mm !important;
+    height: 20mm !important;
+    transform: scale(1.35) !important;
+  }
+
+  .print-topbar-brands {
+    gap: 6mm !important;
+    padding-right: 2mm !important;
+  }
+
+  /* Cliente / fecha / etapa más parecido a la referencia */
+  .print-client-strip {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 8mm !important;
+  }
+
+  .print-client-strip > div {
+    min-height: 14mm !important;
+  }
+
+  .print-client-strip span {
+    font-size: 6.8pt !important;
+  }
+
+  .print-client-strip strong {
+    font-size: 11pt !important;
+  }
+
+  /* Ubicación grande */
+  .print-location-line {
+    margin-left: 6mm !important;
+    margin-bottom: 7mm !important;
+  }
+
+  .print-location-line span {
+    font-size: 12.5pt !important;
+  }
+
+  .print-location-line strong {
+    font-size: 27pt !important;
+  }
+
+  .print-visual-title {
+    font-size: 12.5pt !important;
+    margin-left: 6mm !important;
+  }
+
+
+  /* ======================= */
+  /* PLANO + FICHA           */
+  /* ======================= */
+
+  /* Ahora están demasiado estrechos */
+  .print-visual-grid {
+    grid-template-columns: 1.62fr 0.95fr !important;
+    gap: 9mm !important;
+
+    /* referencia usa casi todo el ancho */
+    margin-left: 8mm !important;
+    margin-right: 8mm !important;
+  }
+
+  .print-project-image {
+    height: 103mm !important;
+  }
+
+  .print-lot-panel {
+    min-height: 103mm !important;
+  }
+
+  /* Logo dentro de la ficha */
+  .print-project-logo {
+    width: 40mm !important;
+    height: 20mm !important;
+    transform: scale(1.28) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-lot-eyebrow {
+    font-size: 7.3pt !important;
+  }
+
+  .print-lot-code {
+    font-size: 27pt !important;
+  }
+
+  .print-lot-panel dt {
+    font-size: 6.8pt !important;
+  }
+
+  .print-lot-panel dd {
+    font-size: 8pt !important;
+  }
+
+  /* Leyenda azul del plano */
+  .print-project-image .print-project-tag {
+    font-size: 8.6pt !important;
+    padding: 2.3mm 3.4mm !important;
+  }
+
+  /* Frase inferior */
+  .print-cover-note {
+    margin-left: 6mm !important;
+    margin-right: 6mm !important;
+  }
+
+  .print-cover-note span {
+    font-size: 12pt !important;
+  }
+
+  .print-cover-note p {
+    font-size: 7.7pt !important;
+  }
+
+
+  /* ======================= */
+  /* PÁGINA 2                */
+  /* ======================= */
+
+  /* Tarjeta del logo superior */
+  .print-page-two-logo-card {
+    width: 58mm !important;
+    height: 33mm !important;
+  }
+
+  /* El logo dentro de la tarjeta sale demasiado pequeño */
+  .print-page-two-logo-card img {
+    width: 48mm !important;
+    height: 27mm !important;
+    transform: scale(1.48) !important;
+    transform-origin: center center !important;
+  }
+
+  /* Hacer que página 2 use más ancho */
+  .print-pricing-content {
+    padding-left: 11mm !important;
+    padding-right: 11mm !important;
+    padding-top: 13mm !important;
+  }
+
+  .print-description h2,
+  .print-pricing-section > h2 {
+    font-size: 12.5pt !important;
+  }
+
+  .print-description p {
+    font-size: 10.2pt !important;
+  }
+
+  /* Precio lista y descuento más anchos */
+  .print-financed-breakdown {
+    margin-left: 3mm !important;
+    margin-right: 3mm !important;
+  }
+
+  .print-financed-breakdown span {
+    font-size: 7pt !important;
+  }
+
+  .print-financed-breakdown strong {
+    font-size: 15.5pt !important;
+  }
+
+  /* Tablas ocupando más ancho */
+  .print-price-option {
+    margin-left: 3mm !important;
+    margin-right: 3mm !important;
+  }
+
+  .print-price-head {
+    min-height: 7.5mm !important;
+  }
+
+  .print-price-head span {
+    font-size: 7.7pt !important;
+  }
+
+  .print-price-values {
+    min-height: 14mm !important;
+  }
+
+  .print-price-values strong {
+    font-size: 14.5pt !important;
+  }
+
+  /* Condiciones */
+  .print-terms {
+    margin-left: 2mm !important;
+    margin-right: 2mm !important;
+  }
+
+  .print-terms p {
+    font-size: 7.2pt !important;
+  }
+
+
+  /* ======================= */
+  /* FOOTER PÁGINA 2         */
+  /* ======================= */
+
+  /* La altura actual ya está casi perfecta */
+  .print-footer {
+    height: 38mm !important;
+  }
+
+  /* Logos footer mucho más grandes */
+  .print-footer-logo-villa {
+    width: 38mm !important;
+    height: 21mm !important;
+    transform: scale(1.42) !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 25mm !important;
+    height: 24mm !important;
+    transform: scale(1.3) !important;
+  }
+
+  .print-footer-brands {
+    gap: 6mm !important;
+    margin-left: 7mm !important;
+    padding-right: 1mm !important;
+  }
+
+  .print-advisor-data strong {
+    font-size: 13pt !important;
+  }
+
+  .print-advisor-data p {
+    font-size: 9pt !important;
+  }
+}
+/* ========================================================= */
+/* MATCH FINAL CON DISEÑO DE REFERENCIA                      */
+/* ========================================================= */
+
+@media print {
+
+  /* ===================================================== */
+  /* PAGINA 1 - SUBIR TODO EL CONTENIDO                    */
+  /* ===================================================== */
+
+  .print-cover-content {
+    transform: translateY(-8mm) !important;
+  }
+
+
+  /* ===================================================== */
+  /* HEADER                                                */
+  /* ===================================================== */
+
+  .print-topbar {
+    height: 26mm !important;
+    padding: 0 14mm !important;
+  }
+
+  .print-document-label {
+    font-size: 9.5pt !important;
+  }
+
+
+  /*
+   * IMPORTANTE:
+   * Tus PNG tienen bastante espacio transparente.
+   * object-fit: cover hace que el LOGO real ocupe
+   * mucho mejor el espacio disponible.
+   */
+
+  .print-header-logo-villa {
+    width: 38mm !important;
+    height: 18mm !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 22mm !important;
+    height: 20mm !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+  .print-topbar-brands {
+    gap: 5mm !important;
+  }
+
+
+  /* ===================================================== */
+  /* COTIZACION + LOGO CENTRAL                             */
+  /* ===================================================== */
+
+  .print-title-area {
+    height: 58mm !important;
+    margin-bottom: 3mm !important;
+  }
+
+  .print-quotation-label {
+    top: 17mm !important;
+    left: 0 !important;
+
+    font-size: 18pt !important;
+  }
+
+  .print-main-villa-logo {
+    width: 73mm !important;
+    height: 47mm !important;
+
+    margin-top: 9mm !important;
+
+    object-fit: contain !important;
+
+    /*
+     * Este logo también tiene espacio blanco interno.
+     */
+    transform: scale(2.35) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ===================================================== */
+  /* CLIENTE / FECHA / ETAPA                               */
+  /* ===================================================== */
+
+  .print-client-strip {
+    margin-bottom: 8mm !important;
+  }
+
+  .print-client-strip > div {
+    min-height: 13.5mm !important;
+  }
+
+  .print-client-strip span {
+    font-size: 6.5pt !important;
+  }
+
+  .print-client-strip strong {
+    font-size: 10.5pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* UBICACION                                             */
+  /* ===================================================== */
+
+  .print-location-line {
+    margin: 0 6mm 7mm !important;
+  }
+
+  .print-location-line span {
+    font-size: 12pt !important;
+  }
+
+  .print-location-line strong {
+    font-size: 27pt !important;
+  }
+
+  .print-visual-title {
+    margin: 0 6mm 7mm !important;
+    font-size: 12pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* PLANO + FICHA                                         */
+  /* ===================================================== */
+
+  .print-visual-grid {
+    width: 164mm !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    grid-template-columns:
+      96mm
+      59mm !important;
+
+    gap: 9mm !important;
+
+    justify-content: center !important;
+  }
+
+  .print-project-image {
+    height: 104mm !important;
+  }
+
+  .print-lot-panel {
+    height: 104mm !important;
+    min-height: 104mm !important;
+
+    padding: 5mm 6mm !important;
+  }
+
+
+  /* Logo ficha del lote */
+
+  .print-project-logo {
+    width: 43mm !important;
+    height: 22mm !important;
+
+    margin: 0 auto 6mm !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+
+  .print-lot-eyebrow {
+    font-size: 7pt !important;
+  }
+
+  .print-lot-code {
+    font-size: 27pt !important;
+  }
+
+  .print-lot-panel dt {
+    font-size: 6.5pt !important;
+  }
+
+  .print-lot-panel dd {
+    font-size: 8pt !important;
+  }
+
+
+  /* Etiqueta azul del plano */
+
+  .print-project-image .print-project-tag {
+    right: 4mm !important;
     bottom: 4mm !important;
-    color: rgba(255, 255, 255, 0.42) !important;
-    font-size: 5.5pt !important;
-    letter-spacing: 0.12em !important;
+
+    font-size: 8.5pt !important;
   }
+
+
+  /* ===================================================== */
+  /* FRASE INFERIOR                                        */
+  /* ===================================================== */
+
+  .print-cover-note {
+    margin-top: 8mm !important;
+  }
+
+  .print-cover-note span {
+    font-size: 11.5pt !important;
+  }
+
+  .print-cover-note p {
+    font-size: 7.5pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* PAGINA 2                                              */
+  /* ===================================================== */
+
+  /*
+   * La posición de la página 2 ya está muy cerca.
+   * NO movemos todo.
+   */
+
+  .print-page-two-logo-card {
+    width: 56mm !important;
+    height: 32mm !important;
+
+    overflow: hidden !important;
+  }
+
+  /*
+   * El logo estaba demasiado pequeño porque el JPEG
+   * tiene mucho blanco alrededor.
+   */
+
+  .print-page-two-logo-card img {
+    width: 52mm !important;
+    height: 29mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(3.05) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ===================================================== */
+  /* DESCRIPCION                                           */
+  /* ===================================================== */
+
+  .print-pricing-content {
+    padding-top: 13mm !important;
+    padding-left: 11.5mm !important;
+    padding-right: 11.5mm !important;
+  }
+
+  .print-description h2,
+  .print-pricing-section > h2 {
+    font-size: 12pt !important;
+  }
+
+  .print-description p {
+    font-size: 10pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* PRECIO LISTA / DESCUENTO                              */
+  /* ===================================================== */
+
+  .print-financed-breakdown {
+    margin-left: 3mm !important;
+    margin-right: 3mm !important;
+  }
+
+  .print-financed-breakdown > div {
+    min-height: 13mm !important;
+  }
+
+  .print-financed-breakdown span {
+    font-size: 6.8pt !important;
+  }
+
+  .print-financed-breakdown strong {
+    font-size: 15pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* TABLAS                                                */
+  /* ===================================================== */
+
+  .print-price-option {
+    margin-left: 3mm !important;
+    margin-right: 3mm !important;
+  }
+
+  .print-price-head {
+    min-height: 7mm !important;
+  }
+
+  .print-price-head span {
+    font-size: 7.5pt !important;
+  }
+
+  .print-price-values {
+    min-height: 13mm !important;
+  }
+
+  .print-price-values strong {
+    font-size: 14pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* TEXTO LEGAL                                           */
+  /* ===================================================== */
+
+  .print-terms {
+    margin-top: 10mm !important;
+  }
+
+  .print-terms p {
+    font-size: 7.4pt !important;
+    line-height: 1.38 !important;
+  }
+
+
+  /* ===================================================== */
+  /* FOOTER                                                */
+  /* ===================================================== */
+
+  .print-footer {
+    height: 38mm !important;
+  }
+
+
+  /*
+   * Villa Hermosa footer:
+   * crop visual del espacio transparente.
+   */
+
+  .print-footer-logo-villa {
+    width: 40mm !important;
+    height: 20mm !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 24mm !important;
+    height: 23mm !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+  .print-footer-brands {
+    gap: 5mm !important;
+  }
+
+  .print-advisor-data strong {
+    font-size: 12.5pt !important;
+  }
+
+}
+/* ========================================================= */
+/* CORRECCIÓN DEFINITIVA DE LOGOS Y PÁGINA 1                 */
+/* ========================================================= */
+
+@media print {
+
+  /* ================================= */
+  /* PÁGINA 1: LOGO CENTRAL            */
+  /* ================================= */
+
+  .print-title-area {
+    height: 58mm !important;
+    overflow: hidden !important;
+  }
+
+  .print-main-villa-logo {
+    width: 68mm !important;
+    height: 44mm !important;
+
+    margin-top: 8mm !important;
+
+    object-fit: contain !important;
+
+    /* evita que invada el header */
+    transform: scale(1.58) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ================================= */
+  /* HEADER                            */
+  /* ================================= */
+
+  .print-topbar {
+    position: relative !important;
+    z-index: 10 !important;
+
+    background: #078d91 !important;
+    overflow: hidden !important;
+  }
+
+  .print-header-logo-villa {
+    width: 29mm !important;
+    height: 16mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.18) !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 18mm !important;
+    height: 18mm !important;
+
+    object-fit: contain !important;
+
+    transform: none !important;
+  }
+
+
+  /* ================================= */
+  /* PÁGINA 2: LOGO SUPERIOR           */
+  /* ================================= */
+
+  .print-page-two-logo-card {
+    width: 56mm !important;
+    height: 32mm !important;
+
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    width: 46mm !important;
+    height: 25mm !important;
+
+    object-fit: contain !important;
+
+    /* ahora estaba demasiado grande */
+    transform: scale(1.35) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ================================= */
+  /* FICHA DEL LOTE                    */
+  /* ================================= */
+
+  .print-project-logo {
+    width: 36mm !important;
+    height: 19mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.2) !important;
+  }
+
+
+  /* ================================= */
+  /* FOOTER                            */
+  /* ================================= */
+
+  .print-footer-logo-villa {
+    width: 32mm !important;
+    height: 19mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.15) !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 21mm !important;
+    height: 22mm !important;
+
+    object-fit: contain !important;
+
+    transform: none !important;
+  }
+
+}
+/* ========================================================= */
+/* AJUSTE 1:1 FINAL - VILLA HERMOSA                          */
+/* ========================================================= */
+
+@media print {
+
+  /* ================================= */
+  /* PÁGINA 1                          */
+  /* ================================= */
+
+  /* Reducimos el espacio vertical superior */
+  .print-title-area {
+    height: 49mm !important;
+    margin-bottom: 2mm !important;
+  }
+
+  .print-quotation-label {
+    top: 11mm !important;
+    font-size: 18pt !important;
+  }
+
+  /* Logo principal */
+  .print-main-villa-logo {
+    width: 70mm !important;
+    height: 42mm !important;
+    margin-top: 3mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.62) !important;
+    transform-origin: center center !important;
+  }
+
+  /* Cliente / Fecha / Etapa */
+  .print-client-strip {
+    margin-bottom: 7mm !important;
+  }
+
+  /* Ubicación */
+  .print-location-line {
+    margin-bottom: 6mm !important;
+  }
+
+  .print-location-line strong {
+    font-size: 27pt !important;
+  }
+
+  .print-visual-title {
+    margin-bottom: 6mm !important;
+  }
+
+
+  /* ================================= */
+  /* PLANO + FICHA                     */
+  /* ================================= */
+
+  .print-visual-grid {
+    width: 158mm !important;
+
+    grid-template-columns:
+      92mm
+      57mm !important;
+
+    gap: 9mm !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /*
+   * Este es uno de los cambios más importantes.
+   * La referencia tiene el bloque bastante más bajo.
+   */
+  .print-project-image {
+    height: 91mm !important;
+  }
+
+  .print-lot-panel {
+    height: 91mm !important;
+    min-height: 91mm !important;
+  }
+
+  .print-project-logo {
+    width: 38mm !important;
+    height: 18mm !important;
+
+    transform: scale(1.3) !important;
+    transform-origin: center !important;
+  }
+
+  .print-lot-code {
+    font-size: 26pt !important;
+  }
+
+
+  /* Franja inferior */
+  .print-cover-note {
+    margin-top: 6mm !important;
+  }
+
+
+  /* ================================= */
+  /* HEADER - LOGOS BLANCOS            */
+  /* ================================= */
+
+  .print-header-logo-villa {
+    width: 31mm !important;
+    height: 17mm !important;
+
+    transform: scale(1.7) !important;
+    transform-origin: center !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 19mm !important;
+    height: 19mm !important;
+
+    transform: scale(1.15) !important;
+    transform-origin: center !important;
+  }
+
+
+  /* ================================= */
+  /* PÁGINA 2                          */
+  /* ================================= */
+
+  .print-page-two-logo-card {
+    width: 56mm !important;
+    height: 32mm !important;
+
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    width: 46mm !important;
+    height: 26mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.8) !important;
+    transform-origin: center !important;
+  }
+
+  .print-pricing-content {
+    padding-top: 11mm !important;
+  }
+
+
+  /* Mantener las tablas similares a la referencia */
+  .print-financed-breakdown {
+    margin-bottom: 6mm !important;
+  }
+
+  .print-price-option {
+    margin-bottom: 8mm !important;
+  }
+
+  .print-terms {
+    margin-top: 9mm !important;
+  }
+
+  .print-terms p {
+    font-size: 7.5pt !important;
+    line-height: 1.4 !important;
+  }
+
+
+  /* ================================= */
+  /* FOOTER                            */
+  /* ================================= */
+
+  .print-footer {
+    height: 38mm !important;
+  }
+
+  .print-footer-logo-villa {
+    width: 36mm !important;
+    height: 20mm !important;
+
+    transform: scale(1.7) !important;
+    transform-origin: center !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 23mm !important;
+    height: 23mm !important;
+
+    transform: scale(1.1) !important;
+    transform-origin: center !important;
+  }
+
+}
+/* ========================================================= */
+/* AJUSTE VISUAL FINAL CONTRA REFERENCIA                     */
+/* ========================================================= */
+
+@media print {
+
+  /* ===== PÁGINA 1 ===== */
+
+  /* Logo central: más presencia como en la referencia */
+  .print-main-villa-logo {
+    width: 76mm !important;
+    height: 46mm !important;
+    margin-top: 3mm !important;
+
+    object-fit: contain !important;
+    transform: scale(1.78) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-title-area {
+    height: 52mm !important;
+  }
+
+  /* Plano + tarjeta más anchos */
+  .print-visual-grid {
+    width: 174mm !important;
+
+    grid-template-columns:
+      102mm
+      63mm !important;
+
+    gap: 9mm !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .print-project-image {
+    height: 98mm !important;
+  }
+
+  .print-lot-panel {
+    width: 63mm !important;
+    height: 98mm !important;
+    min-height: 98mm !important;
+  }
+
+  /* Logo de la ficha derecha */
+  .print-project-logo {
+    width: 41mm !important;
+    height: 20mm !important;
+    transform: scale(1.35) !important;
+  }
+
+  /* Texto de ubicación */
+  .print-location-line strong {
+    font-size: 29pt !important;
+  }
+
+  /* Logos blancos del encabezado */
+  .print-header-logo-villa {
+    transform: scale(1.9) !important;
+  }
+
+  .print-header-logo-ayt {
+    transform: scale(1.2) !important;
+  }
+
+
+  /* ===== PÁGINA 2 ===== */
+
+  /* Logo superior */
+  .print-page-two-logo-card img {
+    transform: scale(1.95) !important;
+  }
+
+  /* Mantener la composición de página 2 */
+  .print-pricing-content {
+    padding-top: 11mm !important;
+  }
+
+  /* Texto legal un poco más legible */
+  .print-terms p {
+    font-size: 7.7pt !important;
+  }
+
+  /* Logos del footer */
+  .print-footer-logo-villa {
+    transform: scale(1.85) !important;
+  }
+
+  .print-footer-logo-ayt {
+    transform: scale(1.15) !important;
+  }
+}
+/* ========================================================= */
+/* CALIBRACION FINAL 1:1 - REFERENCIA ORIGINAL               */
+/* ========================================================= */
+
+@media print {
+
+  /* ===================================================== */
+  /* PAGINA 1 - PLANO Y FICHA                              */
+  /* ===================================================== */
+
+  /*
+   * Referencia:
+   * plano aprox. 92 mm
+   * espacio 9 mm
+   * ficha aprox. 54 mm
+   */
+
+  .print-visual-grid {
+    width: 155mm !important;
+
+    grid-template-columns:
+      92mm
+      54mm !important;
+
+    gap: 9mm !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    justify-content: center !important;
+  }
+
+
+  /*
+   * Relación del recorte:
+   * 92 / 101 = 0.91
+   *
+   * Coincide prácticamente con el viewBox
+   * que estamos usando en JS.
+   */
+
+  .print-project-image {
+    width: 92mm !important;
+    height: 101mm !important;
+  }
+
+  .print-project-image svg {
+    width: 92mm !important;
+    height: 101mm !important;
+  }
+
+
+  /* Ficha derecha */
+
+  .print-lot-panel {
+    width: 54mm !important;
+
+    height: 101mm !important;
+    min-height: 101mm !important;
+
+    padding: 5mm 6mm !important;
+  }
+
+
+  /* Logo dentro de ficha */
+
+  .print-project-logo {
+    width: 37mm !important;
+    height: 19mm !important;
+
+    margin: 0 auto 5mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.45) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* LOTE SELECCIONADO */
+
+  .print-lot-eyebrow {
+    font-size: 7pt !important;
+  }
+
+  .print-lot-code {
+    margin-top: 2mm !important;
+    margin-bottom: 5mm !important;
+
+    font-size: 26pt !important;
+  }
+
+
+  /* Datos */
+
+  .print-lot-panel dl div {
+    padding: 2.2mm 0 !important;
+  }
+
+  .print-lot-panel dt {
+    font-size: 6.5pt !important;
+  }
+
+  .print-lot-panel dd {
+    font-size: 7.8pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* TITULO PRINCIPAL                                      */
+  /* ===================================================== */
+
+  /*
+   * El tamaño actual ya está muy cerca.
+   * No volver a hacerlo gigante.
+   */
+
+  .print-main-villa-logo {
+    width: 70mm !important;
+    height: 43mm !important;
+
+    margin-top: 3mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.65) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-title-area {
+    height: 52mm !important;
+  }
+
+
+  /* COTIZACION */
+
+  .print-quotation-label {
+    top: 12mm !important;
+
+    font-size: 18pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* LINEA INFERIOR PAGINA 1                               */
+  /* ===================================================== */
+
+  .print-cover-note {
+    margin-top: 7mm !important;
+
+    margin-left: 2mm !important;
+    margin-right: 2mm !important;
+  }
+
+  .print-cover-note span {
+    font-size: 11.5pt !important;
+  }
+
+  .print-cover-note p {
+    font-size: 7.5pt !important;
+  }
+
+
+  /* ===================================================== */
+  /* PAGINA 2 - LOGO SUPERIOR                              */
+  /* ===================================================== */
+
+  .print-page-two-logo-card {
+    width: 56mm !important;
+    height: 32mm !important;
+
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    width: 47mm !important;
+    height: 27mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.30) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ===================================================== */
+  /* PAGINA 2 - TEXTO LEGAL                                */
+  /* ===================================================== */
+
+  .print-terms p {
+    font-size: 8.2pt !important;
+    line-height: 1.4 !important;
+  }
+
+
+  /* ===================================================== */
+  /* FOOTER                                                */
+  /* ===================================================== */
+
+  .print-footer {
+    height: 38mm !important;
+  }
+
+  .print-footer-logo-villa {
+    width: 35mm !important;
+    height: 20mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.05) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 22mm !important;
+    height: 22mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.10) !important;
+    transform-origin: center center !important;
+  }
+
+}
+/* ========================================================= */
+/* CORRECCION DE CALIDAD Y PROPORCION DE LOGOS               */
+/* ========================================================= */
+
+@media print {
+
+  /* ----------------------------------------------------- */
+  /* HEADER - VILLA HERMOSA                               */
+  /* ----------------------------------------------------- */
+
+  .print-header-logo-villa {
+    width: auto !important;
+    height: 16mm !important;
+
+    max-width: 34mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* HEADER - A&T                                         */
+  /* ----------------------------------------------------- */
+
+  .print-header-logo-ayt {
+    width: auto !important;
+    height: 18mm !important;
+
+    max-width: 22mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* LOGO CENTRAL PAGINA 1                                */
+  /* ----------------------------------------------------- */
+
+  .print-main-villa-logo {
+    width: auto !important;
+    height: 44mm !important;
+
+    max-width: 74mm !important;
+
+    margin-top: 3mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* LOGO DE LA FICHA DEL LOTE                            */
+  /* ----------------------------------------------------- */
+
+  .print-project-logo {
+    width: auto !important;
+    height: 18mm !important;
+
+    max-width: 38mm !important;
+
+    margin: 0 auto 5mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* LOGO SUPERIOR PAGINA 2                               */
+  /* ----------------------------------------------------- */
+
+  .print-page-two-logo-card img {
+    width: auto !important;
+    height: 25mm !important;
+
+    max-width: 47mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* FOOTER - VILLA HERMOSA                               */
+  /* ----------------------------------------------------- */
+
+  .print-footer-logo-villa {
+    width: auto !important;
+    height: 19mm !important;
+
+    max-width: 36mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ----------------------------------------------------- */
+  /* FOOTER - A&T                                         */
+  /* ----------------------------------------------------- */
+
+  .print-footer-logo-ayt {
+    width: auto !important;
+    height: 22mm !important;
+
+    max-width: 24mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+}
+/* ========================================================= */
+/* LOGOS - TAMAÑO FINAL SIN DEFORMAR                         */
+/* ========================================================= */
+
+@media print {
+
+  /* ------------------------------ */
+  /* HEADER                         */
+  /* ------------------------------ */
+
+  .print-topbar {
+    overflow: hidden !important;
+  }
+
+  .print-header-logo-villa {
+    width: 31mm !important;
+    height: 17mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.2) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 18mm !important;
+    height: 18mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.35) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ------------------------------ */
+  /* LOGO GRANDE PÁGINA 1           */
+  /* ------------------------------ */
+
+  .print-title-area {
+    overflow: hidden !important;
+  }
+
+  .print-main-villa-logo {
+    width: 70mm !important;
+    height: 43mm !important;
+
+    margin-top: 3mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.48) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ------------------------------ */
+  /* LOGO FICHA DEL LOTE            */
+  /* ------------------------------ */
+
+  .print-project-logo {
+    width: 38mm !important;
+    height: 18mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.75) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ------------------------------ */
+  /* LOGO SUPERIOR PÁGINA 2         */
+  /* ------------------------------ */
+
+  .print-page-two-logo-card {
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    width: 46mm !important;
+    height: 26mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.15) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* ------------------------------ */
+  /* FOOTER                         */
+  /* ------------------------------ */
+
+  .print-footer {
+    overflow: hidden !important;
+  }
+
+  .print-footer-logo-villa {
+    width: 35mm !important;
+    height: 20mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.15) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 22mm !important;
+    height: 22mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.3) !important;
+    transform-origin: center center !important;
+  }
+}
+/* ========================================================= */
+/* TAMAÑOS FINALES DE LOGOS - SIN DEFORMAR                   */
+/* ========================================================= */
+
+@media print {
+
+  /* Logo principal de página 1 */
+  .print-main-villa-logo {
+    width: auto !important;
+    height: 50mm !important;
+    max-width: 82mm !important;
+
+    margin-top: 1mm !important;
+
+    object-fit: contain !important;
+    transform: none !important;
+  }
+
+
+  /* Logo Villa Hermosa dentro de la ficha */
+  .print-project-logo {
+    width: auto !important;
+    height: 22mm !important;
+    max-width: 44mm !important;
+
+    margin: 0 auto 4mm !important;
+
+    object-fit: contain !important;
+    transform: none !important;
+  }
+
+
+  /* Logo superior de página 2 */
+  .print-page-two-logo-card img {
+    width: auto !important;
+    height: 29mm !important;
+    max-width: 52mm !important;
+
+    object-fit: contain !important;
+    transform: none !important;
+  }
+
+
+  /* Villa Hermosa del footer */
+  .print-footer-logo-villa {
+    width: auto !important;
+    height: 24mm !important;
+    max-width: 43mm !important;
+
+    object-fit: contain !important;
+    transform: none !important;
+  }
+
+
+  /* A&T footer: ya está bastante bien */
+  .print-footer-logo-ayt {
+    width: auto !important;
+    height: 23mm !important;
+    max-width: 25mm !important;
+
+    object-fit: contain !important;
+    transform: none !important;
+  }
+}
+/* ========================================================= */
+/* AJUSTE FINAL DE TAMAÑO DE LOGOS - SIN DEFORMAR            */
+/* ========================================================= */
+
+@media print {
+
+  /* ===================================================== */
+  /* HEADER PÁGINA 1                                      */
+  /* ===================================================== */
+
+  .print-header-logo {
+    display: block !important;
+    width: auto !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: none !important;
+    image-rendering: auto !important;
+  }
+
+  .print-header-logo-villa {
+    height: 13mm !important;
+    max-width: 35mm !important;
+  }
+
+  .print-header-logo-ayt {
+    height: 15mm !important;
+    max-width: 23mm !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO GRANDE CENTRAL - PÁGINA 1                       */
+  /* ===================================================== */
+
+  .print-main-villa-logo {
+    display: block !important;
+
+    width: 80mm !important;
+    height: auto !important;
+
+    max-height: 50mm !important;
+
+    margin: 1mm auto 0 !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO DENTRO DE LA FICHA DEL LOTE                     */
+  /* ===================================================== */
+
+  .print-project-logo {
+    display: block !important;
+
+    width: 44mm !important;
+    height: auto !important;
+
+    max-height: 22mm !important;
+
+    margin: 0 auto 4mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO SUPERIOR - PÁGINA 2                             */
+  /* ===================================================== */
+
+  .print-page-two-logo-card {
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    display: block !important;
+
+    width: 56mm !important;
+    height: auto !important;
+
+    max-height: 29mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGOS FOOTER - PÁGINA 2                              */
+  /* ===================================================== */
+
+  .print-footer-logo {
+    display: block !important;
+
+    width: auto !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+  .print-footer-logo-villa {
+    height: 14mm !important;
+    max-width: 40mm !important;
+  }
+
+  .print-footer-logo-ayt {
+    height: 17mm !important;
+    max-width: 26mm !important;
+  }
+
+}
+/* ========================================================= */
+/* AJUSTE FINAL DE TAMAÑO DE LOGOS - SIN DEFORMAR            */
+/* ========================================================= */
+
+@media print {
+
+  /* ===================================================== */
+  /* HEADER PÁGINA 1                                      */
+  /* ===================================================== */
+
+  .print-header-logo {
+    display: block !important;
+    width: auto !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: none !important;
+    image-rendering: auto !important;
+  }
+
+  .print-header-logo-villa {
+    height: 13mm !important;
+    max-width: 35mm !important;
+  }
+
+  .print-header-logo-ayt {
+    height: 15mm !important;
+    max-width: 23mm !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO GRANDE CENTRAL - PÁGINA 1                       */
+  /* ===================================================== */
+
+  .print-main-villa-logo {
+    display: block !important;
+
+    width: 80mm !important;
+    height: auto !important;
+
+    max-height: 50mm !important;
+
+    margin: 1mm auto 0 !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO DENTRO DE LA FICHA DEL LOTE                     */
+  /* ===================================================== */
+
+  .print-project-logo {
+    display: block !important;
+
+    width: 44mm !important;
+    height: auto !important;
+
+    max-height: 22mm !important;
+
+    margin: 0 auto 4mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGO SUPERIOR - PÁGINA 2                             */
+  /* ===================================================== */
+
+  .print-page-two-logo-card {
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    display: block !important;
+
+    width: 56mm !important;
+    height: auto !important;
+
+    max-height: 29mm !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+
+  /* ===================================================== */
+  /* LOGOS FOOTER - PÁGINA 2                              */
+  /* ===================================================== */
+
+  .print-footer-logo {
+    display: block !important;
+
+    width: auto !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    transform: none !important;
+
+    image-rendering: auto !important;
+  }
+
+  .print-footer-logo-villa {
+    height: 14mm !important;
+    max-width: 40mm !important;
+  }
+
+  .print-footer-logo-ayt {
+    height: 17mm !important;
+    max-width: 26mm !important;
+  }
+
+}
+/* ========================================================= */
+/* LOGOS - AJUSTE FINAL DE TAMAÑO                            */
+/* ========================================================= */
+
+@media print {
+
+  /* =============================== */
+  /* HEADER PÁGINA 1                 */
+  /* =============================== */
+
+  .print-topbar {
+    overflow: hidden !important;
+  }
+
+  .print-header-logo-villa {
+    width: 31mm !important;
+    height: 17mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.15) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-header-logo-ayt {
+    width: 19mm !important;
+    height: 19mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.25) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* =============================== */
+  /* LOGO GRANDE CENTRAL PÁGINA 1    */
+  /* =============================== */
+
+  .print-title-area {
+    overflow: hidden !important;
+  }
+
+  .print-main-villa-logo {
+    width: 72mm !important;
+    height: 44mm !important;
+
+    margin: 2mm auto 0 !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.55) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* =============================== */
+  /* LOGO DE LA FICHA DEL LOTE       */
+  /* =============================== */
+
+  .print-project-logo {
+    width: 38mm !important;
+    height: 19mm !important;
+
+    margin: 0 auto 4mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.75) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* =============================== */
+  /* LOGO SUPERIOR PÁGINA 2          */
+  /* =============================== */
+
+  .print-page-two-logo-card {
+    overflow: hidden !important;
+  }
+
+  .print-page-two-logo-card img {
+    width: 47mm !important;
+    height: 27mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.05) !important;
+    transform-origin: center center !important;
+  }
+
+
+  /* =============================== */
+  /* FOOTER PÁGINA 2                 */
+  /* =============================== */
+
+  .print-footer {
+    overflow: hidden !important;
+  }
+
+  .print-footer-logo-villa {
+    width: 35mm !important;
+    height: 20mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(2.05) !important;
+    transform-origin: center center !important;
+  }
+
+  .print-footer-logo-ayt {
+    width: 23mm !important;
+    height: 23mm !important;
+
+    object-fit: contain !important;
+
+    transform: scale(1.25) !important;
+    transform-origin: center center !important;
+  }
+
 }
