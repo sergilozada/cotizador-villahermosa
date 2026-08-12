@@ -73,15 +73,13 @@ const saveAssignment = async (advisor) => {
   });
 
   await fs.mkdir(stableUserDataPath, { recursive: true });
-  const temporaryPath = `${CONFIG_PATH}.tmp`;
+  const temporaryPath = `${CONFIG_PATH}.${process.pid}.${Date.now()}.tmp`;
   await fs.writeFile(temporaryPath, document, { encoding: 'utf8', mode: 0o600 });
 
   try {
-    await fs.rename(temporaryPath, CONFIG_PATH);
-  } catch (error) {
-    if (error?.code !== 'EEXIST' && error?.code !== 'EPERM') throw error;
-    await fs.rm(CONFIG_PATH, { force: true });
-    await fs.rename(temporaryPath, CONFIG_PATH);
+    await fs.copyFile(temporaryPath, CONFIG_PATH);
+  } finally {
+    await fs.rm(temporaryPath, { force: true });
   }
 };
 
