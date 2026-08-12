@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self'; img-src 'self' data:; script-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asignar agente · Cotizador Villa Hermosa</title>
+    <link rel="stylesheet" href="setup.css" />
+  </head>
+  <body>
+    <main class="setup-shell">
+      <section class="setup-card" aria-labelledby="setupTitle">
+        <div class="brand-mark" aria-hidden="true">
+          <span>VH</span>
+        </div>
+        <p class="eyebrow">COTIZADOR VILLA HERMOSA</p>
+        <h1 id="setupTitle">Asigna este equipo</h1>
+        <p class="intro">
+          Selecciona al agente inmobiliario que usará esta laptop. Se guardará de
+          forma segura en Windows y no volverá a pedir usuario ni contraseña.
+        </p>
+
+        <div class="advisor-list" id="advisorList" role="radiogroup" aria-label="Agente del equipo">
+          <p class="loading">Cargando agentes…</p>
+        </div>
+
+        <div class="selection-summary" id="selectionSummary" aria-live="polite">
+          Selecciona un agente para continuar.
+        </div>
+
+        <button class="primary-action" id="pairButton" type="button" disabled>
+          ASIGNAR Y ABRIR COTIZADOR
+        </button>
+
+        <p class="privacy-note">
+          Para reasignar la laptop después, usa <strong>Aplicación → Cambiar agente</strong>.
+          Esa opción también borra el historial local de clientes.
+        </p>
+      </section>
+    </main>
+    <script src="setup.js"></script>
+  </body>
+</html>

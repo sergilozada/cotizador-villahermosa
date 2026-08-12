@@ -28,6 +28,7 @@ Cotizador Villa Hermosa es una aplicación web ligera de cotización inmobiliari
 - HTML
 - CSS
 - JavaScript
+- Electron (aplicación portátil para Windows)
 - Netlify (configuración de despliegue estático)
 - Python (scripts de conversión CSV a JSON)
 
@@ -46,6 +47,26 @@ La app consume `data/precios.json`, generado con `scripts/import_stage2_prices.p
 
 [](https://github.com/sergilozada/cotizador-villa-hermosa#sitio-web)
 [https://cotizadorvillahermosa.netlify.app/](https://cotizadorvillahermosa.netlify.app/)
+
+## Aplicación portátil para Windows
+
+La versión de escritorio abre el mismo cotizador publicado en Netlify, por lo que
+recibe los cambios del sitio al volver a abrirla. En el primer inicio se selecciona
+el agente de esa laptop y Windows conserva esa asignación protegida; el sitio móvil
+continúa usando usuario y contraseña.
+
+```powershell
+npm install
+npm run desktop:build
+```
+
+El archivo generado queda en
+`dist/Cotizador-Villa-Hermosa-Portable.exe`. Para cambiar de agente en una laptop,
+usa **Aplicación → Cambiar agente de este equipo**. La reasignación también borra el
+historial local de cotizaciones de ese equipo.
+
+La aplicación requiere conexión a internet. Un ejecutable sin certificado de firma
+puede mostrar la advertencia SmartScreen de Windows en el primer inicio.
 
 ## Repositorio
 

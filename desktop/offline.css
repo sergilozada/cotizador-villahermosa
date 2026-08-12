@@ -1,0 +1,40 @@
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: #0e2542;
+  color: #15284d;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  width: min(520px, calc(100% - 48px));
+  padding: 42px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-family: Georgia, serif;
+  font-size: 2rem;
+}
+
+p {
+  color: #5d6878;
+  line-height: 1.6;
+}
+
+a {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background: #138b92;
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+}

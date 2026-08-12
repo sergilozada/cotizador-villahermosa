@@ -2,11 +2,52 @@
   "name": "cotizador-villa-hermosa",
   "version": "1.0.0",
   "private": true,
+  "description": "Cotizador comercial de terrenos de Condominio Villa Hermosa",
+  "author": "A&T House Inmobiliaria",
+  "main": "desktop/main.cjs",
   "scripts": {
     "dev": "live-server . --port=4173 --open=src/index.html --entry-file=src/index.html",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "desktop:dev": "electron .",
+    "desktop:pack": "electron-builder --dir --win --x64",
+    "desktop:build": "electron-builder --win portable --x64"
   },
   "devDependencies": {
+    "electron": "43.4.0",
+    "electron-builder": "26.15.3",
     "live-server": "^1.2.2"
+  },
+  "build": {
+    "appId": "pe.aythouse.villahermosa.cotizador",
+    "productName": "Cotizador Villa Hermosa",
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "desktop/**/*",
+      "package.json"
+    ],
+    "electronLanguages": [
+      "es",
+      "en-US"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "Cotizador-Villa-Hermosa-Portable.${ext}",
+      "requestExecutionLevel": "user"
+    }
   }
 }

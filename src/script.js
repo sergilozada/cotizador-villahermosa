@@ -68,6 +68,17 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
+const HTML_ESCAPE_CHARACTERS = Object.freeze({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+});
+
+const escapeHTML = (value) =>
+  String(value ?? '').replace(/[&<>"']/g, (character) => HTML_ESCAPE_CHARACTERS[character]);
+
 const formatLotReference = (lot) => {
   const code = String(lot?.codigo || '').trim();
   const block = String(lot?.mz || code.replace(/\d.*$/, '') || '—').trim();
@@ -874,8 +885,8 @@ const setActivePlanStage = (stage, options = {}) => {
 
       planStageMessage.innerHTML = `
         <span class="plan-status-dot"></span>
-        <strong>${config.label}:</strong>
-        <span>${commercialSummary}</span>
+        <strong>${escapeHTML(config.label)}:</strong>
+        <span>${escapeHTML(commercialSummary)}</span>
       `;
       planStageMessage.classList.remove('pending');
     } else if (linkedLots > 0) {
@@ -885,14 +896,14 @@ const setActivePlanStage = (stage, options = {}) => {
 
       planStageMessage.innerHTML = `
         <span class="plan-status-dot"></span>
-        <strong>${config.label}:</strong>
-        <span>${linkedLots} lotes identificados en el plano; precios e inventario pendientes de carga.${stageMappingNote}</span>
+        <strong>${escapeHTML(config.label)}:</strong>
+        <span>${escapeHTML(linkedLots)} lotes identificados en el plano; precios e inventario pendientes de carga.${escapeHTML(stageMappingNote)}</span>
       `;
       planStageMessage.classList.add('pending');
     } else {
       planStageMessage.innerHTML = `
         <span class="plan-status-dot"></span>
-        <strong>${config.label}:</strong>
+        <strong>${escapeHTML(config.label)}:</strong>
         <span>plano disponible; precios e inventario pendientes de carga.</span>
       `;
       planStageMessage.classList.add('pending');
@@ -1111,6 +1122,33 @@ const setCurrentUser = (username) => {
   }
 };
 
+const enterApp = (username, { animate = true } = {}) => {
+  if (!users[username]) return false;
+
+  setCurrentUser(username);
+  showLoginError('');
+
+  const revealApp = () => {
+    loginOverlay.classList.add('hidden');
+    appContent.classList.remove('hidden');
+    appContent.classList.add('app-enter');
+
+    usernameInput.value = '';
+    passwordInput.value = '';
+    loginButton.disabled = false;
+  };
+
+  if (!animate) {
+    revealApp();
+    return true;
+  }
+
+  loginButton.disabled = true;
+  loginOverlay.classList.add('login-success');
+  setTimeout(revealApp, 650);
+  return true;
+};
+
 const handleLogin = () => {
   const username = usernameInput.value.trim().toLowerCase();
   const password = passwordInput.value;
@@ -1126,22 +1164,21 @@ const handleLogin = () => {
     return;
   }
 
-  setCurrentUser(username);
-  showLoginError('');
+  enterApp(username);
+};
 
-  loginButton.disabled = true;
+const initializeDesktopSession = async () => {
+  const desktopBridge = window.villaHermosaDesktop;
+  if (!desktopBridge || typeof desktopBridge.getIdentity !== 'function') return false;
 
-  loginOverlay.classList.add('login-success');
-
-  setTimeout(() => {
-    loginOverlay.classList.add('hidden');
-    appContent.classList.remove('hidden');
-    appContent.classList.add('app-enter');
-
-    usernameInput.value = '';
-    passwordInput.value = '';
-    loginButton.disabled = false;
-  }, 650);
+  try {
+    const identity = await desktopBridge.getIdentity();
+    const username = String(identity?.username || '').trim().toLowerCase();
+    return enterApp(username, { animate: false });
+  } catch (error) {
+    console.error('No se pudo iniciar la sesión de escritorio:', error);
+    return false;
+  }
 };
 
 const loadData = async () => {
@@ -1183,12 +1220,12 @@ const renderLotsTable = () => {
     }
 
     row.innerHTML = `
-      <td>${lot.codigo}</td>
-      <td>${lot.lote}</td>
-      <td>${lot.etapa}</td>
-      <td>${lot.ubicacion}</td>
-      <td>${lot.area ?? '-'}</td>
-      <td>${hasCommercialPricing(lot) ? formatCurrency(lot.precioFinal) : '—'}</td>
+      <td>${escapeHTML(lot.codigo)}</td>
+      <td>${escapeHTML(lot.lote)}</td>
+      <td>${escapeHTML(lot.etapa)}</td>
+      <td>${escapeHTML(lot.ubicacion)}</td>
+      <td>${escapeHTML(lot.area ?? '-')}</td>
+      <td>${escapeHTML(hasCommercialPricing(lot) ? formatCurrency(lot.precioFinal) : '—')}</td>
     `;
 
     row.addEventListener('click', () => {
@@ -1590,38 +1627,38 @@ const updateSummary = () => {
   const isCashPayment = state.paymentMode === 'cash';
   const paymentModeLabel = getPaymentModeLabel();
   const agentRegistrationSummaryRow = agentRegistrationInput.value
-    ? `<dt>Código de agente</dt><dd>${agentRegistrationInput.value}</dd>`
+    ? `<dt>Código de agente</dt><dd>${escapeHTML(agentRegistrationInput.value)}</dd>`
     : '';
   const paymentSummaryRows = isCashPayment
     ? `
-      <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
-      <dt>Descuento al contado</dt><dd>${formatCurrency(totals.cashDiscount)}</dd>
-      <dt>Precio final al contado</dt><dd>${formatCurrency(totals.cashFinal)}</dd>
-      <dt>Ahorro total</dt><dd>${formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))}</dd>
+      <dt>Precio de lista</dt><dd>${escapeHTML(formatCurrency(totals.precioLista))}</dd>
+      <dt>Descuento al contado</dt><dd>${escapeHTML(formatCurrency(totals.cashDiscount))}</dd>
+      <dt>Precio final al contado</dt><dd>${escapeHTML(formatCurrency(totals.cashFinal))}</dd>
+      <dt>Ahorro total</dt><dd>${escapeHTML(formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal)))}</dd>
     `
     : `
-      <dt>Precio de lista</dt><dd>${formatCurrency(totals.precioLista)}</dd>
-      <dt>Descuento por lanzamiento</dt><dd>${formatCurrency(totals.descuentoPreventa)}</dd>
-      <dt>Precio final financiado</dt><dd>${formatCurrency(totals.precioFinal)}</dd>
-      <dt>Inicial</dt><dd>${formatCurrency(totals.initialValue)}</dd>
-      <dt>Plazo</dt><dd>${totals.term} meses</dd>
-      <dt>Monto a financiar</dt><dd>${formatCurrency(totals.financedAmount)}</dd>
-      <dt>Cuota mensual</dt><dd>${formatCurrency(totals.monthlyPayment)}</dd>
+      <dt>Precio de lista</dt><dd>${escapeHTML(formatCurrency(totals.precioLista))}</dd>
+      <dt>Descuento por lanzamiento</dt><dd>${escapeHTML(formatCurrency(totals.descuentoPreventa))}</dd>
+      <dt>Precio final financiado</dt><dd>${escapeHTML(formatCurrency(totals.precioFinal))}</dd>
+      <dt>Inicial</dt><dd>${escapeHTML(formatCurrency(totals.initialValue))}</dd>
+      <dt>Plazo</dt><dd>${escapeHTML(totals.term)} meses</dd>
+      <dt>Monto a financiar</dt><dd>${escapeHTML(formatCurrency(totals.financedAmount))}</dd>
+      <dt>Cuota mensual</dt><dd>${escapeHTML(formatCurrency(totals.monthlyPayment))}</dd>
     `;
 
   summaryCard.innerHTML = `
     <dl class="summary-list">
-      <dt>Manzana</dt><dd>${state.selectedLot.mz || '-'}</dd>
-      <dt>Lote</dt><dd>${state.selectedLot.lote || '-'}</dd>
-      <dt>Cliente</dt><dd>${clienteInput.value || '-'}</dd>
-      <dt>Etapa</dt><dd>${state.selectedLot.etapa || '-'}</dd>
-      <dt>Ubicación</dt><dd>${state.selectedLot.ubicacion || '-'}</dd>
-      <dt>Área</dt><dd>${state.selectedLot.area != null ? `${state.selectedLot.area} m²` : '-'}</dd>
-      <dt>Agente inmobiliario</dt><dd>${asesorSelect.value || '-'}</dd>
+      <dt>Manzana</dt><dd>${escapeHTML(state.selectedLot.mz || '-')}</dd>
+      <dt>Lote</dt><dd>${escapeHTML(state.selectedLot.lote || '-')}</dd>
+      <dt>Cliente</dt><dd>${escapeHTML(clienteInput.value || '-')}</dd>
+      <dt>Etapa</dt><dd>${escapeHTML(state.selectedLot.etapa || '-')}</dd>
+      <dt>Ubicación</dt><dd>${escapeHTML(state.selectedLot.ubicacion || '-')}</dd>
+      <dt>Área</dt><dd>${escapeHTML(state.selectedLot.area != null ? `${state.selectedLot.area} m²` : '-')}</dd>
+      <dt>Agente inmobiliario</dt><dd>${escapeHTML(asesorSelect.value || '-')}</dd>
       ${agentRegistrationSummaryRow}
-      <dt>Fecha</dt><dd>${fechaInput.value || '-'}</dd>
+      <dt>Fecha</dt><dd>${escapeHTML(fechaInput.value || '-')}</dd>
       <dt>Modalidad</dt>
-      <dd><span class="summary-mode-badge ${isCashPayment ? 'cash' : ''}">${paymentModeLabel}</span></dd>
+      <dd><span class="summary-mode-badge ${isCashPayment ? 'cash' : ''}">${escapeHTML(paymentModeLabel)}</span></dd>
       ${paymentSummaryRows}
     </dl>
   `;
@@ -1688,35 +1725,35 @@ const renderSavedQuotes = () => {
           : null;
     const quotePaymentDetails = quoteIsCash
       ? `
-        <p>Descuento al contado: <strong>${formatCurrency(quote.cashDiscount)}</strong></p>
-        <p>Precio final al contado: <strong>${formatCurrency(savedCashFinal)}</strong></p>
+        <p>Descuento al contado: <strong>${escapeHTML(formatCurrency(quote.cashDiscount))}</strong></p>
+        <p>Precio final al contado: <strong>${escapeHTML(formatCurrency(savedCashFinal))}</strong></p>
       `
       : `
-        <p>Descuento por lanzamiento: <strong>${formatCurrency(quote.descuentoPreventa)}</strong></p>
-        <p>Precio final financiado: <strong>${formatCurrency(quote.adjustedFinal)}</strong></p>
-        <p>Cuota mensual: <strong>${formatCurrency(quote.monthlyPayment)}</strong></p>
+        <p>Descuento por lanzamiento: <strong>${escapeHTML(formatCurrency(quote.descuentoPreventa))}</strong></p>
+        <p>Precio final financiado: <strong>${escapeHTML(formatCurrency(quote.adjustedFinal))}</strong></p>
+        <p>Cuota mensual: <strong>${escapeHTML(formatCurrency(quote.monthlyPayment))}</strong></p>
       `;
     const quoteAgentRegistration = quote.agentRegistration
-      ? `<p>Código de agente: <strong>${quote.agentRegistration}</strong></p>`
+      ? `<p>Código de agente: <strong>${escapeHTML(quote.agentRegistration)}</strong></p>`
       : '';
 
     card.innerHTML = `
       <header>
         <div>
-          <strong>${formatLotReference(quote)}</strong>
-          <p>${formatDate(quote.createdAt)}</p>
+          <strong>${escapeHTML(formatLotReference(quote))}</strong>
+          <p>${escapeHTML(formatDate(quote.createdAt))}</p>
         </div>
       </header>
 
-      <p>Cliente: <strong>${quote.cliente || '-'}</strong></p>
-      <p>Agente inmobiliario: <strong>${quote.asesor}</strong></p>
+      <p>Cliente: <strong>${escapeHTML(quote.cliente || '-')}</strong></p>
+      <p>Agente inmobiliario: <strong>${escapeHTML(quote.asesor)}</strong></p>
       ${quoteAgentRegistration}
-      <p>Modalidad: <span class="quote-mode-label ${quoteIsCash ? 'cash' : ''}">${getPaymentModeLabel(quotePaymentMode)}</span></p>
+      <p>Modalidad: <span class="quote-mode-label ${quoteIsCash ? 'cash' : ''}">${escapeHTML(getPaymentModeLabel(quotePaymentMode))}</span></p>
       ${quotePaymentDetails}
 
       <div class="quote-actions">
-        <button class="button secondary" data-action="load" data-id="${quote.id}">Cargar</button>
-        <button class="button danger" data-action="delete" data-id="${quote.id}">Eliminar</button>
+        <button class="button secondary" data-action="load" data-id="${escapeHTML(quote.id)}">Cargar</button>
+        <button class="button danger" data-action="delete" data-id="${escapeHTML(quote.id)}">Eliminar</button>
       </div>
     `;
 
@@ -2076,3 +2113,4 @@ savedQuotesList.addEventListener('click', (event) => {
 
 syncPaymentModeUI();
 loadData();
+initializeDesktopSession();
