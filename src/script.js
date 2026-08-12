@@ -101,12 +101,12 @@ const metrajeInput = query('#metrajeInput');
 const descuentoPreventaInput = query('#descuentoPreventaInput');
 const cashDiscountInput = query('#cashDiscountInput');
 const initialInput = query('#initialInput');
+const priceListInput = query('#priceListInput');
+const cashPriceListInput = query('#cashPriceListInput');
 
-const priceListValue = query('#priceListValue');
 const finalPriceValue = query('#finalPriceValue');
 const monthlyPaymentValue = query('#monthlyPaymentValue');
 const systemValue = query('#systemValue');
-const cashPriceListValue = query('#cashPriceListValue');
 const cashFinalValue = query('#cashFinalValue');
 const paymentModeInputs = [...document.querySelectorAll('input[name="paymentMode"]')];
 const financedPaymentPanel = query('#financedPaymentPanel');
@@ -205,6 +205,7 @@ let lotDialogTrigger = null;
 
 const STORAGE_KEY = 'villa_hermosa_cotizaciones';
 const MAX_FINANCE_TERM = 84;
+const COMPANY_PHONE = '51910917965';
 
 const PLAN_WIDTH = 3509;
 const PLAN_HEIGHT = 4961;
@@ -1233,9 +1234,9 @@ const clearSelectedLotDetails = () => {
   ubicacionInput.value = '';
   metrajeInput.value = '';
 
-  priceListValue.textContent = '-';
+  priceListInput.value = 0;
   finalPriceValue.textContent = '-';
-  cashPriceListValue.textContent = '-';
+  cashPriceListInput.value = 0;
   cashFinalValue.textContent = '-';
   monthlyPaymentValue.textContent = '-';
 
@@ -1304,6 +1305,10 @@ const selectLot = (lot) => {
   ubicacionInput.value = lot.ubicacion || '';
   metrajeInput.value = lot.area != null ? `${lot.area} m²` : '';
 
+  const lotPriceList = lot.precioLista != null ? Number(lot.precioLista) : 0;
+  priceListInput.value = lotPriceList;
+  cashPriceListInput.value = lotPriceList;
+
   descuentoPreventaInput.value =
     lot.descuentoPreventa != null ? lot.descuentoPreventa : 0;
 
@@ -1327,7 +1332,11 @@ const selectLot = (lot) => {
 const getTotals = () => {
   if (!state.selectedLot) return null;
 
-  const precioLista = state.selectedLot.precioLista || 0;
+  let precioLista = Number(priceListInput.value);
+
+  if (Number.isNaN(precioLista) || precioLista < 0) {
+    precioLista = Number(state.selectedLot.precioLista) || 0;
+  }
 
   let descuentoPreventa = Number(descuentoPreventaInput.value);
 
@@ -1365,13 +1374,21 @@ const getTotals = () => {
     state.selectedLot.descuentoContado != null &&
     cashDiscount === Number(state.selectedLot.descuentoContado);
 
+  const usesDefaultListPrice =
+    state.selectedLot.precioLista != null &&
+    precioLista === Number(state.selectedLot.precioLista);
+
   const precioFinal =
-    usesDefaultPreventaDiscount && state.selectedLot.precioFinal != null
+    usesDefaultListPrice &&
+    usesDefaultPreventaDiscount &&
+    state.selectedLot.precioFinal != null
       ? Number(state.selectedLot.precioFinal)
       : Math.max(0, precioLista - descuentoPreventa);
 
   const cashFinal =
-    usesDefaultCashDiscount && state.selectedLot.precioFinalContado != null
+    usesDefaultListPrice &&
+    usesDefaultCashDiscount &&
+    state.selectedLot.precioFinalContado != null
       ? Number(state.selectedLot.precioFinalContado)
       : Math.max(0, precioLista - cashDiscount);
   const financedAmount = Math.max(0, precioFinal - initialValue);
@@ -1408,6 +1425,10 @@ const formatPrintDate = (isoDate) => {
 
 const formatPhone = (phone) => {
   const digits = String(phone || '').replace(/\D/g, '');
+
+  if (digits.length === 11 && digits.startsWith('51')) {
+    return `+51 ${digits.slice(2).replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3')}`;
+  }
 
   if (digits.length === 9) {
     return digits.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
@@ -1537,7 +1558,7 @@ const updatePrintQuote = (totals) => {
       ? `Código de agente: ${agentRegistrationInput.value}`
       : 'Código de agente: —'
   );
-  setPrintText(printAdvisorPhone, formatPhone(currentUser.phone));
+  setPrintText(printAdvisorPhone, formatPhone(COMPANY_PHONE));
 
   if (printQuote) printQuote.setAttribute('aria-hidden', 'false');
 };
@@ -1556,7 +1577,6 @@ const updateSummary = () => {
 
   if (!totals) return;
 
-  priceListValue.textContent = formatCurrency(totals.precioLista);
   descuentoPreventaInput.value = totals.descuentoPreventa;
   finalPriceValue.textContent = formatCurrency(totals.precioFinal);
   initialInput.value = totals.initialValue;
@@ -1564,7 +1584,6 @@ const updateSummary = () => {
 
   systemValue.textContent = 'FINANCIADO';
 
-  cashPriceListValue.textContent = formatCurrency(totals.precioLista);
   cashDiscountInput.value = totals.cashDiscount;
   cashFinalValue.textContent = formatCurrency(totals.cashFinal);
 
@@ -1725,6 +1744,11 @@ const loadQuote = (id) => {
   agentRegistrationInput.value = quote.agentRegistration || '';
   fechaInput.value = getTodayDateValue();
 
+  const savedPriceList =
+    quote.precioLista != null ? Number(quote.precioLista) : Number(lot.precioLista) || 0;
+  priceListInput.value = savedPriceList;
+  cashPriceListInput.value = savedPriceList;
+
   descuentoPreventaInput.value =
     quote.descuentoPreventa != null
       ? quote.descuentoPreventa
@@ -1829,10 +1853,12 @@ const copySummary = () => {
 
   const isCashPayment = state.paymentMode === 'cash';
   const paymentText = isCashPayment
-    ? `Descuento al contado: ${formatCurrency(totals.cashDiscount)}\n` +
+    ? `Precio de lista: ${formatCurrency(totals.precioLista)}\n` +
+      `Descuento al contado: ${formatCurrency(totals.cashDiscount)}\n` +
       `Precio final al contado: ${formatCurrency(totals.cashFinal)}\n` +
       `Ahorro total: ${formatCurrency(Math.max(0, totals.precioLista - totals.cashFinal))}`
-    : `Descuento por lanzamiento: ${formatCurrency(totals.descuentoPreventa)}\n` +
+    : `Precio de lista: ${formatCurrency(totals.precioLista)}\n` +
+      `Descuento por lanzamiento: ${formatCurrency(totals.descuentoPreventa)}\n` +
       `Precio final financiado: ${formatCurrency(totals.precioFinal)}\n` +
       `Inicial: ${formatCurrency(totals.initialValue)}\n` +
       `Plazo: ${totals.term} meses\n` +
@@ -1892,6 +1918,14 @@ fechaInput.addEventListener('change', updateSummary);
 initialInput.addEventListener('input', updateSummary);
 descuentoPreventaInput.addEventListener('input', updateSummary);
 cashDiscountInput.addEventListener('input', updateSummary);
+priceListInput.addEventListener('input', () => {
+  cashPriceListInput.value = priceListInput.value;
+  updateSummary();
+});
+cashPriceListInput.addEventListener('input', () => {
+  priceListInput.value = cashPriceListInput.value;
+  updateSummary();
+});
 
 copySummaryButton.addEventListener('click', copySummary);
 printSummaryButton.addEventListener('click', printSummary);

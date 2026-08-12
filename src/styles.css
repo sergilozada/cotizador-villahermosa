@@ -718,7 +718,6 @@ textarea[readonly] {
 #monthlyPaymentValue,
 #finalPriceValue,
 #cashFinalValue,
-#cashPriceListValue,
 .summary-card dd strong,
 .summary-card dd span {
   color: #b87f00;
@@ -730,10 +729,14 @@ textarea[readonly] {
 
 #monthlyPaymentValue,
 #finalPriceValue,
-#cashFinalValue,
-#cashPriceListValue {
+#cashFinalValue {
   min-width: 90px;
   text-align: right;
+}
+
+.editable-price-row .input-prefix {
+  border-color: rgba(15, 119, 138, 0.42);
+  box-shadow: 0 0 0 3px rgba(15, 119, 138, 0.07);
 }
 
 .input-prefix {
@@ -1670,8 +1673,7 @@ tbody tr.selected {
   .finance-row strong,
   #monthlyPaymentValue,
   #finalPriceValue,
-  #cashFinalValue,
-  #cashPriceListValue {
+  #cashFinalValue {
     min-width: auto !important;
     padding: 1mm 2mm !important;
     border-radius: 8px !important;
@@ -3050,8 +3052,7 @@ tbody tr.selected {
   .finance-row strong,
   #monthlyPaymentValue,
   #finalPriceValue,
-  #cashFinalValue,
-  #cashPriceListValue {
+  #cashFinalValue {
     min-width: 112px;
     padding: 7px 12px;
     border-radius: 999px;

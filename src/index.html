@@ -286,9 +286,20 @@
               </div>
 
               <div class="finance-grid">
-                <div class="finance-row">
+                <div class="finance-row highlight-row editable-price-row">
                   <span>PRECIO LISTA:</span>
-                  <strong id="priceListValue">-</strong>
+                  <div class="input-prefix">
+                    <span>S/</span>
+                    <input
+                      id="priceListInput"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value="0"
+                      inputmode="decimal"
+                      aria-label="Precio de lista financiado"
+                    />
+                  </div>
                 </div>
 
                 <div class="finance-row highlight-row">
@@ -342,9 +353,20 @@
               <div class="finance-block-header">AL CONTADO</div>
 
               <div class="finance-grid">
-                <div class="finance-row">
+                <div class="finance-row highlight-row editable-price-row">
                   <span>PRECIO LISTA:</span>
-                  <strong id="cashPriceListValue">-</strong>
+                  <div class="input-prefix">
+                    <span>S/</span>
+                    <input
+                      id="cashPriceListInput"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value="0"
+                      inputmode="decimal"
+                      aria-label="Precio de lista al contado"
+                    />
+                  </div>
                 </div>
 
                 <div class="finance-row highlight-row">
@@ -1109,7 +1131,7 @@
         <div>
 
           <span>
-            Celular:
+            Teléfono de la empresa:
           </span>
 
           <strong id="printAdvisorPhone">
