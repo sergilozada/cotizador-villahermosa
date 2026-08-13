@@ -364,6 +364,85 @@ textarea[readonly] {
   color: #0d6f78;
 }
 
+.pwa-install-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(13, 111, 120, 0.24);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #edf9f7, #f7fbfa);
+  color: #0a6069;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pwa-install-button:hover,
+.pwa-install-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(13, 111, 120, 0.5);
+  box-shadow: 0 10px 24px rgba(13, 111, 120, 0.14);
+  outline: none;
+}
+
+.pwa-install-button svg {
+  width: 23px;
+  height: 23px;
+  flex: 0 0 auto;
+}
+
+.pwa-install-button span {
+  display: grid;
+  gap: 2px;
+}
+
+.pwa-install-button strong {
+  color: #0b2b48;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pwa-install-button small {
+  color: #687789;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.pwa-install-button[hidden],
+.pwa-status-toast[hidden] {
+  display: none !important;
+}
+
+.pwa-status-toast {
+  position: fixed;
+  z-index: 5000;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  max-width: min(390px, calc(100vw - 36px));
+  padding: 13px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 12px;
+  background: #0b2b48;
+  color: #ffffff;
+  box-shadow: 0 18px 44px rgba(4, 24, 43, 0.3);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.pwa-status-toast.is-offline {
+  border-color: rgba(232, 185, 73, 0.55);
+  background: #49370f;
+}
+
+.pwa-status-toast.is-success {
+  background: #075c5f;
+}
+
 .login-overlay.login-success {
   animation: overlayExit 0.65s ease forwards;
 }
@@ -1425,6 +1504,8 @@ tbody tr.selected {
   .login-overlay,
   .login-card,
   .login-error,
+  .pwa-install-button,
+  .pwa-status-toast,
   .button-row,
   .button,
   .quote-actions,

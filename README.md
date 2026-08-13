@@ -48,6 +48,16 @@ La app consume `data/precios.json`, generado con `scripts/import_stage2_prices.p
 [](https://github.com/sergilozada/cotizador-villa-hermosa#sitio-web)
 [https://cotizadorvillahermosa.netlify.app/](https://cotizadorvillahermosa.netlify.app/)
 
+## Aplicación para Android (PWA)
+
+Abre el sitio en **Google Chrome para Android**, presiona **Instalar en Android**
+en el acceso y confirma **Instalar**. El cotizador queda disponible desde el icono
+de Villa Hermosa en la pantalla de inicio y se abre sin la barra del navegador.
+
+La aplicación requiere internet para iniciar sesión y cargar precios vigentes. Por
+seguridad comercial, el service worker no guarda usuarios, precios ni cotizaciones
+en caché. El historial local se separa por agente en cada dispositivo.
+
 ## Aplicación portátil para Windows
 
 La versión de escritorio abre el mismo cotizador publicado en Netlify, por lo que

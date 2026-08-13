@@ -1,5 +1,27 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+/
+  Cache-Control: no-store, max-age=0
+
+/src/index.html
+  Cache-Control: no-store, max-age=0
+
+/src/script.js
+  Cache-Control: no-store, max-age=0
+
+/src/styles.css
+  Cache-Control: no-cache, must-revalidate
+
+/data/precios.json
+  Cache-Control: no-store, max-age=0
+
+/manifest.webmanifest
+  Cache-Control: no-cache, must-revalidate
+
+/service-worker.js
+  Cache-Control: no-store, max-age=0, must-revalidate
+  Service-Worker-Allowed: /

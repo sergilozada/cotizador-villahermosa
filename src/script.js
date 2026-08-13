@@ -8,6 +8,7 @@ const state = {
   planZoom: 1,
   previewLot: null,
   paymentMode: 'financed',
+  pricesLoadedAt: 0,
 };
 
 const users = {
@@ -89,6 +90,8 @@ const appContent = query('#appContent');
 const usernameInput = query('#usernameInput');
 const passwordInput = query('#passwordInput');
 const loginButton = query('#loginButton');
+const installAppButton = query('#installAppButton');
+const pwaStatusToast = query('#pwaStatusToast');
 
 const mzInput = query('#mzInput');
 const loteInput = query('#loteInput');
@@ -200,8 +203,12 @@ const printMapImage = query('#printMapImage');
 const printMapMarker = query('#printMapMarker');
 const printMapMarkerLabel = query('#printMapMarkerLabel');
 let lotDialogTrigger = null;
+let deferredInstallPrompt = null;
+let pwaStatusTimer = null;
 
-const STORAGE_KEY = 'villa_hermosa_cotizaciones';
+const STORAGE_KEY_PREFIX = 'villa_hermosa_cotizaciones';
+const LEGACY_STORAGE_KEY = 'villa_hermosa_cotizaciones';
+const PRICE_REFRESH_INTERVAL_MS = 15 * 60 * 1000;
 const MAX_FINANCE_TERM = 84;
 const COMPANY_PHONE = '51910917965';
 
@@ -1107,6 +1114,8 @@ const setCurrentUser = (username) => {
     agentRegistrationInput.value = user.registration || '';
     updateAdvisorPhotoCheck(user);
   }
+
+  loadSavedQuotes();
 };
 
 const enterApp = (username, { animate = true } = {}) => {
@@ -1170,10 +1179,46 @@ const initializeDesktopSession = async () => {
 
 const loadData = async () => {
   try {
-    const response = await fetch('/data/precios.json');
+    const previouslySelectedLot = state.selectedLot;
+    const response = await fetch('/data/precios.json', { cache: 'no-store' });
+
+    if (!response.ok) {
+      throw new Error(`No se pudieron cargar los precios (${response.status}).`);
+    }
 
     state.allLots = await response.json();
     state.filteredLots = [...state.allLots];
+    state.pricesLoadedAt = Date.now();
+
+    if (previouslySelectedLot) {
+      const refreshedLot = state.allLots.find(
+        (lot) => String(lot.codigo) === String(previouslySelectedLot.codigo)
+      );
+
+      if (refreshedLot) {
+        const commercialFields = [
+          'precioLista',
+          'descuentoPreventa',
+          'descuentoContado',
+          'inicial',
+          'ubicacion',
+          'area',
+        ];
+        const commercialDataChanged = commercialFields.some(
+          (field) => String(refreshedLot[field] ?? '') !== String(previouslySelectedLot[field] ?? '')
+        );
+
+        state.selectedLot = refreshedLot;
+
+        if (commercialDataChanged) {
+          selectLot(refreshedLot);
+          showPwaStatus('Los datos del lote seleccionado fueron actualizados.', {
+            tone: 'success',
+            duration: 6000,
+          });
+        }
+      }
+    }
 
     renderLotsTable();
     setActivePlanStage('2');
@@ -1665,16 +1710,55 @@ const disableActions = () => {
   saveQuoteButton.disabled = true;
 };
 
-const loadSavedQuotes = () => {
-  const savedData = localStorage.getItem(STORAGE_KEY);
+const getStorageKey = () =>
+  state.currentUser ? `${STORAGE_KEY_PREFIX}:${state.currentUser}` : null;
 
-  state.savedQuotes = savedData ? JSON.parse(savedData) : [];
+const loadSavedQuotes = () => {
+  const storageKey = getStorageKey();
+
+  if (!storageKey) {
+    state.savedQuotes = [];
+    renderSavedQuotes();
+    return;
+  }
+
+  try {
+    let savedData = localStorage.getItem(storageKey);
+
+    if (savedData == null) {
+      const legacyData = localStorage.getItem(LEGACY_STORAGE_KEY);
+      const legacyQuotes = legacyData ? JSON.parse(legacyData) : [];
+      const currentAdvisor = users[state.currentUser]?.fullName;
+      const advisorAliases = new Set(
+        state.currentUser === 's.lozada'
+          ? [currentAdvisor, 'Sergio Lozada']
+          : [currentAdvisor]
+      );
+      const matchingQuotes = Array.isArray(legacyQuotes)
+        ? legacyQuotes.filter((quote) => advisorAliases.has(String(quote?.asesor || '').trim()))
+        : [];
+
+      if (matchingQuotes.length > 0) {
+        savedData = JSON.stringify(matchingQuotes);
+        localStorage.setItem(storageKey, savedData);
+      }
+    }
+
+    const parsedData = savedData ? JSON.parse(savedData) : [];
+    state.savedQuotes = Array.isArray(parsedData) ? parsedData : [];
+  } catch (error) {
+    console.error('No se pudo leer el historial guardado:', error);
+    state.savedQuotes = [];
+  }
 
   renderSavedQuotes();
 };
 
 const saveQuotes = () => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.savedQuotes));
+  const storageKey = getStorageKey();
+  if (!storageKey) return;
+
+  localStorage.setItem(storageKey, JSON.stringify(state.savedQuotes));
 };
 
 const formatDate = (timestamp) => {
@@ -1910,6 +1994,145 @@ const copySummary = () => {
   });
 };
 
+const isStandalonePwa = () =>
+  window.matchMedia?.('(display-mode: standalone)').matches === true ||
+  window.navigator.standalone === true;
+
+const showPwaStatus = (message, { tone = 'info', duration = 4200 } = {}) => {
+  if (!pwaStatusToast) return;
+
+  window.clearTimeout(pwaStatusTimer);
+  pwaStatusToast.textContent = message;
+  pwaStatusToast.classList.toggle('is-offline', tone === 'offline');
+  pwaStatusToast.classList.toggle('is-success', tone === 'success');
+  pwaStatusToast.hidden = false;
+
+  if (duration > 0) {
+    pwaStatusTimer = window.setTimeout(() => {
+      pwaStatusToast.hidden = true;
+    }, duration);
+  }
+};
+
+const registerPwaServiceWorker = async () => {
+  const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+  const isSecureContext = window.location.protocol === 'https:' || isLocalHost;
+
+  if (
+    window.villaHermosaDesktop ||
+    !isSecureContext ||
+    !('serviceWorker' in navigator)
+  ) {
+    return;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.register('/service-worker.js', {
+      scope: '/',
+      updateViaCache: 'none',
+    });
+
+    registration.addEventListener('updatefound', () => {
+      const installingWorker = registration.installing;
+      const isUpdate = Boolean(navigator.serviceWorker.controller);
+      if (!installingWorker || !isUpdate) return;
+
+      installingWorker.addEventListener('statechange', () => {
+        if (installingWorker.state === 'installed') {
+          showPwaStatus('Actualización lista. Vuelve a abrir la app para verla.', {
+            tone: 'success',
+            duration: 6500,
+          });
+        }
+      });
+    });
+
+    registration.update().catch(() => {});
+  } catch (error) {
+    console.warn('No se pudo registrar la aplicación instalable:', error);
+  }
+};
+
+const initializePwa = () => {
+  if (window.villaHermosaDesktop) return;
+
+  if (installAppButton) {
+    installAppButton.hidden = true;
+
+    installAppButton.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) return;
+
+      const promptEvent = deferredInstallPrompt;
+      deferredInstallPrompt = null;
+      installAppButton.hidden = true;
+
+      await promptEvent.prompt();
+      const choice = await promptEvent.userChoice;
+
+      if (choice?.outcome === 'accepted') {
+        showPwaStatus('Instalación aceptada. La app aparecerá en tu pantalla de inicio.', {
+          tone: 'success',
+          duration: 6000,
+        });
+      }
+    });
+  }
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+
+    if (installAppButton && !isStandalonePwa()) {
+      installAppButton.hidden = false;
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    if (installAppButton) installAppButton.hidden = true;
+    showPwaStatus('Cotizador instalado correctamente.', {
+      tone: 'success',
+      duration: 6000,
+    });
+  });
+
+  window.addEventListener('offline', () => {
+    showPwaStatus('Sin conexión. Reconéctate para consultar precios actualizados.', {
+      tone: 'offline',
+      duration: 0,
+    });
+  });
+
+  window.addEventListener('online', () => {
+    showPwaStatus('Conexión restablecida. Actualizando precios en línea.', {
+      tone: 'success',
+    });
+
+    loadData();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    const pricesAreStale = Date.now() - state.pricesLoadedAt >= PRICE_REFRESH_INTERVAL_MS;
+
+    if (document.visibilityState === 'visible' && navigator.onLine && pricesAreStale) {
+      loadData();
+    }
+  });
+
+  if (!navigator.onLine) {
+    showPwaStatus('Sin conexión. Reconéctate para consultar precios actualizados.', {
+      tone: 'offline',
+      duration: 0,
+    });
+  }
+
+  if (document.readyState === 'complete') {
+    registerPwaServiceWorker();
+  } else {
+    window.addEventListener('load', registerPwaServiceWorker, { once: true });
+  }
+};
+
 paymentModeInputs.forEach((input) => {
   input.addEventListener('change', () => {
     if (input.checked) setPaymentMode(input.value);
@@ -2099,5 +2322,6 @@ savedQuotesList.addEventListener('click', (event) => {
 });
 
 syncPaymentModeUI();
+initializePwa();
 loadData();
 initializeDesktopSession();
