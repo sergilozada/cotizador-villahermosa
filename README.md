@@ -51,9 +51,9 @@ La app consume `data/precios.json`, generado con `scripts/import_stage2_prices.p
 ## Aplicación portátil para Windows
 
 La versión de escritorio abre el mismo cotizador publicado en Netlify, por lo que
-recibe los cambios del sitio al volver a abrirla. En el primer inicio se selecciona
-el agente de esa laptop y Windows conserva esa asignación protegida; el sitio móvil
-continúa usando usuario y contraseña.
+recibe los cambios del sitio al volver a abrirla. Cada vez que inicia muestra un
+selector de agente sin contraseña; el sitio móvil continúa usando usuario y
+contraseña.
 
 ```powershell
 npm install
@@ -61,9 +61,9 @@ npm run desktop:build
 ```
 
 El archivo generado queda en
-`dist/Cotizador-Villa-Hermosa-Portable.exe`. Para cambiar de agente en una laptop,
-usa **Aplicación → Cambiar agente de este equipo**. La reasignación también borra el
-historial local de cotizaciones de ese equipo.
+`dist/Cotizador-Villa-Hermosa-Portable.exe`. Para cambiar de agente durante una
+sesión, usa **Aplicación → Cambiar agente**. Si se elige un agente diferente, la app
+borra el historial local anterior para proteger los datos de clientes.
 
 La aplicación requiere conexión a internet. Un ejecutable sin certificado de firma
 puede mostrar la advertencia SmartScreen de Windows en el primer inicio.

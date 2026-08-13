@@ -32,6 +32,7 @@ const SETUP_URL = pathToFileURL(SETUP_HTML_PATH).toString();
 let mainWindow = null;
 let setupWindow = null;
 let pairedAdvisor = null;
+let storedAdvisor = null;
 let resettingDevice = false;
 
 const publicAdvisor = (advisor) => ({
@@ -139,8 +140,8 @@ const configureAppSession = () => {
 
 const installApplicationMenu = () => {
   const advisorLabel = pairedAdvisor
-    ? `Agente asignado: ${pairedAdvisor.displayName}`
-    : 'Equipo sin agente asignado';
+    ? `Agente activo: ${pairedAdvisor.displayName}`
+    : 'Selecciona el agente de esta sesión';
 
   Menu.setApplicationMenu(
     Menu.buildFromTemplate([
@@ -150,7 +151,7 @@ const installApplicationMenu = () => {
           { label: advisorLabel, enabled: false },
           { type: 'separator' },
           {
-            label: 'Cambiar agente de este equipo…',
+            label: 'Cambiar agente…',
             enabled: Boolean(pairedAdvisor),
             click: () => resetDeviceAssignment(),
           },
@@ -273,26 +274,27 @@ async function resetDeviceAssignment() {
     defaultId: 0,
     cancelId: 0,
     title: 'Cambiar agente',
-    message: '¿Cambiar el agente asignado a este equipo?',
+    message: '¿Elegir otro agente para esta sesión?',
     detail:
-      'Se cerrará la sesión automática y se borrará del equipo el historial local de cotizaciones para proteger los datos de clientes.',
+      'Se cerrará el cotizador actual. Si eliges otro agente, se borrará el historial local para proteger los datos de clientes.',
   });
 
   if (confirmation.response !== 1) return;
 
   resettingDevice = true;
+  const previousAdvisor = pairedAdvisor;
   try {
-    await clearAdvisorSiteData();
-    await fs.rm(CONFIG_PATH, { force: true });
     pairedAdvisor = null;
 
     createSetupWindow();
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.destroy();
   } catch (error) {
+    pairedAdvisor = previousAdvisor;
+    installApplicationMenu();
     await dialog.showMessageBox({
       type: 'error',
       title: 'No se pudo cambiar el agente',
-      message: 'No se pudo limpiar la asignación de este equipo.',
+      message: 'No se pudo abrir el selector de agentes.',
       detail: error.message,
     });
   } finally {
@@ -319,10 +321,16 @@ const registerIpcHandlers = () => {
 
     const advisor = findAdvisor(username);
     if (!advisor) throw new Error('El agente seleccionado no es válido.');
+    if (!safeStorage.isEncryptionAvailable()) {
+      throw new Error('Windows no pudo proteger la selección de este equipo.');
+    }
 
-    // A missing/corrupt assignment must never expose the previous agent's local quotes.
-    await clearAdvisorSiteData();
+    // Keep the same advisor's local history, but never expose it to another advisor.
+    if (!storedAdvisor || storedAdvisor.username !== advisor.username) {
+      await clearAdvisorSiteData();
+    }
     await saveAssignment(advisor);
+    storedAdvisor = advisor;
     pairedAdvisor = advisor;
 
     createMainWindow();
@@ -353,15 +361,15 @@ if (!hasSingleInstanceLock) {
   app.whenReady().then(async () => {
     configureAppSession();
     registerIpcHandlers();
-    pairedAdvisor = await loadAssignment();
+    storedAdvisor = await loadAssignment();
+    pairedAdvisor = null;
 
-    if (pairedAdvisor) createMainWindow();
-    else createSetupWindow();
+    createSetupWindow();
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length) return;
-      if (pairedAdvisor) createMainWindow();
-      else createSetupWindow();
+      pairedAdvisor = null;
+      createSetupWindow();
     });
   });
 }

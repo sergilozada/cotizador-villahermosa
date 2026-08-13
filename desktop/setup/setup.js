@@ -25,7 +25,7 @@ const selectAdvisor = (advisor, option) => {
   const registration = advisor.registration
     ? ` · Código ${advisor.registration}`
     : '';
-  selectionSummary.textContent = `Este equipo quedará asignado a ${advisor.displayName}${registration}.`;
+  selectionSummary.textContent = `Abrirás el cotizador como ${advisor.displayName}${registration}.`;
   pairButton.disabled = false;
 };
 
@@ -75,8 +75,8 @@ pairButton.addEventListener('click', async () => {
   if (!selectedAdvisor) return;
 
   pairButton.disabled = true;
-  pairButton.textContent = 'ASIGNANDO EQUIPO…';
-  selectionSummary.textContent = 'Guardando la asignación segura en Windows…';
+  pairButton.textContent = 'ABRIENDO COTIZADOR…';
+  selectionSummary.textContent = 'Preparando tu sesión…';
 
   try {
     await window.villaHermosaSetup.pairAdvisor(selectedAdvisor.username);
