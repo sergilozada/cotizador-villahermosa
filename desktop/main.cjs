@@ -12,10 +12,7 @@ const APP_NAME = 'Cotizador Villa Hermosa';
 const CONFIG_VERSION = 1;
 
 const ADVISORS = Object.freeze([
-  Object.freeze({ username: 'd.guerra', displayName: 'Dixon Jamir Guerra Armejo', registration: '' }),
-  Object.freeze({ username: 'l.villanueva', displayName: 'Lizbeth Antonia Villanueva Chávez', registration: '' }),
-  Object.freeze({ username: 'y.montoya', displayName: 'Teresa Yvonne Montoya Acosta', registration: '' }),
-  Object.freeze({ username: 's.lozada', displayName: 'Sergio Lozada', registration: '' }),
+  Object.freeze({ username: 's.lozada', displayName: 'Sergi Lozada', registration: '' }),
   Object.freeze({ username: 't.lozada', displayName: 'Theo Lozada Villegas', registration: '14661-PN-MVCS' }),
   Object.freeze({ username: 'j.talavera', displayName: 'Julio Talavera', registration: '23773-PN-MVCS' }),
 ]);

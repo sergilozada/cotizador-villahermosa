@@ -11,30 +11,9 @@ const state = {
 };
 
 const users = {
-  'd.guerra': {
-    advisor: 'Dixon Guerra',
-    fullName: 'Dixon Jamir Guerra Armejo',
-    phone: '912131159',
-    photo: '/src/assets/DIXON.jpeg',
-    password: 'VH-Agosto2026!',
-  },
-  'l.villanueva': {
-    advisor: 'Lizbeth Villanueva',
-    fullName: 'Lizbeth Antonia Villanueva Chávez',
-    phone: '938697119',
-    photo: '/src/assets/LISBETH.jpeg',
-    password: 'VH-Agosto2026!',
-  },
-  'y.montoya': {
-    advisor: 'Yvonne Montoya',
-    fullName: 'Teresa Yvonne Montoya Acosta',
-    phone: '906522870',
-    photo: '/src/assets/TERESA.jpeg',
-    password: 'VH-Agosto2026!',
-  },
   's.lozada': {
-    advisor: 'Sergio Lozada',
-    fullName: 'Sergio Lozada',
+    advisor: 'Sergi Lozada',
+    fullName: 'Sergi Lozada',
     phone: '',
     photo: '',
     registration: '',
