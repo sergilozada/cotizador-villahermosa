@@ -15,6 +15,7 @@ const ADVISORS = Object.freeze([
   Object.freeze({ username: 's.lozada', displayName: 'Sergi Lozada', registration: '' }),
   Object.freeze({ username: 't.lozada', displayName: 'Theo Lozada Villegas', registration: '14661-PN-MVCS' }),
   Object.freeze({ username: 'j.talavera', displayName: 'Julio Talavera', registration: '23773-PN-MVCS' }),
+  Object.freeze({ username: 'l.loayza', displayName: 'Luis Loayza', registration: '' }),
 ]);
 
 app.enableSandbox();

@@ -35,6 +35,14 @@ const users = {
     registration: '23773-PN-MVCS',
     password: 'Villahermosa2026',
   },
+  'l.loayza': {
+    advisor: 'Luis Loayza',
+    fullName: 'Luis Loayza',
+    phone: '',
+    photo: '',
+    registration: '',
+    password: 'Villahermosa2026',
+  },
 };
 
 const formatCurrency = (value) => {
