@@ -21,6 +21,7 @@
 
 /manifest.webmanifest
   Cache-Control: no-cache, must-revalidate
+  Content-Type: application/manifest+json; charset=utf-8
 
 /service-worker.js
   Cache-Control: no-store, max-age=0, must-revalidate
