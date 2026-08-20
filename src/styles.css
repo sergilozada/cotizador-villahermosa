@@ -2384,6 +2384,81 @@ tbody tr.selected {
     background: #9da3aa;
   }
 
+  .plan-status-filters {
+    display: grid;
+    gap: 9px;
+    margin: 0 0 16px;
+  }
+
+  .plan-status-filters-label {
+    color: var(--vh-navy);
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .plan-status-filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .plan-status-filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 13px;
+    border: 1px solid #cbd2d1;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--vh-navy);
+    cursor: pointer;
+    font-size: 0.73rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .plan-status-filter strong {
+    display: inline-grid;
+    place-items: center;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #e7eeec;
+    font-size: 0.68rem;
+  }
+
+  .plan-status-filter:hover,
+  .plan-status-filter:focus-visible,
+  .plan-status-filter.active {
+    border-color: var(--vh-teal-dark);
+    background: var(--vh-navy);
+    color: #ffffff;
+  }
+
+  .plan-status-filter.active strong {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .plan-status-filter.status-separated:not(.active) {
+    border-color: #d58a18;
+    color: #8e5600;
+  }
+
+  .plan-status-filter.status-sold:not(.active) {
+    border-color: #168355;
+    color: #0b6d42;
+  }
+
+  .plan-status-filter.status-blocked:not(.active) {
+    border-color: #34435b;
+    color: #26364f;
+  }
+
   .plan-viewer-shell {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 270px;
@@ -2437,39 +2512,95 @@ tbody tr.selected {
     outline: none;
   }
 
-  .plan-lot-hotspot rect,
-  .plan-lot-hotspot polygon {
-    fill: rgba(20, 142, 152, 0.055);
-    stroke: rgba(13, 111, 120, 0.22);
+  .plan-lot-hotspot > .plan-lot-shape {
+    fill: transparent;
+    stroke: rgba(13, 111, 120, 0.16);
     stroke-width: 4;
     pointer-events: all;
     vector-effect: non-scaling-stroke;
     transition: fill 140ms ease, stroke 140ms ease;
   }
 
-  .plan-lot-hotspot:hover rect,
-  .plan-lot-hotspot:hover polygon,
-  .plan-lot-hotspot:focus rect,
-  .plan-lot-hotspot:focus polygon,
-  .plan-lot-hotspot.previewing rect,
-  .plan-lot-hotspot.previewing polygon {
-    fill: rgba(20, 142, 152, 0.32);
-    stroke: #075f68;
+  .plan-lot-hotspot:hover > .plan-lot-shape,
+  .plan-lot-hotspot:focus > .plan-lot-shape,
+  .plan-lot-hotspot.previewing > .plan-lot-shape {
+    stroke: #ffffff;
     stroke-width: 9;
+    filter: drop-shadow(0 0 6px rgba(7, 24, 45, 0.74));
   }
 
-  .plan-lot-hotspot.selected rect,
-  .plan-lot-hotspot.selected polygon {
-    fill: rgba(201, 162, 77, 0.42);
-    stroke: #9c7015;
-    stroke-width: 11;
+  .plan-lot-hotspot.selected > .plan-lot-shape {
+    stroke: #f4c756;
+    stroke-width: 13;
+    filter: drop-shadow(0 0 7px rgba(80, 51, 0, 0.82));
   }
 
-  .plan-lot-hotspot.information-only rect,
-  .plan-lot-hotspot.information-only polygon {
+  .plan-lot-hotspot.status-separated > .plan-lot-shape {
+    fill: rgba(221, 126, 0, 0.48);
+    stroke: #a85d00;
+  }
+
+  .plan-lot-hotspot.status-sold > .plan-lot-shape {
+    fill: rgba(32, 164, 101, 0.5);
+    stroke: #0d7045;
+  }
+
+  .plan-lot-hotspot.status-blocked > .plan-lot-shape {
+    fill: rgba(14, 27, 47, 0.7);
+    stroke: #07182d;
+  }
+
+  .plan-lot-hotspot.information-only > .plan-lot-shape {
     fill: rgba(100, 107, 115, 0.1);
     stroke: rgba(100, 107, 115, 0.55);
     stroke-dasharray: 13 8;
+  }
+
+  .plan-lot-hotspot:hover > rect:first-child,
+  .plan-lot-hotspot:hover > polygon:first-child,
+  .plan-lot-hotspot:focus > rect:first-child,
+  .plan-lot-hotspot:focus > polygon:first-child,
+  .plan-lot-hotspot.previewing > rect:first-child,
+  .plan-lot-hotspot.previewing > polygon:first-child {
+    stroke: #ffffff;
+    stroke-width: 9;
+    filter: drop-shadow(0 0 6px rgba(7, 24, 45, 0.74));
+  }
+
+  .plan-lot-hotspot.selected > rect:first-child,
+  .plan-lot-hotspot.selected > polygon:first-child {
+    stroke: #f4c756;
+    stroke-width: 13;
+    filter: drop-shadow(0 0 7px rgba(80, 51, 0, 0.82));
+  }
+
+  .plan-lot-hotspot.status-filtered-out {
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .plan-lot-lock-body,
+  .plan-lot-lock-shackle {
+    pointer-events: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .plan-lot-lock-body {
+    fill: #ffffff;
+    stroke: #07182d;
+    stroke-width: 2;
+  }
+
+  .plan-lot-lock-shackle {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 8;
+    stroke-linecap: round;
+  }
+
+  .plan-lot-lock-keyhole {
+    fill: #07182d;
+    pointer-events: none;
   }
 
   .plan-help-card {
@@ -2517,10 +2648,16 @@ tbody tr.selected {
   }
 
   .plan-legend i {
-    width: 19px;
-    height: 13px;
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 16px;
     border: 2px solid var(--vh-teal-dark);
     background: rgba(20, 142, 152, 0.22);
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-style: normal;
+    line-height: 1;
   }
 
   .plan-legend .legend-selected {
@@ -2528,10 +2665,19 @@ tbody tr.selected {
     background: rgba(201, 162, 77, 0.45);
   }
 
-  .plan-legend .legend-pending {
-    border-color: #777f86;
-    border-style: dashed;
-    background: rgba(100, 107, 115, 0.12);
+  .plan-legend .legend-separated {
+    border-color: #a85d00;
+    background: rgba(221, 126, 0, 0.55);
+  }
+
+  .plan-legend .legend-sold {
+    border-color: #0d7045;
+    background: rgba(32, 164, 101, 0.58);
+  }
+
+  .plan-legend .legend-blocked {
+    border-color: #07182d;
+    background: #26364f;
   }
 
   #planSelectionLabel {
@@ -2621,6 +2767,194 @@ tbody tr.selected {
   .lot-data-status.pending {
     background: #eceeed;
     color: #656c73;
+  }
+
+  .lot-inventory-status,
+  .table-lot-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    gap: 5px;
+    padding: 7px 10px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .lot-inventory-status.status-available,
+  .table-lot-status.status-available {
+    background: #e6f6f3;
+    color: #0d6f78;
+  }
+
+  .lot-inventory-status.status-separated,
+  .table-lot-status.status-separated {
+    background: #fff0d4;
+    color: #935800;
+  }
+
+  .lot-inventory-status.status-sold,
+  .table-lot-status.status-sold {
+    background: #e2f6eb;
+    color: #0b6d42;
+  }
+
+  .lot-inventory-status.status-blocked,
+  .table-lot-status.status-blocked {
+    background: #26364f;
+    color: #ffffff;
+  }
+
+  .lot-availability-note {
+    margin: -8px 0 22px;
+    padding: 12px 14px;
+    border-left: 4px solid #6d7888;
+    background: #eef1f3;
+    color: #3d4a5c;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .lot-availability-note[data-status='separado'] {
+    border-color: #d17c00;
+    background: #fff5e3;
+    color: #7e4b00;
+  }
+
+  .lot-availability-note[data-status='vendido'] {
+    border-color: #168355;
+    background: #eaf8f0;
+    color: #0b6540;
+  }
+
+  .lot-availability-note[data-status='bloqueado'] {
+    border-color: #26364f;
+    background: #e8ecf1;
+    color: #1d2b42;
+  }
+
+  .lot-status-editor {
+    display: grid;
+    gap: 14px;
+    margin: 0 0 24px;
+    padding: 18px;
+    border: 1px solid #d7ddda;
+    border-left: 5px solid var(--vh-teal);
+    background: #f6f8f5;
+  }
+
+  .lot-status-editor[hidden] {
+    display: none;
+  }
+
+  .lot-status-editor-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .lot-status-editor-head h3 {
+    margin: 4px 0 0;
+    color: var(--vh-navy);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.24rem;
+    font-weight: 500;
+  }
+
+  #lotStatusEditorCurrent {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 7px 11px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    color: var(--vh-teal-dark);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  #lotStatusEditorCurrent[data-status='separado'] {
+    background: #fff0d4;
+    color: #935800;
+  }
+
+  #lotStatusEditorCurrent[data-status='vendido'] {
+    background: #e2f6eb;
+    color: #0b6d42;
+  }
+
+  #lotStatusEditorCurrent[data-status='bloqueado'] {
+    background: #26364f;
+    color: #ffffff;
+  }
+
+  .lot-status-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .lot-status-action {
+    min-height: 48px;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    background: #ffffff;
+    color: var(--vh-navy);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .lot-status-action:hover,
+  .lot-status-action:focus-visible,
+  .lot-status-action.is-current {
+    outline: 0;
+    box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.72), 0 0 0 3px rgba(20, 142, 152, 0.18);
+  }
+
+  .lot-status-action.status-separated {
+    border-color: #d17c00;
+    background: #fff0d4;
+    color: #8a5100;
+  }
+
+  .lot-status-action.status-sold {
+    border-color: #168355;
+    background: #e2f6eb;
+    color: #0b6d42;
+  }
+
+  .lot-status-action.status-blocked {
+    border-color: #26364f;
+    background: #26364f;
+    color: #ffffff;
+  }
+
+  .lot-status-action.lot-status-release {
+    grid-column: 1 / -1;
+    border-color: var(--vh-teal-dark);
+    background: #e6f6f3;
+    color: var(--vh-teal-dark);
+  }
+
+  .lot-status-action[hidden] {
+    display: none;
+  }
+
+  .lot-status-feedback {
+    margin: 0;
+    color: #5c6874;
+    font-size: 0.73rem;
+    font-weight: 700;
+    line-height: 1.4;
   }
 
   .lot-dialog-facts {
@@ -2754,6 +3088,28 @@ tbody tr.selected {
     align-items: flex-start;
   }
 
+  .plan-status-filters {
+    margin-inline: -4px;
+    overflow: hidden;
+  }
+
+  .plan-status-filters-label {
+    padding-inline: 4px;
+  }
+
+  .plan-status-filter-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 1px 4px 8px;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+
+  .plan-status-filter {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
   .plan-viewport {
     height: 70vh;
     min-height: 520px;
@@ -2768,11 +3124,28 @@ tbody tr.selected {
     display: grid;
   }
 
+  .lot-status-editor-head {
+    display: grid;
+  }
+
+  .lot-status-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lot-status-action.lot-status-release {
+    grid-column: 1 / -1;
+  }
+
   .lot-dialog-title-row h2 {
     font-size: 2.25rem;
   }
 
   .lot-data-status {
+    width: fit-content;
+  }
+
+  .lot-inventory-status,
+  .lot-availability-note {
     width: fit-content;
   }
 

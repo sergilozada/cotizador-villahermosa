@@ -9,6 +9,8 @@ const state = {
   previewLot: null,
   paymentMode: 'financed',
   pricesLoadedAt: 0,
+  inventoryUpdatedAt: '',
+  planStatusFilter: 'todos',
 };
 
 const users = {
@@ -139,6 +141,12 @@ const planZoomInButton = query('#planZoomInButton');
 const planZoomResetButton = query('#planZoomResetButton');
 const planZoomValue = query('#planZoomValue');
 const planSelectionLabel = query('#planSelectionLabel');
+const planStatusFilterButtons = [
+  ...document.querySelectorAll('[data-lot-status-filter]'),
+];
+const planStatusCountElements = [
+  ...document.querySelectorAll('[data-status-count]'),
+];
 const lotDetailsDialog = query('#lotDetailsDialog');
 const closeLotDetailsButton = query('#closeLotDetailsButton');
 const lotDialogCancelButton = query('#lotDialogCancelButton');
@@ -158,7 +166,15 @@ const lotDialogInstallment = query('#lotDialogInstallment');
 const lotDialogCashDiscount = query('#lotDialogCashDiscount');
 const lotDialogCashPrice = query('#lotDialogCashPrice');
 const lotDialogDataStatus = query('.lot-data-status');
+const lotDialogInventoryStatus = query('#lotDialogInventoryStatus');
+const lotDialogAvailabilityNote = query('#lotDialogAvailabilityNote');
 const lotDialogPaymentMode = query('#lotDialogPaymentMode');
+const lotStatusEditor = query('#lotStatusEditor');
+const lotStatusEditorCurrent = query('#lotStatusEditorCurrent');
+const lotStatusFeedback = query('#lotStatusFeedback');
+const lotStatusActionButtons = [
+  ...document.querySelectorAll('[data-set-lot-status]'),
+];
 const lotDialogPaymentModeItems = [
   ...document.querySelectorAll('[data-dialog-payment-mode]'),
 ];
@@ -208,19 +224,96 @@ let pwaStatusTimer = null;
 
 const STORAGE_KEY_PREFIX = 'villa_hermosa_cotizaciones';
 const LEGACY_STORAGE_KEY = 'villa_hermosa_cotizaciones';
+const INVENTORY_OVERRIDES_STORAGE_KEY = 'villa_hermosa_inventario_overrides:v1';
 const PRICE_REFRESH_INTERVAL_MS = 15 * 60 * 1000;
 const MAX_FINANCE_TERM = 84;
 const COMPANY_PHONE = '51910917965';
 
-const PLAN_WIDTH = 3509;
-const PLAN_HEIGHT = 4961;
+const PLAN_IMAGE_WIDTH = 11112;
+const PLAN_IMAGE_HEIGHT = 9167;
+const PLAN_VIEWBOX = Object.freeze({ x: 3000, y: 120, width: 4300, height: 8950 });
+const PLAN_COORDINATE_TRANSFORM = Object.freeze({
+  scaleX: 2.3498771353152756,
+  offsetX: 970.7127749891979,
+  scaleY: 2.056787011753409,
+  offsetY: -520.3129453342086,
+});
+const PLAN_ASSET_PATH = '/src/assets/plano-etapa-2-limpio-2026-08-19.jpeg';
+const PLAN_HOSTED_IMAGE_PATH =
+  '/.netlify/images?url=/src/assets/plano-etapa-2-limpio-2026-08-19.jpeg&w=5000&fm=webp&q=86';
+const PLAN_IMAGE_SOURCE = window.location.hostname.endsWith('.netlify.app')
+  ? PLAN_HOSTED_IMAGE_PATH
+  : PLAN_ASSET_PATH;
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 const PLAN_CONFIG = {
   '2': {
     label: 'Etapa 2',
-    image: '/src/assets/2da-02.png',
-    description: 'Registros del proyecto vinculados con sus datos comerciales disponibles.',
+    image: PLAN_IMAGE_SOURCE,
+    description: 'Plano limpio de la segunda etapa con inventario comercial actualizado.',
   },
+};
+
+const LOT_STATUS_CONFIG = Object.freeze({
+  disponible: Object.freeze({ label: 'Disponible', className: 'status-available' }),
+  separado: Object.freeze({ label: 'Separado', className: 'status-separated' }),
+  vendido: Object.freeze({ label: 'Vendido', className: 'status-sold' }),
+  bloqueado: Object.freeze({ label: 'Bloqueado', className: 'status-blocked' }),
+});
+const VALID_LOT_STATUSES = new Set(Object.keys(LOT_STATUS_CONFIG));
+
+const normalizeLotStatus = (status) =>
+  VALID_LOT_STATUSES.has(String(status || '').toLowerCase())
+    ? String(status).toLowerCase()
+    : 'disponible';
+
+const getLotStatus = (lot) => normalizeLotStatus(lot?.estado);
+
+const getLotStatusConfig = (lotOrStatus) => {
+  const status = typeof lotOrStatus === 'string'
+    ? normalizeLotStatus(lotOrStatus)
+    : getLotStatus(lotOrStatus);
+
+  return LOT_STATUS_CONFIG[status];
+};
+
+const loadInventoryOverrides = () => {
+  try {
+    const storedValue = localStorage.getItem(INVENTORY_OVERRIDES_STORAGE_KEY);
+    if (!storedValue) return {};
+
+    const payload = JSON.parse(storedValue);
+    return payload?.version === 1 && payload.changes && typeof payload.changes === 'object'
+      ? payload.changes
+      : {};
+  } catch (error) {
+    console.warn('No se pudieron leer los cambios locales de inventario:', error);
+    return {};
+  }
+};
+
+const saveInventoryOverride = (lot, status) => {
+  const normalizedStatus = normalizeLotStatus(status);
+  const existingChanges = loadInventoryOverrides();
+  const currentUser = users[state.currentUser];
+  const payload = {
+    version: 1,
+    changes: {
+      ...existingChanges,
+      [lot.codigo]: {
+        estado: normalizedStatus,
+        updatedAt: new Date().toISOString(),
+        updatedBy: currentUser?.fullName || state.currentUser || 'Este dispositivo',
+      },
+    },
+  };
+
+  try {
+    localStorage.setItem(INVENTORY_OVERRIDES_STORAGE_KEY, JSON.stringify(payload));
+    return true;
+  } catch (error) {
+    console.error('No se pudo guardar el cambio de inventario:', error);
+    return false;
+  }
 };
 
 const STAGE_TWO_TOP_ROWS = [
@@ -712,8 +805,47 @@ const getStageTwoLotGeometry = (lot) => {
   return null;
 };
 
-const getPlanLotGeometry = (lot) =>
-  lot?.planGeometry || getStageTwoLotGeometry(lot);
+const transformPlanPoint = ([x, y]) => [
+  x * PLAN_COORDINATE_TRANSFORM.scaleX + PLAN_COORDINATE_TRANSFORM.offsetX,
+  y * PLAN_COORDINATE_TRANSFORM.scaleY + PLAN_COORDINATE_TRANSFORM.offsetY,
+];
+
+const transformPlanGeometry = (geometry) => {
+  if (!geometry) return null;
+
+  if (geometry.points) {
+    const points = geometry.points.map(transformPlanPoint);
+    const xValues = points.map(([x]) => x);
+    const yValues = points.map(([, y]) => y);
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
+
+    return {
+      x: minX,
+      y: minY,
+      width: maxX - minX,
+      height: maxY - minY,
+      points,
+    };
+  }
+
+  return {
+    x: geometry.x * PLAN_COORDINATE_TRANSFORM.scaleX + PLAN_COORDINATE_TRANSFORM.offsetX,
+    y: geometry.y * PLAN_COORDINATE_TRANSFORM.scaleY + PLAN_COORDINATE_TRANSFORM.offsetY,
+    width: geometry.width * PLAN_COORDINATE_TRANSFORM.scaleX,
+    height: geometry.height * PLAN_COORDINATE_TRANSFORM.scaleY,
+  };
+};
+
+const getPlanLotGeometry = (lot) => {
+  const legacyGeometry = lot?.planGeometry || getStageTwoLotGeometry(lot);
+
+  return String(lot?.etapa) === '2'
+    ? transformPlanGeometry(legacyGeometry)
+    : legacyGeometry;
+};
 
 const setPlanZoom = (nextZoom, { preserveCenter = true } = {}) => {
   if (!planCanvas || !planViewport) return;
@@ -746,9 +878,9 @@ const getDefaultPlanZoom = () =>
 const centerPlanOnGeometry = (geometry) => {
   if (!geometry || !planCanvas || !planViewport) return;
 
-  const scale = planCanvas.getBoundingClientRect().width / PLAN_WIDTH;
-  const centerX = (geometry.x + geometry.width / 2) * scale;
-  const centerY = (geometry.y + geometry.height / 2) * scale;
+  const scale = planCanvas.getBoundingClientRect().width / PLAN_VIEWBOX.width;
+  const centerX = (geometry.x + geometry.width / 2 - PLAN_VIEWBOX.x) * scale;
+  const centerY = (geometry.y + geometry.height / 2 - PLAN_VIEWBOX.y) * scale;
 
   planViewport.scrollTo({
     left: centerX - planViewport.clientWidth / 2,
@@ -780,6 +912,89 @@ const syncPlanSelection = (codigo = null, preview = false) => {
   }
 };
 
+const getLotStatusCounts = (lots = getAllPlanLots()) => {
+  const counts = {
+    todos: lots.length,
+    disponible: 0,
+    separado: 0,
+    vendido: 0,
+    bloqueado: 0,
+  };
+
+  lots.forEach((lot) => {
+    counts[getLotStatus(lot)] += 1;
+  });
+
+  return counts;
+};
+
+const syncPlanStatusFilters = () => {
+  const counts = getLotStatusCounts(
+    getAllPlanLots().filter((lot) => String(lot.etapa) === state.activePlanStage)
+  );
+
+  planStatusCountElements.forEach((element) => {
+    const status = element.dataset.statusCount;
+    element.textContent = counts[status] ?? 0;
+  });
+
+  planStatusFilterButtons.forEach((button) => {
+    const isActive = button.dataset.lotStatusFilter === state.planStatusFilter;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  planHotspots?.querySelectorAll('.plan-lot-hotspot').forEach((hotspot) => {
+    const matches =
+      state.planStatusFilter === 'todos' ||
+      hotspot.dataset.status === state.planStatusFilter;
+    hotspot.classList.toggle('status-filtered-out', !matches);
+    hotspot.setAttribute('tabindex', matches ? '0' : '-1');
+    hotspot.setAttribute('aria-hidden', String(!matches));
+  });
+};
+
+const setPlanStatusFilter = (status = 'todos') => {
+  state.planStatusFilter = status === 'todos' || VALID_LOT_STATUSES.has(status)
+    ? status
+    : 'todos';
+  syncPlanStatusFilters();
+};
+
+const appendBlockedLotIcon = (hotspot, geometry) => {
+  const size = Math.max(64, Math.min(130, Math.min(geometry.width, geometry.height) * 0.42));
+  const centerX = geometry.x + geometry.width / 2;
+  const centerY = geometry.y + geometry.height / 2;
+  const bodyWidth = size * 0.72;
+  const bodyHeight = size * 0.55;
+  const body = document.createElementNS(SVG_NAMESPACE, 'rect');
+  const shackle = document.createElementNS(SVG_NAMESPACE, 'path');
+  const keyhole = document.createElementNS(SVG_NAMESPACE, 'circle');
+
+  body.classList.add('plan-lot-lock-body');
+  body.setAttribute('x', centerX - bodyWidth / 2);
+  body.setAttribute('y', centerY - bodyHeight * 0.05);
+  body.setAttribute('width', bodyWidth);
+  body.setAttribute('height', bodyHeight);
+  body.setAttribute('rx', size * 0.08);
+
+  shackle.classList.add('plan-lot-lock-shackle');
+  shackle.setAttribute(
+    'd',
+    `M ${centerX - size * 0.22} ${centerY - bodyHeight * 0.05} ` +
+      `V ${centerY - size * 0.23} A ${size * 0.22} ${size * 0.22} 0 0 1 ` +
+      `${centerX + size * 0.22} ${centerY - size * 0.23} ` +
+      `V ${centerY - bodyHeight * 0.05}`
+  );
+
+  keyhole.classList.add('plan-lot-lock-keyhole');
+  keyhole.setAttribute('cx', centerX);
+  keyhole.setAttribute('cy', centerY + size * 0.18);
+  keyhole.setAttribute('r', size * 0.055);
+
+  hotspot.append(shackle, body, keyhole);
+};
+
 const renderPlanHotspots = () => {
   if (!planHotspots) return;
 
@@ -799,10 +1014,15 @@ const renderPlanHotspots = () => {
       );
       const title = document.createElementNS(SVG_NAMESPACE, 'title');
       const hasPricing = hasCommercialPricing(lot);
+      const status = getLotStatus(lot);
+      const statusConfig = getLotStatusConfig(status);
 
+      shape.classList.add('plan-lot-shape');
       hotspot.classList.add('plan-lot-hotspot');
+      hotspot.classList.add(statusConfig.className);
       hotspot.classList.toggle('information-only', !hasPricing);
       hotspot.dataset.codigo = lot.codigo;
+      hotspot.dataset.status = status;
       hotspot.setAttribute('role', 'button');
       hotspot.setAttribute('tabindex', '0');
       hotspot.setAttribute('aria-haspopup', 'dialog');
@@ -811,7 +1031,7 @@ const renderPlanHotspots = () => {
       const pricingLabel = hasPricing ? '' : ', sin precios cargados';
       hotspot.setAttribute(
         'aria-label',
-        `${lot.codigo}, manzana ${lot.mz}, lote ${lot.lote}${areaLabel}${pricingLabel}`
+        `${lot.codigo}, manzana ${lot.mz}, lote ${lot.lote}, estado ${statusConfig.label}${areaLabel}${pricingLabel}`
       );
 
       if (geometry.points) {
@@ -826,11 +1046,12 @@ const renderPlanHotspots = () => {
         shape.setAttribute('height', geometry.height);
         shape.setAttribute('rx', Math.min(10, geometry.height * 0.08));
       }
-      title.textContent = `${lot.codigo} · ${lot.ubicacion || 'Ubicación según plano'}${
+      title.textContent = `${lot.codigo} · ${statusConfig.label} · ${lot.ubicacion || 'Ubicación según plano'}${
         lot.area != null ? ` · ${lot.area} m²` : ''
       }`;
 
       hotspot.append(shape, title);
+      if (status === 'bloqueado') appendBlockedLotIcon(hotspot, geometry);
       hotspot.addEventListener('click', () => openLotDetails(lot));
       hotspot.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -843,6 +1064,7 @@ const renderPlanHotspots = () => {
     });
 
   syncPlanSelection(state.selectedLot?.codigo || null);
+  syncPlanStatusFilters();
 };
 
 const setActivePlanStage = (stage, options = {}) => {
@@ -863,6 +1085,7 @@ const setActivePlanStage = (stage, options = {}) => {
   const linkedLots = stageLots.length;
   const pricedLots = stageLots.filter(hasCommercialPricing).length;
   const informationalLots = stageLots.filter(isInformationalLot).length;
+  const statusCounts = getLotStatusCounts(stageLots);
 
   if (planDataBadge) {
     planDataBadge.querySelector('strong').textContent = linkedLots;
@@ -873,9 +1096,16 @@ const setActivePlanStage = (stage, options = {}) => {
 
   if (planStageMessage) {
     if (pricedLots > 0) {
-      const commercialSummary = informationalLots
-        ? `${pricedLots} lotes con precios y ${informationalLots} espacio informativo vinculados al plano.`
-        : `${pricedLots} lotes cuentan con información de precios y pueden consultarse.`;
+      const inventoryDateLabel = state.inventoryUpdatedAt
+        ? ` Inventario actualizado al ${state.inventoryUpdatedAt.split('-').reverse().join('/')}.`
+        : '';
+      const commercialSummary =
+        `${statusCounts.disponible} disponibles, ${statusCounts.separado} separados, ` +
+        `${statusCounts.vendido} vendidos y ${statusCounts.bloqueado} bloqueados.` +
+        (informationalLots
+          ? ` ${informationalLots} espacio informativo aparece sin precio de venta.`
+          : '') +
+        inventoryDateLabel;
 
       planStageMessage.innerHTML = `
         <span class="plan-status-dot"></span>
@@ -905,6 +1135,7 @@ const setActivePlanStage = (stage, options = {}) => {
   }
 
   renderPlanHotspots();
+  syncPlanStatusFilters();
 
   if (!options.preserveZoom) {
     const defaultZoom = getDefaultPlanZoom();
@@ -922,6 +1153,42 @@ const closeLotDetails = () => {
   syncPlanSelection(state.selectedLot?.codigo || null);
 };
 
+const syncLotStatusEditor = (lot, feedbackMessage = '') => {
+  if (!lotStatusEditor || !lot) return;
+
+  const informational = isInformationalLot(lot);
+  const status = getLotStatus(lot);
+  const statusConfig = getLotStatusConfig(status);
+  const releaseButton = lotStatusActionButtons.find(
+    (button) => button.dataset.setLotStatus === 'disponible'
+  );
+
+  lotStatusEditor.hidden = informational;
+  if (informational) return;
+
+  setPrintText(lotStatusEditorCurrent, statusConfig.label);
+  lotStatusEditorCurrent.dataset.status = status;
+
+  lotStatusActionButtons.forEach((button) => {
+    const buttonStatus = normalizeLotStatus(button.dataset.setLotStatus);
+    const isCurrent = buttonStatus === status;
+    button.setAttribute('aria-pressed', String(isCurrent));
+    button.classList.toggle('is-current', isCurrent);
+  });
+
+  if (releaseButton) {
+    releaseButton.hidden = status === 'disponible';
+    releaseButton.textContent = status === 'bloqueado'
+      ? 'Desbloquear y volver a disponible'
+      : 'Volver a disponible';
+  }
+
+  if (lotStatusFeedback) {
+    lotStatusFeedback.textContent = feedbackMessage ||
+      'El cambio se guardará en este dispositivo.';
+  }
+};
+
 const openLotDetails = (lot) => {
   if (!lot) return;
 
@@ -931,6 +1198,9 @@ const openLotDetails = (lot) => {
 
   const geometry = getPlanLotGeometry(lot);
   const hasPricing = hasCommercialPricing(lot);
+  const quotable = isLotQuotable(lot);
+  const lotStatus = getLotStatus(lot);
+  const statusConfig = getLotStatusConfig(lotStatus);
   const informational = isInformationalLot(lot);
   const initial = hasPricing ? Number(lot.inicial || 0) : null;
   const installment = hasPricing
@@ -971,7 +1241,35 @@ const openLotDetails = (lot) => {
     lotDialogDataStatus.classList.toggle('pending', !hasPricing);
   }
 
-  if (quoteMapLotButton) quoteMapLotButton.disabled = !hasPricing;
+  if (lotDialogInventoryStatus) {
+    lotDialogInventoryStatus.textContent = statusConfig.label;
+    Object.values(LOT_STATUS_CONFIG).forEach(({ className }) => {
+      lotDialogInventoryStatus.classList.remove(className);
+    });
+    lotDialogInventoryStatus.classList.add(statusConfig.className);
+  }
+
+  if (lotDialogAvailabilityNote) {
+    const availabilityMessage = getLotAvailabilityMessage(lot);
+    lotDialogAvailabilityNote.textContent = availabilityMessage;
+    lotDialogAvailabilityNote.hidden = !availabilityMessage;
+    lotDialogAvailabilityNote.dataset.status = lotStatus;
+  }
+
+  syncLotStatusEditor(lot);
+
+  if (quoteMapLotButton) {
+    quoteMapLotButton.disabled = !quotable;
+    quoteMapLotButton.textContent = quotable
+      ? 'Cargar en el cotizador'
+      : lotStatus === 'separado'
+        ? 'Lote separado'
+        : lotStatus === 'vendido'
+          ? 'Lote vendido'
+          : lotStatus === 'bloqueado'
+            ? 'Lote bloqueado'
+            : 'Sin precio disponible';
+  }
 
   syncPaymentModeUI();
 
@@ -1000,6 +1298,10 @@ const handlePlanSearch = () => {
 
   planSearchInput.setCustomValidity('');
 
+  if (state.planStatusFilter !== 'todos' && getLotStatus(lot) !== state.planStatusFilter) {
+    setPlanStatusFilter('todos');
+  }
+
   const lotStage = String(lot.etapa);
 
   if (state.activePlanStage !== lotStage) {
@@ -1014,7 +1316,7 @@ const handlePlanSearch = () => {
 };
 
 const quotePreviewLot = () => {
-  if (!state.previewLot || !hasCommercialPricing(state.previewLot)) return;
+  if (!state.previewLot || !isLotQuotable(state.previewLot)) return;
 
   const lot = state.previewLot;
   selectLot(lot);
@@ -1118,6 +1420,94 @@ const setCurrentUser = (username) => {
   loadSavedQuotes();
 };
 
+const isLotQuotable = (lot) =>
+  hasCommercialPricing(lot) && getLotStatus(lot) === 'disponible';
+
+const getLotAvailabilityMessage = (lot) => {
+  const status = getLotStatus(lot);
+
+  if (status === 'separado') {
+    return 'Este lote está separado y no puede cotizarse mientras conserve este estado.';
+  }
+
+  if (status === 'vendido') {
+    return 'Este lote ya fue vendido y se mantiene visible solo como referencia.';
+  }
+
+  if (status === 'bloqueado') {
+    return 'Este lote está bloqueado y no se encuentra disponible para cotización.';
+  }
+
+  if (!hasCommercialPricing(lot)) {
+    return isInformationalLot(lot)
+      ? 'Espacio informativo del proyecto; no corresponde a un lote en venta.'
+      : 'La información comercial de este lote todavía está pendiente.';
+  }
+
+  return '';
+};
+
+const setLotInventoryStatus = (codigo, nextStatus) => {
+  const normalizedStatus = normalizeLotStatus(nextStatus);
+  const lot = state.allLots.find(
+    (item) => String(item.codigo).toUpperCase() === String(codigo || '').toUpperCase()
+  );
+
+  if (!lot || isInformationalLot(lot)) return;
+
+  const previousStatus = getLotStatus(lot);
+  if (previousStatus === normalizedStatus) {
+    syncLotStatusEditor(
+      lot,
+      `${formatLotReference(lot)} ya figura como ${getLotStatusConfig(lot).label.toLowerCase()}.`
+    );
+    return;
+  }
+
+  if (
+    normalizedStatus === 'vendido' &&
+    !window.confirm(
+      `¿Marcar ${formatLotReference(lot)} como vendido? Ya no podrá cotizarse.`
+    )
+  ) {
+    return;
+  }
+
+  if (!saveInventoryOverride(lot, normalizedStatus)) {
+    syncLotStatusEditor(
+      lot,
+      'No se pudo guardar el cambio. Verifica el almacenamiento del navegador.'
+    );
+    return;
+  }
+
+  lot.estado = normalizedStatus;
+  state.previewLot = lot;
+
+  if (state.selectedLot?.codigo === lot.codigo && normalizedStatus !== 'disponible') {
+    clearSelectedLotDetails();
+  }
+
+  if (
+    state.planStatusFilter !== 'todos' &&
+    state.planStatusFilter !== normalizedStatus
+  ) {
+    state.planStatusFilter = 'todos';
+  }
+
+  renderLotsTable();
+  setActivePlanStage(state.activePlanStage, { preserveZoom: true });
+  openLotDetails(lot);
+
+  const statusConfig = getLotStatusConfig(normalizedStatus);
+  const feedbackMessage = normalizedStatus === 'disponible'
+    ? `${formatLotReference(lot)} volvió a estar disponible en este dispositivo.`
+    : `${formatLotReference(lot)} quedó ${statusConfig.label.toLowerCase()} en este dispositivo.`;
+
+  syncLotStatusEditor(lot, feedbackMessage);
+  showPwaStatus(feedbackMessage, { tone: 'success', duration: 6000 });
+};
+
 const enterApp = (username, { animate = true } = {}) => {
   if (!users[username]) return false;
 
@@ -1180,15 +1570,41 @@ const initializeDesktopSession = async () => {
 const loadData = async () => {
   try {
     const previouslySelectedLot = state.selectedLot;
-    const response = await fetch('/data/precios.json', { cache: 'no-store' });
+    const [pricesResponse, inventoryResponse] = await Promise.all([
+      fetch('/data/precios.json', { cache: 'no-store' }),
+      fetch('/data/inventario.json', { cache: 'no-store' }),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`No se pudieron cargar los precios (${response.status}).`);
+    if (!pricesResponse.ok) {
+      throw new Error(`No se pudieron cargar los precios (${pricesResponse.status}).`);
     }
 
-    state.allLots = await response.json();
+    if (!inventoryResponse.ok) {
+      throw new Error(`No se pudo cargar el inventario (${inventoryResponse.status}).`);
+    }
+
+    const [priceLots, inventoryPayload] = await Promise.all([
+      pricesResponse.json(),
+      inventoryResponse.json(),
+    ]);
+    const inventoryLots = inventoryPayload?.lotes || {};
+    const inventoryOverrides = loadInventoryOverrides();
+
+    state.allLots = priceLots.map((lot) => {
+      const baseStatus = normalizeLotStatus(inventoryLots[lot.codigo]);
+      const overrideStatus = inventoryOverrides[lot.codigo]?.estado;
+
+      return {
+        ...lot,
+        estadoBase: baseStatus,
+        estado: overrideStatus == null
+          ? baseStatus
+          : normalizeLotStatus(overrideStatus),
+      };
+    });
     state.filteredLots = [...state.allLots];
     state.pricesLoadedAt = Date.now();
+    state.inventoryUpdatedAt = String(inventoryPayload?.actualizadoEl || '');
 
     if (previouslySelectedLot) {
       const refreshedLot = state.allLots.find(
@@ -1203,14 +1619,23 @@ const loadData = async () => {
           'inicial',
           'ubicacion',
           'area',
+          'estado',
         ];
         const commercialDataChanged = commercialFields.some(
           (field) => String(refreshedLot[field] ?? '') !== String(previouslySelectedLot[field] ?? '')
         );
 
-        state.selectedLot = refreshedLot;
+        if (!isLotQuotable(refreshedLot)) {
+          clearSelectedLotDetails();
+          showPwaStatus(
+            `${formatLotReference(refreshedLot)} ahora figura como ${getLotStatusConfig(refreshedLot).label.toLowerCase()}; se retiró de la cotización.`,
+            { tone: 'offline', duration: 7000 }
+          );
+        } else {
+          state.selectedLot = refreshedLot;
+        }
 
-        if (commercialDataChanged) {
+        if (isLotQuotable(refreshedLot) && commercialDataChanged) {
           selectLot(refreshedLot);
           showPwaStatus('Los datos del lote seleccionado fueron actualizados.', {
             tone: 'success',
@@ -1230,7 +1655,7 @@ const loadData = async () => {
     console.error('Error cargando datos:', error);
 
     summaryCard.innerHTML =
-      '<p class="empty-state">No se pudo cargar los datos de precios.</p>';
+      '<p class="empty-state">No se pudieron cargar los precios y el inventario actualizado.</p>';
   }
 };
 
@@ -1239,13 +1664,17 @@ const renderLotsTable = () => {
 
   if (!state.filteredLots.length) {
     lotsTable.innerHTML =
-      '<tr><td colspan="6">No se encontraron lotes con esos filtros.</td></tr>';
+      '<tr><td colspan="7">No se encontraron lotes con esos filtros.</td></tr>';
     return;
   }
 
   state.filteredLots.forEach((lot) => {
     const row = document.createElement('tr');
+    const lotStatus = getLotStatus(lot);
+    const statusConfig = getLotStatusConfig(lotStatus);
     row.dataset.codigo = lot.codigo;
+    row.dataset.status = lotStatus;
+    row.classList.add(`lot-row-${lotStatus}`);
 
     if (state.selectedLot && state.selectedLot.codigo === lot.codigo) {
       row.classList.add('selected');
@@ -1257,11 +1686,12 @@ const renderLotsTable = () => {
       <td>${escapeHTML(lot.etapa)}</td>
       <td>${escapeHTML(lot.ubicacion)}</td>
       <td>${escapeHTML(lot.area ?? '-')}</td>
+      <td><span class="table-lot-status ${escapeHTML(statusConfig.className)}">${lotStatus === 'bloqueado' ? '<span aria-hidden="true">🔒</span> ' : ''}${escapeHTML(statusConfig.label)}</span></td>
       <td>${escapeHTML(hasCommercialPricing(lot) ? formatCurrency(lot.precioFinal) : '—')}</td>
     `;
 
     row.addEventListener('click', () => {
-      if (!hasCommercialPricing(lot)) {
+      if (!isLotQuotable(lot)) {
         openLotDetails(lot);
         return;
       }
@@ -1330,7 +1760,7 @@ const handleCodigoInput = () => {
   const lot = findLotByCodigo(code);
 
   if (lot) {
-    if (!hasCommercialPricing(lot)) {
+    if (!isLotQuotable(lot)) {
       openLotDetails(lot);
       codigoInput.value = state.selectedLot?.codigo || '';
       return;
@@ -1347,7 +1777,7 @@ const handleCodigoInput = () => {
 };
 
 const selectLot = (lot) => {
-  if (!hasCommercialPricing(lot)) {
+  if (!isLotQuotable(lot)) {
     openLotDetails(lot);
     return;
   }
@@ -1507,7 +1937,10 @@ const formatPhone = (phone) => {
 };
 
 const resetPrintMapLocation = () => {
-  printMapSvg?.setAttribute('viewBox', `0 0 ${PLAN_WIDTH} ${PLAN_HEIGHT}`);
+  printMapSvg?.setAttribute(
+    'viewBox',
+    `${PLAN_VIEWBOX.x} ${PLAN_VIEWBOX.y} ${PLAN_VIEWBOX.width} ${PLAN_VIEWBOX.height}`
+  );
   printMapMarker?.setAttribute('visibility', 'hidden');
   printMapMarkerLabel?.setAttribute('visibility', 'hidden');
 
@@ -1557,10 +1990,11 @@ const updatePrintQuote = (totals) => {
   if (planGeometry && printMapSvg && printMapMarker && printMapMarkerLabel) {
     const centerX = planGeometry.x + planGeometry.width / 2;
     const centerY = planGeometry.y + planGeometry.height / 2;
-    const viewWidth = planGeometry.height > 700 ? 1050 : 820;
-    const viewHeight = planGeometry.height > 700 ? 1120 : 900;
-    const viewX = Math.max(0, Math.min(PLAN_WIDTH - viewWidth, centerX - viewWidth / 2));
-    const viewY = Math.max(0, Math.min(PLAN_HEIGHT - viewHeight, centerY - viewHeight / 2));
+    const isLargeGeometry = planGeometry.height > 1300;
+    const viewWidth = isLargeGeometry ? 2300 : 1850;
+    const viewHeight = isLargeGeometry ? 2500 : 1850;
+    const viewX = Math.max(0, Math.min(PLAN_IMAGE_WIDTH - viewWidth, centerX - viewWidth / 2));
+    const viewY = Math.max(0, Math.min(PLAN_IMAGE_HEIGHT - viewHeight, centerY - viewHeight / 2));
 
     printMapSvg.setAttribute('viewBox', `${viewX} ${viewY} ${viewWidth} ${viewHeight}`);
     printMapMarker.setAttribute('visibility', 'visible');
@@ -1573,7 +2007,10 @@ const updatePrintQuote = (totals) => {
     printMapMarkerLabel.setAttribute('y', centerY);
     printMapMarkerLabel.textContent = lot.codigo;
   } else if (printMapSvg && printMapMarker && printMapMarkerLabel) {
-    printMapSvg.setAttribute('viewBox', `0 0 ${PLAN_WIDTH} ${PLAN_HEIGHT}`);
+    printMapSvg.setAttribute(
+      'viewBox',
+      `${PLAN_VIEWBOX.x} ${PLAN_VIEWBOX.y} ${PLAN_VIEWBOX.width} ${PLAN_VIEWBOX.height}`
+    );
     printMapMarker.setAttribute('x', 0);
     printMapMarker.setAttribute('y', 0);
     printMapMarker.setAttribute('width', 0);
@@ -1843,6 +2280,15 @@ const loadQuote = (id) => {
 
   if (!lot) return;
 
+  if (!isLotQuotable(lot)) {
+    openLotDetails(lot);
+    showPwaStatus(
+      `${formatLotReference(lot)} ya no está disponible para cargar desde el historial.`,
+      { tone: 'offline', duration: 6500 }
+    );
+    return;
+  }
+
   setPaymentMode(quote.paymentMode, { refresh: false });
   selectLot(lot);
 
@@ -1886,7 +2332,7 @@ const clearHistory = () => {
 };
 
 const getCurrentQuote = () => {
-  if (!state.selectedLot) return null;
+  if (!state.selectedLot || !isLotQuotable(state.selectedLot)) return null;
 
   const totals = getTotals();
 
@@ -1935,7 +2381,7 @@ const saveCurrentQuote = () => {
 const printSummary = () => {
   const totals = getTotals();
 
-  if (!state.selectedLot || !totals) return;
+  if (!state.selectedLot || !isLotQuotable(state.selectedLot) || !totals) return;
 
   updatePrintQuote(totals);
 
@@ -1953,7 +2399,7 @@ const printSummary = () => {
 };
 
 const copySummary = () => {
-  if (!state.selectedLot) return;
+  if (!state.selectedLot || !isLotQuotable(state.selectedLot)) return;
 
   const totals = getTotals();
 
@@ -2212,6 +2658,12 @@ planZoomInButton?.addEventListener('click', () => setPlanZoom(state.planZoom + 0
 planZoomResetButton?.addEventListener('click', () => setPlanZoom(getDefaultPlanZoom()));
 planSearchButton?.addEventListener('click', handlePlanSearch);
 
+planStatusFilterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setPlanStatusFilter(button.dataset.lotStatusFilter);
+  });
+});
+
 planSearchInput?.addEventListener('input', (event) => {
   event.target.value = event.target.value.replace(/\s+/g, '').toUpperCase().slice(0, 4);
   event.target.setCustomValidity('');
@@ -2291,6 +2743,13 @@ planViewport?.addEventListener('lostpointercapture', (event) => clearPlanDrag(ev
 closeLotDetailsButton?.addEventListener('click', closeLotDetails);
 lotDialogCancelButton?.addEventListener('click', closeLotDetails);
 quoteMapLotButton?.addEventListener('click', quotePreviewLot);
+
+lotStatusActionButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    if (!state.previewLot) return;
+    setLotInventoryStatus(state.previewLot.codigo, button.dataset.setLotStatus);
+  });
+});
 
 lotDetailsDialog?.addEventListener('click', (event) => {
   if (event.target === lotDetailsDialog) closeLotDetails();

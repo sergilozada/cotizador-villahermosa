@@ -243,6 +243,7 @@
                   <th>Etapa</th>
                   <th>Ubicación</th>
                   <th>Área</th>
+                  <th>Estado</th>
                   <th>Precio final</th>
                 </tr>
               </thead>
@@ -485,6 +486,24 @@
           <span>105 lotes cuentan con información comercial y pueden seleccionarse.</span>
         </div>
 
+        <div class="plan-status-filters" aria-label="Filtrar lotes por estado">
+          <span class="plan-status-filters-label">Mostrar inventario</span>
+          <div class="plan-status-filter-list" role="group" aria-label="Estados de lote">
+            <button type="button" class="plan-status-filter active" data-lot-status-filter="todos" aria-pressed="true">
+              Todos <strong data-status-count="todos">105</strong>
+            </button>
+            <button type="button" class="plan-status-filter status-separated" data-lot-status-filter="separado" aria-pressed="false">
+              Separado <strong data-status-count="separado">0</strong>
+            </button>
+            <button type="button" class="plan-status-filter status-sold" data-lot-status-filter="vendido" aria-pressed="false">
+              Vendido <strong data-status-count="vendido">0</strong>
+            </button>
+            <button type="button" class="plan-status-filter status-blocked" data-lot-status-filter="bloqueado" aria-pressed="false">
+              <span aria-hidden="true">🔒</span> Bloqueado <strong data-status-count="bloqueado">0</strong>
+            </button>
+          </div>
+        </div>
+
         <div class="plan-viewer-shell">
           <div
             class="plan-viewport"
@@ -495,7 +514,7 @@
             <div class="plan-canvas" id="planCanvas">
               <svg
                 id="planSvg"
-                viewBox="0 0 3509 4961"
+                viewBox="3000 120 4300 8950"
                 role="group"
                 aria-labelledby="planSvgTitle planSvgDescription"
               >
@@ -505,9 +524,8 @@
                 </desc>
                 <image
                   id="planImage"
-                  href="/src/assets/2da-02.png"
-                  width="3509"
-                  height="4961"
+                  width="11112"
+                  height="9167"
                   aria-hidden="true"
                   focusable="false"
                   preserveAspectRatio="xMidYMid meet"
@@ -526,9 +544,10 @@
               <li>Haz clic para abrir su área, ubicación y precios disponibles.</li>
             </ol>
             <div class="plan-legend">
-              <span><i class="legend-available"></i> Con información</span>
-              <span><i class="legend-pending"></i> Precio pendiente</span>
-              <span><i class="legend-selected"></i> Seleccionado</span>
+              <span><i class="legend-separated"></i> Separado</span>
+              <span><i class="legend-sold"></i> Vendido</span>
+              <span><i class="legend-blocked">🔒</i> Bloqueado</span>
+              <span><i class="legend-selected"></i> Selección actual</span>
             </div>
             <p id="planSelectionLabel">Ningún lote seleccionado en el plano.</p>
           </aside>
@@ -576,10 +595,49 @@
             <p id="lotDialogSubtitle">—</p>
           </div>
           <div class="lot-dialog-status-stack">
+            <span class="lot-inventory-status status-available" id="lotDialogInventoryStatus">Disponible</span>
             <span class="lot-data-status">Con información comercial</span>
             <small class="lot-payment-mode" id="lotDialogPaymentMode">Financiado</small>
           </div>
         </div>
+
+        <section
+          class="lot-status-editor"
+          id="lotStatusEditor"
+          aria-labelledby="lotStatusEditorTitle"
+        >
+          <div class="lot-status-editor-head">
+            <div>
+              <span class="section-eyebrow">Estado comercial</span>
+              <h3 id="lotStatusEditorTitle">Actualizar disponibilidad</h3>
+            </div>
+            <strong id="lotStatusEditorCurrent" aria-live="polite">Disponible</strong>
+          </div>
+
+          <div class="lot-status-actions" role="group" aria-label="Cambiar estado del lote">
+            <button type="button" class="lot-status-action status-separated" data-set-lot-status="separado">
+              Separar lote
+            </button>
+            <button type="button" class="lot-status-action status-sold" data-set-lot-status="vendido">
+              Marcar vendido
+            </button>
+            <button type="button" class="lot-status-action status-blocked" data-set-lot-status="bloqueado">
+              <span aria-hidden="true">🔒</span> Bloquear
+            </button>
+            <button
+              type="button"
+              class="lot-status-action lot-status-release"
+              data-set-lot-status="disponible"
+              hidden
+            >
+              Volver a disponible
+            </button>
+          </div>
+
+          <p class="lot-status-feedback" id="lotStatusFeedback" aria-live="polite">
+            El cambio se guardará en este dispositivo.
+          </p>
+        </section>
 
         <dl class="lot-dialog-facts">
           <div><dt>Etapa</dt><dd id="lotDialogStage">—</dd></div>
@@ -588,6 +646,8 @@
           <div><dt>Área</dt><dd id="lotDialogArea">—</dd></div>
           <div><dt>Ubicación</dt><dd id="lotDialogLocation">—</dd></div>
         </dl>
+
+        <p class="lot-availability-note" id="lotDialogAvailabilityNote" hidden></p>
 
         <div class="lot-dialog-prices">
           <article>
@@ -736,16 +796,15 @@
 
             <svg
               id="printMapSvg"
-              viewBox="900 300 1800 1800"
+              viewBox="3000 120 4300 8950"
               role="img"
               aria-label="Detalle de ubicación del lote seleccionado"
             >
 
               <image
                 id="printMapImage"
-                href="/src/assets/2da-02.png"
-                width="3509"
-                height="4961"
+                width="11112"
+                height="9167"
               ></image>
 
               <rect
